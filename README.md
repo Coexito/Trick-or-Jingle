@@ -122,6 +122,6 @@ Integrantes del equipo:
 | ------ | ------ | ------ | ------ |
 | Sergio | Sánchez Martínez | s.sanchezmart.2019@alumnos.urjc.es | https://github.com/Coexito
 | Aurora | García Raigón | a.garciarai.2019@alumnos.urjc.es | https://github.com/bdevainy
-| Cecilia | Garrido Cano | | https://github.com/airiru
+| Cecilia | Garrido Cano | c.garrido.2019@alumnos.urjc.es | https://github.com/airiru
 | Iván | García Martínez | i.garciam.2019@alumnos.urjc.es | https://github.com/Igarmart
 | Raúl | Vives Guilló | r.vives.2019@alumnos.urjc.es | https://github.com/Ailentejitas

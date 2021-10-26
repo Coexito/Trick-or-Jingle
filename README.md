@@ -118,7 +118,7 @@ Se utilizarán bibliotecas de sonido en su mayor parte. Habrá música dentro de
 - Morir
 - Saltar
 
-### Autoría
+# Autoría
 
 Proyecto creado enteramente por ***Gamer Ferret***.
 ![Gamer Ferret](/Resources/Gamer_Ferret/Gamer_Ferret_logo_letras.png)

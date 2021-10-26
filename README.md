@@ -1,6 +1,8 @@
 # Trick or Jingle
 ***Halloween VS Navidad!***
 
+![Trick or Jingle](/Resources/Art/Logos/Trick_or_Jingle_logo.png)
+
 ## Identidad del juego
 
 *Trick or Jingle* se trata de un juego gratuito estilo plataformas y acción
@@ -56,10 +58,6 @@ Debido a que se trata de un juego en red, debe existir cierta comunicación entr
 
 De esta forma se pueden tener en cuenta todas las interacciones y calcularlas correctamente según posiciones y estados del juego.
 
-## Arte
-
-
-
 ## Referencias artísticas
 
 ![Brawlhalla Cover](/Resources/Artistic_References/brawlhalla_cover.jpg)
@@ -79,6 +77,9 @@ para poder moverse libremente por él.
 
 Ambos escenarios estarán totalmente cerrados de manera que resulte imposible caer al vacío o salir del mapa.
 
+![Halloween Level](/Resources/Art/Scenery/Halloween_boceto.jpg)
+![Christmas Level](/Resources/Art/Scenery/Navidad_boceto.jpg)
+
 ## Personajes
 
 Todos los personajes tienen las mismas habilidades, ya que el gameplay se caracteriza
@@ -91,14 +92,18 @@ Por esto, para la creación de los personajes, se juega mucho con la posible vir
 utilizando el humor conocido en Internet como memes.
 
 - **Personajes navideños**:
-    - **María Karei**: Mariah Carey es una cantante conocida mundialmente por su gran éxito navideño “*All I Want for Christmas is You*”. Desde que la canción salió en el año 1994 se puede observar cómo sus ventas crecen de manera exponencial al acercarse Navidad desde finales de septiembre y decrecen de manera drástica pasada la Navidad. Este es un meme muy conocido en Internet y por ello se ha decidido incluirla en el juego.
-    - **Papá Noel**: Papá Noel es una de las figuras más conocidas de la Navidad, pero para encajar más con el humor de la temática del juego se ha decidido que este fuera un poco inusual, representando a un Papá Noel con problemas de alcohol.
-    - **Pavo**: El pavo es una de las comidas navideñas más famosas. En el videojuego se ha querido representar con guantes de boxeo para mostrar que está listo para la pelea. Hace un par de años se viralizó en España un tweet sobre una fuente de pavo de Navidad destrozada tras caerse al suelo y el comentario “nos acabamos de quedar sin cena”. Por ello, al matar a este personaje sonaría “nos acabamos de quedar sin cena”.
+    - **María Karei**: Mariah Carey es una cantante conocida mundialmente por su gran éxito navideño “*All I Want for Christmas is You*”. Desde que la canción salió en el año 1994 se puede observar cómo sus ventas crecen de manera exponencial al acercarse Navidad desde finales de septiembre y decrecen de manera drástica pasada la Navidad. Este es un meme muy conocido en Internet y por ello se ha decidido incluirla en el juego.![Maria Karei](/Resources/Art/Concept/N_Maria_Karei.png)
+
+    - **Papá Noel**: Papá Noel es una de las figuras más conocidas de la Navidad, pero para encajar más con el humor de la temática del juego se ha decidido que este fuera un poco inusual, representando a un Papá Noel con problemas de alcohol.![Papa Noel](/Resources/Art/Concept/N_Papa_Noel.png)
+
+    - **Pavo**: El pavo es una de las comidas navideñas más famosas. En el videojuego se ha querido representar con guantes de boxeo para mostrar que está listo para la pelea. Hace un par de años se viralizó en España un tweet sobre una fuente de pavo de Navidad destrozada tras caerse al suelo y el comentario “nos acabamos de quedar sin cena”. Por ello, al matar a este personaje sonaría “nos acabamos de quedar sin cena”.![Pavo](/Resources/Art/Concept/N_Pavo.png)
     
 - **Personajes de Halloween**
-    -  **Edward Cullon**: Edward Cullen es el protagonista principal de las sagas adolescentes sobre vampiros “Crepúsculo”. Hace un tiempo se viralizó una imagen del actor en chándal por lo que se ha decidido incluir al personaje con esta estética en el juego.
-    -  **Vanessa**: En España se viralizó un audio de Whatsapp que se difundió por todas las plataformas en el que una tal “Vanessa” intentaba felicitar Halloween a un grupo de WhatsApp sin suerte para pronunciar el nombre de la festividad. Desde entonces las referencias a este audio y su mítico “Feliz Jabulín grupo soy Vanessa” son tradición y por ello lo hemos incluido en el videojuego. Como Vanessa es solo una voz, se ha decidido representarla como una persona calabaza, ya que estas también son muy conocidas por Halloween.
-    -  **Fantasma**: Uno de los disfraces más populares en Halloween es el de usar una manta con dos agujeros para representar un fantasma
+    -  **Edward Cullon**: Edward Cullen es el protagonista principal de las sagas adolescentes sobre vampiros “Crepúsculo”. Hace un tiempo se viralizó una imagen del actor en chándal por lo que se ha decidido incluir al personaje con esta estética en el juego.![Edward Cullon](/Resources/Art/Concept/H_Edward_Cullon.png)
+
+    -  **Vanessa**: En España se viralizó un audio de Whatsapp que se difundió por todas las plataformas en el que una tal “Vanessa” intentaba felicitar Halloween a un grupo de WhatsApp sin suerte para pronunciar el nombre de la festividad. Desde entonces las referencias a este audio y su mítico “Feliz Jabulín grupo soy Vanessa” son tradición y por ello lo hemos incluido en el videojuego. Como Vanessa es solo una voz, se ha decidido representarla como una persona calabaza, ya que estas también son muy conocidas por Halloween.![Vanessa](/Resources/Art/Concept/H_Vanessa.png)
+
+    -  **Fantasma**: Uno de los disfraces más populares en Halloween es el de usar una manta con dos agujeros para representar un fantasma.![Fantasma](/Resources/Art/Concept/H_Fantasma.png)
 
 ## Música / Sonido
 
@@ -114,7 +119,7 @@ Se utilizarán bibliotecas de sonido en su mayor parte. Habrá música dentro de
 ### Autoría
 
 Proyecto creado enteramente por ***Gamer Ferret***.
-![Gamer Ferret](/Resources/Gamer_Ferret/Gamer_Ferret_logo.png)
+![Gamer Ferret](/Resources/Gamer_Ferret/Gamer_Ferret_logo_letras.png)
 
 Integrantes del equipo:
 

@@ -8,7 +8,7 @@
 *Trick or Jingle* se trata de un juego gratuito estilo plataformas y acción
 que dará fin a la rivalidad Halloween contra Navidad en una ***ÉPICA*** batalla.
 
-![Trick or Jingle isotype]((/Resources/Art/Logos/Trick_or_Jingle_isotipo.png)
+![Trick or Jingle isotype](/Resources/Art/Logos/Trick_or_Jingle_isotipo.png)
 
 ## Lanzamiento
 **Plataformas**: Navegador ([Chrome](https://www.google.es/chrome/)).

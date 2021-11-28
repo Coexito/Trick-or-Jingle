@@ -19,31 +19,27 @@ var config = {
 
 var game = new Phaser.Game(config);
 
-
 function preload () // load assets
 {
-    this.load.image('sky', 'TestAssets/sky.png');
-    this.load.image('ground', 'TestAssets/platform.png');
-    this.load.image('star', 'TestAssets/star.png');
-    this.load.image('bomb', 'TestAssets/bomb.png');
+    this.load.image('sky', 'Resources/TestAssets/sky.png');
+    this.load.image('ground', 'Resources/TestAssets/platform.png');
+    this.load.image('star', 'Resources/TestAssets/star.png');
+    this.load.image('bomb', 'Resources/TestAssets/bomb.png');
     this.load.spritesheet('dude', 
-        'TestAssets/dude.png',
+        'Resources/TestAssets/dude.png',
         { frameWidth: 32, frameHeight: 48 }
     );
-    this.load.image('bullet', 'TestAssets/bullet.png');
-    this.load.image('sprite', 'TestAssets/sprite.png');
+    this.load.image('bullet', 'Resources/TestAssets/bullet.png');
+    this.load.image('sprite', 'Resources/TestAssets/sprite.png');
 }
 
 function create ()
 {
+    // the timer is just a test for the 5 minute clock
     var timer = this.time.delayedCall(5000, outOfTime, null, this);  // delay in ms
-
-    // just so it exists
-    bullet = this.physics.add.image(-100, -100, 'bullet').setImmovable(true);
-    bullet.body.setAllowGravity(false);
     
     // objects in order from farther to nearest on screen
-    this.add.image(0, 0, 'sky').setOrigin(0,0); // by dafault elements are positioned based on their center. Change so it matches the origin of the screen
+    this.add.image(0, 0, 'sky').setOrigin(0,0); // by default elements are positioned based on their center. Change so it matches the origin of the screen
     
     // create platforms
     platforms = this.physics.add.staticGroup();
@@ -114,7 +110,7 @@ function create ()
     this.physics.add.collider(player, player2); // collider between characters
     this.physics.add.collider(player, platforms); // collider between character 1 and platforms
     this.physics.add.collider(player2, platforms) // collider between character 2 and platforms
-    this.physics.add.collider(player, bullet);
+    //this.physics.add.collider(player, bullet);
     
 
     // player 2 input
@@ -129,6 +125,12 @@ function create ()
     space_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     q_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
     e_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+
+    // create group to store the bullets
+    bullets = this.physics.add.group({inmovable: true, allowGravity:false});
+    this.physics.add.collider(player, bullets, hitBullets, null, this); // collider between player and bullets
+    this.physics.add.collider(platforms, bullets, killBullets, null, this); // collider between bullets and platforms
+
 
 }
 
@@ -180,10 +182,11 @@ function update ()
     if (Phaser.Input.Keyboard.JustDown(space_key))
     {
         // create bullet
-        //bullet = new Bullet();
-        bullet = this.physics.add.image(spr.x, spr.y, 'bullet').setImmovable(true);
+        var bullet = this.physics.add.image(spr.x, spr.y, 'bullet').setImmovable(true);
         bullet.body.setAllowGravity(false);
-        
+
+        bullets.add(bullet); // add bullet to group
+
         // set sprite rotation
         bullet.angle = spr.angle;
         //console.log(bullet.angle); // just to see the rotation
@@ -191,19 +194,9 @@ function update ()
         
         // set bullet velocity
         bullet.body.velocity.x = vec.y*10; // the real angle doesn't match what we can see on the sprite (90º is actually 0º)
-        bullet.body.velocity.y = -vec.x*10;   
+        bullet.body.velocity.y = -vec.x*10; 
+
     }
-
-    // collision with bullet
-
-    //bullet.onHit();
-
-
-    this.physics.add.overlap(player, bullet, death, null, this); // doesnt work with multiple bullets i dont know how to set it to a especific one
-
-
-
-    //var bullet = new Bullet(1, 1, 1);
 
     // movement player 2
     if (a_key.isDown)
@@ -229,16 +222,7 @@ function update ()
     {
         player2.setVelocityY(-330);
     }
-
-    // spawn weapon
-
-
         
-}
-
-function fire()
-{
-
 }
 
 function death()
@@ -247,7 +231,20 @@ function death()
     console.log("collide");
 }
 
-function outOfTime(){
+function outOfTime() // i was playing with this for the 5 minute timeout
+{
     console.log("Time over buddy");
 }
 
+
+function hitBullets() 
+{
+    bullets.clear(true,true); // destroy all bullets when you hit the other player (to restart the game)
+    player.anims.play('turn');
+}
+
+function killBullets(platforms,bullet)
+{
+    // this will need an explosion sprite to show how the bullet collided with the platform
+    bullet.disableBody(true,true); // hide bullet when it hits a platform
+}

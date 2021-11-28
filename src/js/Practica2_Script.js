@@ -52,8 +52,8 @@ function create ()
 
     // create player 1
     player = this.physics.add.sprite(100, 450, 'dude').setScale(2); // create sprite for player 1
-
-    player_lives = 3; // player 1 lives
+    
+    playerOK = true; // to check if the player can be hit or if he is momentanely invincible because he just lost a live
 
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
@@ -80,8 +80,6 @@ function create ()
 
     // create player 2
     player2 = this.physics.add.sprite(400, 450, 'dude').setScale(2);
-
-    player2_lives = 3;
 
     player2.setBounce(0.2);
     player2.setCollideWorldBounds(true);
@@ -110,8 +108,6 @@ function create ()
     this.physics.add.collider(player, player2); // collider between characters
     this.physics.add.collider(player, platforms); // collider between character 1 and platforms
     this.physics.add.collider(player2, platforms) // collider between character 2 and platforms
-    //this.physics.add.collider(player, bullet);
-    
 
     // player 2 input
     cursors = this.input.keyboard.createCursorKeys();
@@ -237,14 +233,25 @@ function outOfTime() // i was playing with this for the 5 minute timeout
 }
 
 
-function hitBullets() 
+function hitBullets(player, bullet) 
 {
-    bullets.clear(true,true); // destroy all bullets when you hit the other player (to restart the game)
-    player.anims.play('turn');
+    bullet.disableBody(true,true); // destroy bullet when it hits the player
+    if(playerOK){ // if the player can be hit
+        console.log("playerhurt"); // debug
+        playerOK = false; // player is now invincible
+        var timerHurt = this.time.delayedCall(5000, playerHurt, null, this);  // wait 5 seconds and then call function playerHurt
+        // we need to change the sprite to red or more translucid or something
+    }
 }
 
 function killBullets(platforms,bullet)
 {
     // this will need an explosion sprite to show how the bullet collided with the platform
-    bullet.disableBody(true,true); // hide bullet when it hits a platform
+    bullet.disableBody(true,true); // destroy bullet when it hits a platform
+}
+
+function playerHurt()
+{
+    playerOK = true; // after 5 seconds the player can be hit again
+    console.log("PlayerOk"); // debug
 }

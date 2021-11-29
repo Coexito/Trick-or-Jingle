@@ -124,7 +124,7 @@ function create ()
 
     // create group to store the bullets
     bullets = this.physics.add.group({inmovable: true, allowGravity:false});
-    this.physics.add.collider(player, bullets, hitBullets, null, this); // collider between player and bullets
+    bulletsCollider = this.physics.add.collider(player, bullets, hitBullets, null, this); // collider between player and bullets
     this.physics.add.collider(platforms, bullets, killBullets, null, this); // collider between bullets and platforms
 
 
@@ -172,9 +172,7 @@ function update ()
         spr.angle -= 2;
     }
 
-
-    // bullets
-    // using vec works like shit i gotta use real math :(
+    // shoot bullets
     if (Phaser.Input.Keyboard.JustDown(space_key))
     {
         // create bullet
@@ -190,7 +188,7 @@ function update ()
         
         // set bullet velocity
         bullet.body.velocity.x = vec.y*10; // the real angle doesn't match what we can see on the sprite (90º is actually 0º)
-        bullet.body.velocity.y = -vec.x*10; 
+        bullet.body.velocity.y = -vec.x*10;
 
     }
 
@@ -221,12 +219,6 @@ function update ()
         
 }
 
-function death()
-{
-    bullet.disableBody(true, true);
-    console.log("collide");
-}
-
 function outOfTime() // i was playing with this for the 5 minute timeout
 {
     console.log("Time over buddy");
@@ -235,12 +227,12 @@ function outOfTime() // i was playing with this for the 5 minute timeout
 
 function hitBullets(player, bullet) 
 {
-    bullet.disableBody(true,true); // destroy bullet when it hits the player
     if(playerOK){ // if the player can be hit
-        console.log("playerhurt"); // debug
+        bullet.disableBody(true,true); // destroy bullet when it hits the player
         playerOK = false; // player is now invincible
         var timerHurt = this.time.delayedCall(5000, playerHurt, null, this);  // wait 5 seconds and then call function playerHurt
-        // we need to change the sprite to red or more translucid or something
+        player.alpha = 0.5; // turn down sprite transparency to visually show inmunity
+        bulletsCollider.destroy(); // destroy the collider
     }
 }
 
@@ -253,5 +245,6 @@ function killBullets(platforms,bullet)
 function playerHurt()
 {
     playerOK = true; // after 5 seconds the player can be hit again
-    console.log("PlayerOk"); // debug
+    player.alpha = 1; // turn up sprite transparency to visually show it can be hit again
+    bulletsCollider = this.physics.add.collider(player, bullets, hitBullets, null, this); // restore collider
 }

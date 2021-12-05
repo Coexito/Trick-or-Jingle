@@ -1,10 +1,10 @@
-let weaponTypes =  ['player', 'dude', 'bullet']; // global variable of an array with the diferent types of weapons
+let weaponTypes =  ['gun', 'shotgun', 'bomb']; // global variable of an array with the diferent types of weapons
 
 // there are two weapons in scene, each one has different valid positions so they don't overlap
 let validX_1 = [300, 200, 100]; // global variable of an array with the valid x positions the weapon can be generated in
 let validX_2 = [350, 250, 150]; 
-let validY_1 = [300, 200, 100]; // global variable of an array with the valid y positions the weapon can be generated in
-let validY_2 = [350, 250, 150];
+let validY_1 = [200, 300, 400]; // global variable of an array with the valid y positions the weapon can be generated in
+let validY_2 = [250, 350, 450];
 
 class Weapon extends Phaser.GameObjects.Sprite{
     

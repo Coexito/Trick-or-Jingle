@@ -23,7 +23,6 @@ class Player extends Phaser.GameObjects.Sprite
         this.scene.players.add(this);        
     }
 
-
     movement1()
     {
         if (a_key.isDown)
@@ -93,28 +92,23 @@ class Player extends Phaser.GameObjects.Sprite
                 this.arrow.angle -= 2;
             }
 
-            // shoot bullets
-            if (Phaser.Input.Keyboard.JustDown(space_key))
+            // shooting method depends on weaponType
+            switch(this.weaponType)
             {
-                // create bullet
-                var bullet = this.scene.physics.add.image(this.arrow.x, this.arrow.y, 'bullet').setImmovable(true); // Creates a bullet on the scene
-                bullet.body.setAllowGravity(false);
-
-                this.scene.bullets.add(bullet); // adds bullet to scene group
-
-                // set bullet's sprite rotation to match the arrow rotation
-                bullet.angle = this.arrow.angle;
-
-                var bulletSpeed = 500;
-                var vec = this.scene.physics.velocityFromAngle(bullet.angle, bulletSpeed); // angle velocity of arrow
-
-                // Sets bullet velocity
-                bullet.body.velocity.x = vec.y;
-                bullet.body.velocity.y = -vec.x;
+                case 'shotgun': // if the weapon type is a shotgun
+                    // gotta do, change arrow sprite to shotgun
+                    this.shootShotGun();
+                    break;
+                case 'gun': // if the weapon type is a gun
+                    this.shootGun();
+                    break;
+                case 'bomb':
+                    this.throwBomb();
+                    break;
             }
         }
-        
     }
+
     shooting2()
     {
         if (this.hasWeapon)
@@ -134,26 +128,100 @@ class Player extends Phaser.GameObjects.Sprite
                 this.arrow.angle -= 2;
             }
 
-            // shoot bullets
-            if (Phaser.Input.Keyboard.JustDown(numpad_0_key))
+            // shooting method depends on weaponType
+            switch(this.weaponType)
             {
-                // create bullet
-                var bullet = this.scene.physics.add.image(this.arrow.x, this.arrow.y, 'bullet').setImmovable(true); // Creates a bullet on the scene
-                bullet.body.setAllowGravity(false);
-
-                this.scene.bullets.add(bullet); // adds bullet to scene group
-
-                // set bullet's sprite rotation to match the arrow rotation
-                bullet.angle = this.arrow.angle;
-
-                var bulletSpeed = 500;
-                var vec = this.scene.physics.velocityFromAngle(bullet.angle, bulletSpeed); // angle velocity of arrow
-
-                // Sets bullet velocity
-                bullet.body.velocity.x = vec.y;
-                bullet.body.velocity.y = -vec.x;
+                case 'shotgun': // if the weapon type is a shotgun
+                    // gotta do, change arrow sprite to shotgun
+                    this.shootShotGun();
+                    break;
+                case 'gun': // if the weapon type is a gun
+                    this.shootGun();
+                    break;
+                case 'bomb':
+                    this.throwBomb();
+                    break;
             }
         }
+    }
+
+    shootGun()
+    {
+        // shoot gun bullets (the collide box is tinier, but they reload faster and scroll the entire screen)
+        if (Phaser.Input.Keyboard.JustDown(space_key))
+        {
+            // create bullet
+            var bullet = this.scene.physics.add.image(this.arrow.x, this.arrow.y, 'bullet').setImmovable(true).setScale(0.5); // Creates a bullet on the scene
+            bullet.body.setAllowGravity(false);
+
+            this.scene.bullets.add(bullet); // adds bullet to scene group
+
+            // set bullet's sprite rotation to match the arrow rotation
+            bullet.angle = this.arrow.angle;
+
+            var bulletSpeed = 500;
+            var vec = this.scene.physics.velocityFromAngle(bullet.angle, bulletSpeed); // angle velocity of arrow
+
+            // Sets bullet velocity
+            bullet.body.velocity.x = vec.y;
+            bullet.body.velocity.y = -vec.x;
+        }
+    }
+
+    shootShotGun()
+    {
+        // shoot shotgun bullets (the collide box is bigger, but they take longer to load and dissapear after a few pixels)
+        if (Phaser.Input.Keyboard.JustDown(space_key))
+        {
+            // create bullet
+            var bullet = this.scene.physics.add.image(this.arrow.x, this.arrow.y, 'bullet').setImmovable(true); // Creates a bullet on the scene
+            bullet.body.setAllowGravity(false);
+
+            this.scene.bullets.add(bullet); // adds bullet to scene group
+
+            // set bullet's sprite rotation to match the arrow rotation
+            bullet.angle = this.arrow.angle;
+
+            var bulletSpeed = 500;
+            var vec = this.scene.physics.velocityFromAngle(bullet.angle, bulletSpeed); // angle velocity of arrow
+
+            // Sets bullet velocity
+            bullet.body.velocity.x = vec.y;
+            bullet.body.velocity.y = -vec.x;
+
+            // Bullet dissapears after a few miliseconds to give the impresion that it can't reach far
+            this.scene.tweens.add({
+                targets: [bullet],
+                ease: 'Sine.easeInOut',
+                duration: 200, // time doing the fading effect
+                delay: 300, // time since it is called till it does the effect
+                alpha: {
+                  getStart: () => 1,
+                  getEnd: () => 0
+                },
+                onComplete: () => {
+                    bullet.disableBody(true, true); 
+                }
+            });
+        }
+    }
+
+    throwBomb()
+    {
+        if (Phaser.Input.Keyboard.JustDown(space_key)) {
+            var bomb = this.scene.physics.add.image(this.arrow.x, this.arrow.y, 'bomb').setImmovable(true);
+
+            this.scene.bombs.add(bomb); // adds bullet to scene group
+
+            var bombSpeed = 400;
+            
+            var vec = this.scene.physics.velocityFromAngle(this.arrow.angle, bombSpeed); // angle velocity of arrow
+
+            // Sets bullet velocity
+            bomb.body.velocity.x = vec.y;
+            bomb.body.velocity.y = -vec.x;
+        }
+        
     }
 
     takeDamage()

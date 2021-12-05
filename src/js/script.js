@@ -51,9 +51,10 @@ function create ()
     platforms.create(600,400, 'ground');
 
 
-    // Creates a group for the players & for the bullets
+    // Creates a group for the players, bullets & weapons
     this.players = this.add.group();
     this.bullets = this.physics.add.group({inmovable: true, allowGravity:false});	
+    this.weapons = this.physics.add.group({inmovable:true, allowGravity:false});
 
     // Player 1 animations
     this.anims.create({
@@ -106,6 +107,19 @@ function create ()
     player1.setScale(1.5); // Increases the scale cause they're tiny uwu
     player2.setScale(1.5);
 
+    // Initialize first weapons
+    weapon1 = this.physics.add.existing(new Weapon(this, 1)); // scene, idx
+    weapon2 = this.physics.add.existing(new Weapon(this, 2)); // scene, idx
+
+    updateWeaponSeconds = 5;
+
+    setTimeout(function updateWeapon() { // updates the weapons every x seconds
+        weapon1.updateWeapon();
+        weapon2.updateWeapon();
+
+        setTimeout(updateWeapon,updateWeaponSeconds * 1000); // i don't know if this is the best way to make a loop
+    }, updateWeaponSeconds * 1000);
+
 
     // Adds colliders
         // Characters
@@ -115,6 +129,9 @@ function create ()
         // Bullets
     this.physics.add.collider(this.players, this.bullets, bulletOnPlayer, null, this); // collider between player and bullets
     this.physics.add.collider(platforms, this.bullets, bulletOnWall, null, this); // collider between bullets and platforms
+
+        // Weapons
+    this.physics.add.collider(this.players, this.weapons, pickUpWeapon, null, this); // collider between player and weapons
 
 
     // Player 1 inputs
@@ -153,8 +170,6 @@ function outOfTime() // i was playing with this for the 5 minute timeout
     console.log("Time over buddy");
 }
 
-
-
 // -- Bullet collisions --
 
 function bulletOnWall(platforms, bullet)
@@ -179,5 +194,13 @@ function bulletOnPlayer(player, bullet)
             }, 5000);
         }
     }
-    
+}
+
+function pickUpWeapon(player, weaponBody)
+{
+    // move out of the canvas so the player can't interact with it anymore but
+    // the object still exits for the next call
+    weaponBody.x = 1000;
+    weaponBody.y = 1000
+    player.pickWeapon(weaponBody.texture.key);
 }

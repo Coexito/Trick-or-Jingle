@@ -10,8 +10,11 @@ class Player extends Phaser.GameObjects.Sprite
         this.alive = true;
         this.canBeDamaged = true;
 
+        this.hasWeapon = false;
+        this.weaponType;
+
         // Pointer sprite for bullets arrow marker
-        this.arrow = scene.physics.add.staticSprite(400,300, 'sprite').setScale(0.15);
+        this.arrow = scene.physics.add.staticSprite(1000,1000, 'sprite').setScale(0.15); // create out of frame because it has no weapon when created
 
         // Add to scene
         this.scene.add.existing(this);
@@ -74,76 +77,82 @@ class Player extends Phaser.GameObjects.Sprite
 
     shooting1()
     {
-        // update arrow position
-        this.arrow.x = this.x;
-        this.arrow.y = this.y;
+        if (this.hasWeapon){
+            // update arrow position
+            this.arrow.x = this.x;
+            this.arrow.y = this.y;
 
-        // rotate arrow
-        if (e_key.isDown)
-        {
-            this.arrow.angle += 2;
+            // rotate arrow
+            if (e_key.isDown)
+            {
+                this.arrow.angle += 2;
+            }
+
+            if (q_key.isDown)
+            {
+                this.arrow.angle -= 2;
+            }
+
+            // shoot bullets
+            if (Phaser.Input.Keyboard.JustDown(space_key))
+            {
+                // create bullet
+                var bullet = this.scene.physics.add.image(this.arrow.x, this.arrow.y, 'bullet').setImmovable(true); // Creates a bullet on the scene
+                bullet.body.setAllowGravity(false);
+
+                this.scene.bullets.add(bullet); // adds bullet to scene group
+
+                // set bullet's sprite rotation to match the arrow rotation
+                bullet.angle = this.arrow.angle;
+
+                var bulletSpeed = 500;
+                var vec = this.scene.physics.velocityFromAngle(bullet.angle, bulletSpeed); // angle velocity of arrow
+
+                // Sets bullet velocity
+                bullet.body.velocity.x = vec.y;
+                bullet.body.velocity.y = -vec.x;
+            }
         }
-
-        if (q_key.isDown)
-        {
-            this.arrow.angle -= 2;
-        }
-
-        // shoot bullets
-        if (Phaser.Input.Keyboard.JustDown(space_key))
-        {
-            // create bullet
-            var bullet = this.scene.physics.add.image(this.arrow.x, this.arrow.y, 'bullet').setImmovable(true); // Creates a bullet on the scene
-            bullet.body.setAllowGravity(false);
-
-            this.scene.bullets.add(bullet); // adds bullet to scene group
-
-            // set bullet's sprite rotation to match the arrow rotation
-            bullet.angle = this.arrow.angle;
-
-            var bulletSpeed = 500;
-            var vec = this.scene.physics.velocityFromAngle(bullet.angle, bulletSpeed); // angle velocity of arrow
-
-            // Sets bullet velocity
-            bullet.body.velocity.x = vec.y;
-            bullet.body.velocity.y = -vec.x;
-        }
+        
     }
     shooting2()
     {
-        // update arrow position
-        this.arrow.x = this.x;
-        this.arrow.y = this.y;
-
-        // rotate arrow
-        if (numpad_9_key.isDown)
+        if (this.hasWeapon)
         {
-            this.arrow.angle += 2;
-        }
+            // update arrow position
+            this.arrow.x = this.x;
+            this.arrow.y = this.y;
 
-        if (numpad_7_key.isDown)
-        {
-            this.arrow.angle -= 2;
-        }
+            // rotate arrow
+            if (numpad_9_key.isDown)
+            {
+                this.arrow.angle += 2;
+            }
 
-        // shoot bullets
-        if (Phaser.Input.Keyboard.JustDown(numpad_0_key))
-        {
-            // create bullet
-            var bullet = this.scene.physics.add.image(this.arrow.x, this.arrow.y, 'bullet').setImmovable(true); // Creates a bullet on the scene
-            bullet.body.setAllowGravity(false);
+            if (numpad_7_key.isDown)
+            {
+                this.arrow.angle -= 2;
+            }
 
-            this.scene.bullets.add(bullet); // adds bullet to scene group
+            // shoot bullets
+            if (Phaser.Input.Keyboard.JustDown(numpad_0_key))
+            {
+                // create bullet
+                var bullet = this.scene.physics.add.image(this.arrow.x, this.arrow.y, 'bullet').setImmovable(true); // Creates a bullet on the scene
+                bullet.body.setAllowGravity(false);
 
-            // set bullet's sprite rotation to match the arrow rotation
-            bullet.angle = this.arrow.angle;
+                this.scene.bullets.add(bullet); // adds bullet to scene group
 
-            var bulletSpeed = 500;
-            var vec = this.scene.physics.velocityFromAngle(bullet.angle, bulletSpeed); // angle velocity of arrow
+                // set bullet's sprite rotation to match the arrow rotation
+                bullet.angle = this.arrow.angle;
 
-            // Sets bullet velocity
-            bullet.body.velocity.x = vec.y;
-            bullet.body.velocity.y = -vec.x;
+                var bulletSpeed = 500;
+                var vec = this.scene.physics.velocityFromAngle(bullet.angle, bulletSpeed); // angle velocity of arrow
+
+                // Sets bullet velocity
+                bullet.body.velocity.x = vec.y;
+                bullet.body.velocity.y = -vec.x;
+            }
         }
     }
 
@@ -173,6 +182,13 @@ class Player extends Phaser.GameObjects.Sprite
     {
         this.canBeDamaged = true;
         console.log("Player" + this.idx + " vulnerable again");
+    }
+
+    pickWeapon(texture)
+    {
+        this.hasWeapon = true;
+        this.weaponType = texture;
+        console.log(this.weaponType);
     }
 
     update(){

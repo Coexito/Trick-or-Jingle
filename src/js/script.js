@@ -28,6 +28,9 @@ function preload () // load assets
     this.load.image('ground', 'Resources/TestAssets/platform.png');
     this.load.image('star', 'Resources/TestAssets/star.png');
     this.load.image('bomb', 'Resources/TestAssets/bomb.png');
+    this.load.image('explosion', 'Resources/TestAssets/explosion.png');
+    this.load.image('gun', 'Resources/TestAssets/gun.png');
+    this.load.image('shotgun', 'Resources/TestAssets/shotgun.png');
     this.load.spritesheet('dude', 
         'Resources/TestAssets/dude.png',
         { frameWidth: 32, frameHeight: 48 }
@@ -51,9 +54,12 @@ function create ()
     platforms.create(600,400, 'ground');
 
 
-    // Creates a group for the players & for the bullets
+    // Creates a group for the players, bullets & weapons
     this.players = this.add.group();
-    this.bullets = this.physics.add.group({inmovable: true, allowGravity:false});	
+    this.bullets = this.physics.add.group({inmovable: true, allowGravity:false});
+    this.bombs = this.physics.add.group();
+    this.explosions = this.physics.add.group({inmovable: true, allowGravity:false});
+    this.weapons = this.physics.add.group({inmovable:true, allowGravity:false});
 
     // Player 1 animations
     this.anims.create({
@@ -106,6 +112,19 @@ function create ()
     player1.setScale(1.5); // Increases the scale cause they're tiny uwu
     player2.setScale(1.5);
 
+    // Initialize first weapons
+    weapon1 = this.physics.add.existing(new Weapon(this, 1)); // scene, idx
+    weapon2 = this.physics.add.existing(new Weapon(this, 2)); // scene, idx
+
+    updateWeaponSeconds = 5;
+
+    setTimeout(function updateWeapon() { // updates the weapons every x seconds
+        weapon1.updateWeapon();
+        weapon2.updateWeapon();
+
+        setTimeout(updateWeapon,updateWeaponSeconds * 1000); // i don't know if this is the best way to make a loop
+    }, updateWeaponSeconds * 1000);
+
 
     // Adds colliders
         // Characters
@@ -115,6 +134,14 @@ function create ()
         // Bullets
     this.physics.add.collider(this.players, this.bullets, bulletOnPlayer, null, this); // collider between player and bullets
     this.physics.add.collider(platforms, this.bullets, bulletOnWall, null, this); // collider between bullets and platforms
+
+        // Bombs
+    this.physics.add.collider(this.players, this.bombs, bombCollision, null, this); // collider between bullets and platforms
+    this.physics.add.collider(platforms, this.bombs, bombCollision, null, this); // collider between bullets and platforms
+    this.physics.add.overlap(this.players, this.explosions, explosionCollision, null, this); // collider between bullets and platforms
+    
+        // Weapons
+    this.physics.add.collider(this.players, this.weapons, pickUpWeapon, null, this); // collider between player and weapons
 
 
     // Player 1 inputs
@@ -153,8 +180,6 @@ function outOfTime() // i was playing with this for the 5 minute timeout
     console.log("Time over buddy");
 }
 
-
-
 // -- Bullet collisions --
 
 function bulletOnWall(platforms, bullet)
@@ -169,7 +194,7 @@ function bulletOnPlayer(player, bullet)
 
     if(player.canBeDamaged) // If the player can be damaged...
     {
-        if(player.takeDamage()) // If the player takes the damage and doesn't dies...
+        if(player.takeDamage()) // If the player takes the damage and doesn't die...
         {
             player.alpha = 0.5;
 
@@ -179,5 +204,55 @@ function bulletOnPlayer(player, bullet)
             }, 5000);
         }
     }
-    
+}
+
+// -- Bomb collisions --
+
+function bombCollision(first, bomb)
+{
+    // create an explosion object so it can collide with the player
+    var explosion = this.explosions.create(bomb.x, bomb.y, 'explosion').setScale(1.3);
+    explosion.setVelocity(0, 0);
+
+    bomb.disableBody(true, true); // delete the bomb body
+
+    // fade effect for the explosion
+    this.tweens.add({
+        targets: [explosion],
+        ease: 'Sine.easeInOut',
+        duration: 500, // time doing the fading effect
+        delay: 0, // time since it is called till it does the effect
+        alpha: {
+          getStart: () => 1,
+          getEnd: () => 0
+        },
+        onComplete: () => {
+            explosion.disableBody(true, true); 
+        }
+    });
+}
+
+function explosionCollision(player, bomb)
+{
+    if(player.canBeDamaged) // If the player can be damaged...
+    {
+        if(player.takeDamage()) // If the player takes the damage and doesn't die...
+        {
+            player.alpha = 0.5;
+
+            setTimeout(function () {
+                player.makeVulnerable();
+                player.alpha = 1;
+            }, 5000);
+        }
+    }
+}
+
+function pickUpWeapon(player, weaponBody)
+{
+    // move out of the canvas so the player can't interact with it anymore but
+    // the object still exits for the next call
+    weaponBody.x = 1000;
+    weaponBody.y = 1000
+    player.pickWeapon(weaponBody.texture.key);
 }

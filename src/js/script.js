@@ -33,7 +33,7 @@ function preload () // load assets
     this.load.image('shotgun', 'Resources/TestAssets/shotgun.png');
     this.load.spritesheet('dude', 
         '/Resources/Art/Sprites/N_MariaKarei/SPS_MariaKarei_RUN.png',
-        { frameWidth: 364, frameHeight: 498 }
+        { frameWidth: 182, frameHeight: 249 }
     );
     this.load.image('bullet', 'Resources/TestAssets/bullet.png');
     this.load.image('sprite', 'Resources/TestAssets/sprite.png');
@@ -100,7 +100,7 @@ function create ()
 
     this.anims.create({
         key: 'right2',
-        frames: this.anims.generateFrameNumbers('dude', { start: 11, end: 20 }),
+        frames: this.anims.generateFrameNumbers('dude', { start: 11, end: 21 }),
         frameRate: 20,
         repeat: -1
     });
@@ -110,7 +110,9 @@ function create ()
     player1 = this.physics.add.existing(new Player(this, 160, 3, 200, 100, "dude", 1)) //scene, speed, lives, x, y, sprite, index
     player2 = this.physics.add.existing(new Player(this, 100, 3, 500, 100, "dude", 2))
 
-   
+    player1.setScale(0.5); // Increases the scale cause they're tiny uwu
+    player2.setScale(0.5);
+
     // Initialize first weapons
     weapon1 = this.physics.add.existing(new Weapon(this, 1)); // scene, idx
     weapon2 = this.physics.add.existing(new Weapon(this, 2)); // scene, idx

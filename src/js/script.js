@@ -78,7 +78,7 @@ function create ()
 
     this.anims.create({
         key: 'right1',
-        frames: this.anims.generateFrameNumbers('dude', { start: 11, end: 21 }),
+        frames: this.anims.generateFrameNumbers('dude', { start: 11, end: 20 }),
         frameRate: 20,
         repeat: -1
     });
@@ -100,7 +100,7 @@ function create ()
 
     this.anims.create({
         key: 'right2',
-        frames: this.anims.generateFrameNumbers('dude', { start: 11, end: 21 }),
+        frames: this.anims.generateFrameNumbers('dude', { start: 11, end: 20 }),
         frameRate: 20,
         repeat: -1
     });

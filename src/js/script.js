@@ -32,8 +32,8 @@ function preload () // load assets
     this.load.image('gun', 'Resources/TestAssets/gun.png');
     this.load.image('shotgun', 'Resources/TestAssets/shotgun.png');
     this.load.spritesheet('dude', 
-        'Resources/TestAssets/dude.png',
-        { frameWidth: 32, frameHeight: 48 }
+        '/Resources/Art/Sprites/N_MariaKarei/SPS_MariaKarei_RUN.png',
+        { frameWidth: 512, frameHeight: 512 }
     );
     this.load.image('bullet', 'Resources/TestAssets/bullet.png');
     this.load.image('sprite', 'Resources/TestAssets/sprite.png');
@@ -62,22 +62,23 @@ function create ()
     this.weapons = this.physics.add.group({inmovable:true, allowGravity:false});
 
     // Player 1 animations
+
     this.anims.create({
         key: 'left1',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 9 }),
         frameRate: 10,
         repeat: -1
     });
 
     this.anims.create({
         key: 'turn1',
-        frames: [ { key: 'dude', frame: 4 } ],
+        frames: [ { key: 'dude', frame: 10 } ],
         frameRate: 20
     });
 
     this.anims.create({
         key: 'right1',
-        frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+        frames: this.anims.generateFrameNumbers('dude', { start: 21, end: 11 }),
         frameRate: 10,
         repeat: -1
     });
@@ -86,20 +87,20 @@ function create ()
     // Player 2 animations
     this.anims.create({
         key: 'left2',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 9  }),
         frameRate: 10,
         repeat: -1
     });
 
     this.anims.create({
         key: 'turn2',
-        frames: [ { key: 'dude', frame: 4 } ],
-        frameRate: 20
+        frames: [ { key: 'dude', frame: 10} ],
+        frameRate: 20 
     });
 
     this.anims.create({
         key: 'right2',
-        frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+        frames: this.anims.generateFrameNumbers('dude', { start: 21, end: 11 }),
         frameRate: 10,
         repeat: -1
     });
@@ -109,8 +110,8 @@ function create ()
     player1 = this.physics.add.existing(new Player(this, 160, 3, 200, 100, "dude", 1)) //scene, speed, lives, x, y, sprite, index
     player2 = this.physics.add.existing(new Player(this, 100, 3, 500, 100, "dude", 2))
 
-    player1.setScale(1.5); // Increases the scale cause they're tiny uwu
-    player2.setScale(1.5);
+    player1.setScale(0.25); // Increases the scale cause they're tiny uwu
+    player2.setScale(0.25);
 
     // Initialize first weapons
     weapon1 = this.physics.add.existing(new Weapon(this, 1)); // scene, idx

@@ -16,6 +16,15 @@ class Player extends Phaser.GameObjects.Sprite
         // Pointer sprite for bullets arrow marker
         this.arrow = scene.physics.add.staticSprite(1000,1000, 'sprite').setScale(0.15); // create out of frame because it has no weapon when created
 
+        // Create hearts image to represent the player lives
+        if (this.idx == 1) // the position of the lives on scene in the x axis depends on the player (player 1 to the left, player 2 to the right)
+            var posHeartsX = 100;
+        else
+            var posHeartsX = 700;
+
+        this.hearts = scene.add.image(posHeartsX, 75, 'heart').setScale(0.5);
+        this.hearts.setFrame(this.lives); // change the frame of the spriteSheet to match the player lives (frame 3 has 3 hearts etc.)
+
         // Add to scene
         this.scene.add.existing(this);
 
@@ -224,6 +233,7 @@ class Player extends Phaser.GameObjects.Sprite
     takeDamage()
     {
         this.lives--;
+        this.hearts.setFrame(this.lives); // change the frame of the spriteSheet to match the player lives (frame 3 has 3 hearts etc.)
 
         if(this.lives > 0) // If has enough lives to survive, takes damage
         {

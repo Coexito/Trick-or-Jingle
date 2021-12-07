@@ -110,9 +110,7 @@ function create ()
     player1 = this.physics.add.existing(new Player(this, 160, 3, 200, 100, "dude", 1)) //scene, speed, lives, x, y, sprite, index
     player2 = this.physics.add.existing(new Player(this, 100, 3, 500, 100, "dude", 2))
 
-    player1.setScale(0.25); // Increases the scale cause they're tiny uwu
-    player2.setScale(0.25);
-
+   
     // Initialize first weapons
     weapon1 = this.physics.add.existing(new Weapon(this, 1)); // scene, idx
     weapon2 = this.physics.add.existing(new Weapon(this, 2)); // scene, idx

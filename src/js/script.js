@@ -66,7 +66,7 @@ function create ()
     this.anims.create({
         key: 'left1',
         frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 9 }),
-        frameRate: 10,
+        frameRate: 20,
         repeat: -1
     });
 
@@ -78,8 +78,8 @@ function create ()
 
     this.anims.create({
         key: 'right1',
-        frames: this.anims.generateFrameNumbers('dude', { start: 21, end: 11 }),
-        frameRate: 10,
+        frames: this.anims.generateFrameNumbers('dude', { start: 11, end: 21 }),
+        frameRate: 20,
         repeat: -1
     });
 
@@ -88,7 +88,7 @@ function create ()
     this.anims.create({
         key: 'left2',
         frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 9  }),
-        frameRate: 10,
+        frameRate: 20,
         repeat: -1
     });
 
@@ -100,8 +100,8 @@ function create ()
 
     this.anims.create({
         key: 'right2',
-        frames: this.anims.generateFrameNumbers('dude', { start: 21, end: 11 }),
-        frameRate: 10,
+        frames: this.anims.generateFrameNumbers('dude', { start: 11, end: 21 }),
+        frameRate: 20,
         repeat: -1
     });
     

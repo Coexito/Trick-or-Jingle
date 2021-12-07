@@ -33,7 +33,7 @@ function preload () // load assets
     this.load.image('shotgun', 'Resources/TestAssets/shotgun.png');
     this.load.spritesheet('dude', 
         '/Resources/Art/Sprites/N_MariaKarei/SPS_MariaKarei_RUN.png',
-        { frameWidth: 512, frameHeight: 512 }
+        { frameWidth: 364, frameHeight: 498 }
     );
     this.load.image('bullet', 'Resources/TestAssets/bullet.png');
     this.load.image('sprite', 'Resources/TestAssets/sprite.png');

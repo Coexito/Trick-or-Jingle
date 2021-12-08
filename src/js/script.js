@@ -36,7 +36,7 @@ function preload () // load assets
         { frameWidth: 182, frameHeight: 249 }
     );
     this.load.spritesheet('bad', 
-        '/Resources/Art/Sprites/H_EdwardCullon/Spritesheet_sin_idle',
+        '/Resources/Art/Sprites/H_EdwardCullon/Spritesheet_sin_idle.png',
         { frameWidth: 182, frameHeight: 249 }
     );
     this.load.image('bullet', 'Resources/TestAssets/bullet.png');
@@ -70,7 +70,7 @@ function create ()
     this.anims.create({
         key: 'left1',
         frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 8 }),
-        frameRate: 20,
+        frameRate: 15,
         repeat: -1
     });
 
@@ -83,7 +83,7 @@ function create ()
     this.anims.create({
         key: 'right1',
         frames: this.anims.generateFrameNumbers('dude', { start: 11, end: 19 }), //fixed animation
-        frameRate: 20,
+        frameRate: 15,
         repeat: -1
     });
 
@@ -111,8 +111,8 @@ function create ()
     
 
     // Initializes the players
-    player1 = this.physics.add.existing(new Player(this, 160, 3, 200, 100, "dude", 1)) //scene, speed, lives, x, y, sprite, index
-    player2 = this.physics.add.existing(new Player(this, 100, 3, 500, 100, "bad", 2))
+    player1 = this.physics.add.existing(new Player(this, 350, 3, 200, 100, "dude", 1)) //scene, speed, lives, x, y, sprite, index
+    player2 = this.physics.add.existing(new Player(this, 300, 3, 500, 100, "bad", 2))
 
     player1.setScale(0.5); // Increases the scale cause they're tiny uwu
     player2.setScale(0.5);

@@ -35,6 +35,10 @@ function preload () // load assets
         '/Resources/Art/Sprites/N_MariaKarei/SPS_MariaKarei_RUN.png',
         { frameWidth: 182, frameHeight: 249 }
     );
+    this.load.spritesheet('bad', 
+        '/Resources/Art/Sprites/H_EdwardCullon/Spritesheet_sin_idle',
+        { frameWidth: 182, frameHeight: 249 }
+    );
     this.load.image('bullet', 'Resources/TestAssets/bullet.png');
     this.load.image('sprite', 'Resources/TestAssets/sprite.png');
 }
@@ -65,7 +69,7 @@ function create ()
 
     this.anims.create({
         key: 'left1',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 9 }),
+        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 8 }),
         frameRate: 20,
         repeat: -1
     });
@@ -78,7 +82,7 @@ function create ()
 
     this.anims.create({
         key: 'right1',
-        frames: this.anims.generateFrameNumbers('dude', { start: 11, end: 20 }),
+        frames: this.anims.generateFrameNumbers('dude', { start: 11, end: 19 }), //fixed animation
         frameRate: 20,
         repeat: -1
     });
@@ -87,20 +91,20 @@ function create ()
     // Player 2 animations
     this.anims.create({
         key: 'left2',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 9  }),
+        frames: this.anims.generateFrameNumbers('bad', { start: 0, end: 10  }),
         frameRate: 20,
         repeat: -1
     });
 
     this.anims.create({
         key: 'turn2',
-        frames: [ { key: 'dude', frame: 10} ],
+        frames: [ { key: 'bad', frame: 11} ],
         frameRate: 20 
     });
 
     this.anims.create({
         key: 'right2',
-        frames: this.anims.generateFrameNumbers('dude', { start: 11, end: 21 }),
+        frames: this.anims.generateFrameNumbers('bad', { start: 12, end: 22 }),
         frameRate: 20,
         repeat: -1
     });
@@ -108,7 +112,7 @@ function create ()
 
     // Initializes the players
     player1 = this.physics.add.existing(new Player(this, 160, 3, 200, 100, "dude", 1)) //scene, speed, lives, x, y, sprite, index
-    player2 = this.physics.add.existing(new Player(this, 100, 3, 500, 100, "dude", 2))
+    player2 = this.physics.add.existing(new Player(this, 100, 3, 500, 100, "bad", 2))
 
     player1.setScale(0.5); // Increases the scale cause they're tiny uwu
     player2.setScale(0.5);

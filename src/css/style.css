@@ -1,1 +1,8 @@
-
+canvas {
+    display: block;
+    margin: auto;
+}
+body{
+    background-image: url(Resources/Art/Planteamiento_web.png);
+    background-color: darkred;
+}

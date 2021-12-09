@@ -31,6 +31,7 @@ function preload () // load assets
     this.load.image('explosion', 'Resources/TestAssets/explosion.png');
     this.load.image('gun', 'Resources/TestAssets/gun.png');
     this.load.image('shotgun', 'Resources/TestAssets/shotgun.png');
+
     this.load.spritesheet('dude', 
         '/Resources/Art/Sprites/N_MariaKarei/SPS_MariaKarei_RUN.png',
         { frameWidth: 182, frameHeight: 249 }
@@ -39,16 +40,14 @@ function preload () // load assets
         '/Resources/Art/Sprites/H_EdwardCullon/Spritesheet_sin_idle.png',
         { frameWidth: 182, frameHeight: 249 }
     );
+    this.load.spritesheet('heart', 'Resources/TestAssets/heart.png', { frameWidth: 200, frameHeight: 53 });
+
     this.load.image('bullet', 'Resources/TestAssets/bullet.png');
     this.load.image('sprite', 'Resources/TestAssets/sprite.png');
 }
 
 function create ()
 {
-    // the timer is just a test for the 5 minute clock
-    var secondsToEnd = 60;
-    var timer = this.time.delayedCall(secondsToEnd * 1000, outOfTime, null, this);  // delay in ms
-    
     // objects in order from farther to nearest on screen
     this.add.image(0, 0, 'sky').setOrigin(0,0); // by default elements are positioned based on their center. Change so it matches the origin of the screen
     
@@ -170,6 +169,20 @@ function create ()
     numpad_7_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SEVEN);
     numpad_9_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_NINE);
 
+    // Countdown text
+    countdownTime = 300; // 300 seconds are 5 minutes
+    text = this.add.text(320, 50, formatTime(countdownTime)).setScale(3); // create text
+
+        //function to update the text every second
+    setTimeout(function updateWeapon() {
+        countdownTime--;
+        text.setText(formatTime(countdownTime));
+        setTimeout(updateWeapon,1000); // loop every second
+    }, 1000);
+
+    // after the 5 minutes call outOfTime function
+    var secondsToEnd = 300;
+    var timer = this.time.delayedCall(secondsToEnd * 1000, outOfTime, null, this);  // delay in ms
 }
 
 
@@ -260,4 +273,12 @@ function pickUpWeapon(player, weaponBody)
     weaponBody.x = 1000;
     weaponBody.y = 1000
     player.pickWeapon(weaponBody.texture.key);
+}
+
+function formatTime(totalSeconds){
+    var minutes = Math.floor(totalSeconds/60); // divide total seconds by 60 to get minutes
+    var seconds = totalSeconds%60; // get remainder of seconds divided by 60 to get seconds
+    seconds = seconds.toString().padStart(2,'0'); // add left zeros to seconds
+
+    return `${minutes}:${seconds}`;     // return formated time
 }

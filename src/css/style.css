@@ -3,8 +3,11 @@ canvas {
     margin: auto;
     
 }
-#link {
-    color: FCD053;
+a{
+    color: lightgoldenrodyellow;
+}
+a:hover{
+    color: skyblue;
 }
 
 
@@ -14,10 +17,17 @@ canvas {
     text-align: center;
 
 }
-#juego{
+#game{
     
     margin: auto;
 }
+#banner{
+    text-align: center;
+}
+#Aditional{
+    text-align: center;
+}
+
 
 footer{
      position: fixed;
@@ -29,7 +39,7 @@ footer{
 body{
     height: 2189px;
     width:  1920;
-    background-image: url(/Resources/Art/Planteamiento_web.png);
+    background-image: url(/Resources/WebAssets/background.png);
     background-color: darkred; 
 }
 html{

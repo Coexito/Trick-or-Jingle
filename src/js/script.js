@@ -2,7 +2,10 @@
 var config = {
     type: Phaser.AUTO, // Tries to use WebGL, but if the browser doesn't admit it changes to Canvas
     
+    width:  1280,
+    height: 680,
 
+    parent:game,
     physics: {
         default: 'arcade',
         arcade: {

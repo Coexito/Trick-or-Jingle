@@ -1,8 +1,37 @@
 canvas {
     display: block;
     margin: auto;
+    
+}
+#link {
+    color: FCD053;
+}
+
+
+#RRSS{
+    font-family: Helvetica, Arial;
+    color: white;
+    text-align: center;
+
+}
+#juego{
+    
+    margin: auto;
+}
+
+footer{
+     position: fixed;
+    padding: 10px 10px 0px 10px;
+    bottom: 0;
+    color: ghostwhite;
+
 }
 body{
-    background-image: url(Resources/Art/Planteamiento_web.png);
-    background-color: darkred;
+    height: 2189px;
+    width:  1920;
+    background-image: url(/Resources/Art/Planteamiento_web.png);
+    background-color: darkred; 
+}
+html{
+    overflow: scroll;
 }

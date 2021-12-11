@@ -1,8 +1,11 @@
 
 var config = {
     type: Phaser.AUTO, // Tries to use WebGL, but if the browser doesn't admit it changes to Canvas
-    width: 800,
-    height: 600,
+    
+    width:  1280,
+    height: 680,
+
+    parent:game,
     physics: {
         default: 'arcade',
         arcade: {
@@ -15,6 +18,7 @@ var config = {
         create: create,
         update: update,
     }
+    
 };
 
 var game = new Phaser.Game(config);
@@ -37,7 +41,7 @@ function preload () // load assets
         { frameWidth: 182, frameHeight: 249 }
     );
     this.load.spritesheet('bad', 
-        '/Resources/Art/Sprites/H_EdwardCullon/Spritesheet_sin_idle.png',
+        '/Resources/Art/Sprites/H_EdwardCullon/spritesheet_edward.png',
         { frameWidth: 182, frameHeight: 249 }
     );
     this.load.spritesheet('heart', 'Resources/TestAssets/heart.png', { frameWidth: 200, frameHeight: 53 });
@@ -48,6 +52,9 @@ function preload () // load assets
 
 function create ()
 {
+    //game screen at the center of the browser
+  
+    
     // objects in order from farther to nearest on screen
     this.add.image(0, 0, 'sky').setOrigin(0,0); // by default elements are positioned based on their center. Change so it matches the origin of the screen
     

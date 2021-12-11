@@ -6,7 +6,7 @@ let validX_2 = [350, 250, 150];
 let validY_1 = [200, 300, 400]; // global variable of an array with the valid y positions the weapon can be generated in
 let validY_2 = [250, 350, 450];
 
-class Weapon extends Phaser.GameObjects.Sprite{
+export class Weapon extends Phaser.GameObjects.Sprite{
     
     constructor(scene, _idx) {
         super(scene);

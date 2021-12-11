@@ -1,4 +1,4 @@
-import { RestartButton } from "../../components/restart-button.js";
+import { RestartButton } from "../components/restart-button.js";
 
 export class MainMenu extends Phaser.Scene {
   constructor() {

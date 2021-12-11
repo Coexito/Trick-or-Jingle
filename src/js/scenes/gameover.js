@@ -1,4 +1,4 @@
-import { RestartButton } from "../../components/restart-button.js";
+import { RestartButton } from "../components/restart-button.js";
 
 export class Gameover extends Phaser.Scene {
   constructor() {

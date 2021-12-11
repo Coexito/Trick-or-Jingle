@@ -1,68 +1,50 @@
-
-var config = {
-    type: Phaser.AUTO, // Tries to use WebGL, but if the browser doesn't admit it changes to Canvas
-    
-    width:  1280,
-    height: 680,
-
-    parent:game,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 300 },
-            debug: false
-        }
-    },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update,
-    }
-    
-};
-
-var game = new Phaser.Game(config);
+import { Player } from '../Player.js';
+import { Weapon } from '../Weapon.js';
 
 var player1;
 var player2;
 
-function preload () // load assets
-{
-    this.load.image('sky', 'Resources/TestAssets/sky.png');
-    this.load.image('ground', 'Resources/TestAssets/platform.png');
-    this.load.image('star', 'Resources/TestAssets/star.png');
-    this.load.image('bomb', 'Resources/TestAssets/bomb.png');
-    this.load.image('explosion', 'Resources/TestAssets/explosion.png');
-    this.load.image('gun', 'Resources/TestAssets/gun.png');
-    this.load.image('shotgun', 'Resources/TestAssets/shotgun.png');
+export class Game extends Phaser.Scene {
+
+  constructor() {
+    super({ key: 'game' });
+  }
+  
+  init() {
+    
+  }
+
+  preload() {
+    this.load.image('sky', '../Resources/TestAssets/sky.png');
+    this.load.image('ground', '../Resources/TestAssets/platform.png');
+    this.load.image('star', '../Resources/TestAssets/star.png');
+    this.load.image('bomb', '../Resources/TestAssets/bomb.png');
+    this.load.image('explosion', '../Resources/TestAssets/explosion.png');
+    this.load.image('gun', '../Resources/TestAssets/gun.png');
+    this.load.image('shotgun', '../Resources/TestAssets/shotgun.png');
 
     this.load.spritesheet('dude', 
-        '/Resources/Art/Sprites/N_MariaKarei/SPS_MariaKarei_RUN.png',
+        '../Resources/Art/Sprites/N_MariaKarei/SPS_MariaKarei_RUN.png',
         { frameWidth: 182, frameHeight: 249 }
     );
     this.load.spritesheet('bad', 
-        '/Resources/Art/Sprites/H_EdwardCullon/spritesheet_edward.png',
+        '../Resources/Art/Sprites/H_EdwardCullon/spritesheet_edward.png',
         { frameWidth: 182, frameHeight: 249 }
     );
     this.load.spritesheet('heart', 'Resources/TestAssets/heart.png', { frameWidth: 200, frameHeight: 53 });
 
-    this.load.image('bullet', 'Resources/TestAssets/bullet.png');
-    this.load.image('sprite', 'Resources/TestAssets/sprite.png');
-}
+    this.load.image('bullet', '../Resources/TestAssets/bullet.png');
+    this.load.image('sprite', '../Resources/TestAssets/sprite.png');
+  }
 
-function create ()
-{
-    //game screen at the center of the browser
-  
-    
+  create() {
     // objects in order from farther to nearest on screen
     this.add.image(0, 0, 'sky').setOrigin(0,0); // by default elements are positioned based on their center. Change so it matches the origin of the screen
     
     // create platforms
-    platforms = this.physics.add.staticGroup();
-    platforms.create(400,568, 'ground').setScale(2).refreshBody();
-    platforms.create(600,400, 'ground');
-
+    this.platforms = this.physics.add.staticGroup();
+    this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+    this.platforms.create(600, 400, 'ground');
 
     // Creates a group for the players, bullets & weapons
     this.players = this.add.group();
@@ -72,7 +54,6 @@ function create ()
     this.weapons = this.physics.add.group({inmovable:true, allowGravity:false});
 
     // Player 1 animations
-
     this.anims.create({
         key: 'left1',
         frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 8 }),
@@ -118,37 +99,39 @@ function create ()
 
     // Initializes the players
     player1 = this.physics.add.existing(new Player(this, 350, 3, 200, 100, "dude", 1)) //scene, speed, lives, x, y, sprite, index
+    player1.body.allowGravity = true;
     player2 = this.physics.add.existing(new Player(this, 300, 3, 500, 100, "bad", 2))
+    player2.body.allowGravity = true;    
 
     player1.setScale(0.5); // Increases the scale cause they're tiny uwu
     player2.setScale(0.5);
 
     // Initialize first weapons
-    weapon1 = this.physics.add.existing(new Weapon(this, 1)); // scene, idx
-    weapon2 = this.physics.add.existing(new Weapon(this, 2)); // scene, idx
+    var weapon1 = this.physics.add.existing(new Weapon(this, 1)); // scene, idx
+    var weapon2 = this.physics.add.existing(new Weapon(this, 2)); // scene, idx
 
-    updateWeaponSeconds = 5;
+    var updateWeaponSeconds = 5;
 
     setTimeout(function updateWeapon() { // updates the weapons every x seconds
-        weapon1.updateWeapon();
-        weapon2.updateWeapon();
+      weapon1.updateWeapon();
+      weapon2.updateWeapon();
 
-        setTimeout(updateWeapon,updateWeaponSeconds * 1000); // i don't know if this is the best way to make a loop
+        setTimeout(updateWeapon, updateWeaponSeconds * 1000); // i don't know if this is the best way to make a loop
     }, updateWeaponSeconds * 1000);
 
 
     // Adds colliders
         // Characters
     this.physics.add.collider(this.players, this.players); // collider between characters
-    this.physics.add.collider(this.players, platforms); // collider between character 1 and platforms
+    this.physics.add.collider(this.players, this.platforms); // collider between character 1 and platforms
     
         // Bullets
     this.physics.add.collider(this.players, this.bullets, bulletOnPlayer, null, this); // collider between player and bullets
-    this.physics.add.collider(platforms, this.bullets, bulletOnWall, null, this); // collider between bullets and platforms
+    this.physics.add.collider(this.platforms, this.bullets, bulletOnWall, null, this); // collider between bullets and platforms
 
         // Bombs
     this.physics.add.collider(this.players, this.bombs, bombCollision, null, this); // collider between bullets and platforms
-    this.physics.add.collider(platforms, this.bombs, bombCollision, null, this); // collider between bullets and platforms
+    this.physics.add.collider(this.platforms, this.bombs, bombCollision, null, this); // collider between bullets and platforms
     this.physics.add.overlap(this.players, this.explosions, explosionCollision, null, this); // collider between bullets and platforms
     
         // Weapons
@@ -157,48 +140,48 @@ function create ()
 
     // Player 1 inputs
         // Mooving
-    w_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-    a_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-    d_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    this.w_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    this.a_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    this.d_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         // Shooting
-    space_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    q_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
-    e_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+    this.space_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.q_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+    this.e_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
 
     // Player 2 inputs
         // Mooving
-    cursors = this.input.keyboard.createCursorKeys();
+    this.cursors = this.input.keyboard.createCursorKeys();
 
         //Shooting
-    numpad_0_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO);
-    numpad_7_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SEVEN);
-    numpad_9_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_NINE);
+    this.numpad_0_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO);
+    this.numpad_7_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SEVEN);
+    this.numpad_9_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_NINE);
 
     // Countdown text
-    countdownTime = 300; // 300 seconds are 5 minutes
-    text = this.add.text(320, 50, formatTime(countdownTime)).setScale(3); // create text
+    var countdownTime = 300; // 300 seconds are 5 minutes
+    var text = this.add.text(320, 50, formatTime(countdownTime)).setScale(3); // create text
 
         //function to update the text every second
     setTimeout(function updateWeapon() {
-        countdownTime--;
-        text.setText(formatTime(countdownTime));
-        setTimeout(updateWeapon,1000); // loop every second
+      countdownTime--;
+      text.setText(formatTime(countdownTime));
+        setTimeout(updateWeapon, 1000); // loop every second
     }, 1000);
 
     // after the 5 minutes call outOfTime function
     var secondsToEnd = 300;
     var timer = this.time.delayedCall(secondsToEnd * 1000, outOfTime, null, this);  // delay in ms
-}
 
+  }
 
-function update ()
-{
+  update() {
     player1.update();
     player2.update();
-}
+  }
 
+}
 
 function outOfTime() // i was playing with this for the 5 minute timeout
 {
@@ -206,7 +189,6 @@ function outOfTime() // i was playing with this for the 5 minute timeout
 }
 
 // -- Bullet collisions --
-
 function bulletOnWall(platforms, bullet)
 {
     // this will need an explosion sprite to show how the bullet collided with the platform

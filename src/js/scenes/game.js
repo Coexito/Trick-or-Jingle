@@ -33,6 +33,10 @@ export class Game extends Phaser.Scene {
     );
     this.load.spritesheet('heart', 'Resources/TestAssets/heart.png', { frameWidth: 200, frameHeight: 53 });
 
+    this.load.spritesheet('weapons', 
+        '../Resources/TestAssets/weapons.png',
+        { frameWidth: 600, frameHeight: 600 }
+    );
     this.load.image('bullet', '../Resources/TestAssets/bullet.png');
     this.load.image('sprite', '../Resources/TestAssets/sprite.png');
   }
@@ -172,7 +176,7 @@ export class Game extends Phaser.Scene {
 
     // after the 5 minutes call outOfTime function
     var secondsToEnd = 300;
-    var timer = this.time.delayedCall(secondsToEnd * 1000, outOfTime, null, this);  // delay in ms
+    this.time.delayedCall(secondsToEnd * 1000, outOfTime, null, this);  // delay in ms
 
   }
 

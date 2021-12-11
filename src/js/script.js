@@ -41,7 +41,7 @@ function preload () // load assets
         { frameWidth: 182, frameHeight: 249 }
     );
     this.load.spritesheet('bad', 
-        '/Resources/Art/Sprites/H_EdwardCullon/Spritesheet_sin_idle.png',
+        '/Resources/Art/Sprites/H_EdwardCullon/spritesheet_edward.png',
         { frameWidth: 182, frameHeight: 249 }
     );
     this.load.spritesheet('heart', 'Resources/TestAssets/heart.png', { frameWidth: 200, frameHeight: 53 });

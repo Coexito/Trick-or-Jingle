@@ -1,3 +1,14 @@
+// weapons cooldown as global variables
+// player 1
+let shotgunCooldown1 = false; // at the start it hasn't used any weapons so they don't need to cooldown
+let gunCooldown1 = false;
+let bombCooldown1 = false;
+
+// player 2
+let shotgunCooldown2 = false;
+let gunCooldown2 = false;
+let bombCooldown2 = false;
+
 export class Player extends Phaser.GameObjects.Sprite
 {
     constructor(scene, _speed, _lives, x, y, sprite, _idx) {
@@ -14,7 +25,9 @@ export class Player extends Phaser.GameObjects.Sprite
         this.weaponType;
 
         // Pointer sprite for bullets arrow marker
-        this.arrow = scene.physics.add.staticSprite(1000,1000, 'sprite').setScale(0.15); // create out of frame because it has no weapon when created
+        this.arrow = scene.physics.add.staticSprite(1000,1000, 'weapons').setScale(0.4); // create out of frame because it has no weapon when created
+        this.arrow.depth = 100; // put on front of the player
+        this.arrow.angle = 45;
 
         // Create hearts image to represent the player lives
         if (this.idx == 1) // the position of the lives on scene in the x axis depends on the player (player 1 to the left, player 2 to the right)
@@ -30,6 +43,8 @@ export class Player extends Phaser.GameObjects.Sprite
 
         // Add to players group
         this.scene.players.add(this);        
+
+
     }
 
     movement1()
@@ -105,16 +120,38 @@ export class Player extends Phaser.GameObjects.Sprite
             switch(this.weaponType)
             {
                 case 'shotgun': // if the weapon type is a shotgun
-                    if (Phaser.Input.Keyboard.JustDown(this.scene.space_key))
-                        this.shootShotGun();
+                    if (Phaser.Input.Keyboard.JustDown(this.scene.space_key) && (shotgunCooldown1 == false)) // it only works if the player has cooled down
+                    {
+                        this.shootShotGun(); 
+
+                        shotgunCooldown1 = true; // the weapon needs to cooldown to be used again
+                        setTimeout( function(){ // after some time sets boolean to false so it can be shot again
+                            shotgunCooldown1 = false;
+                        }, 1000);
+                    }
                     break;
                 case 'gun': // if the weapon type is a gun
-                    if (Phaser.Input.Keyboard.JustDown(this.scene.space_key))    
+                    if (Phaser.Input.Keyboard.JustDown(this.scene.space_key) && (gunCooldown1 == false))
+                    {
                         this.shootGun();
+
+                        gunCooldown1 = true;
+                        setTimeout( function(){
+                            gunCooldown1 = false;
+                        }, 1000);
+                    }
                     break;
+
                 case 'bomb':
-                    if (Phaser.Input.Keyboard.JustDown(this.scene.space_key))
+                    if (Phaser.Input.Keyboard.JustDown(this.scene.space_key) && (bombCooldown1 == false))
+                    {
                         this.throwBomb();
+
+                        bombCooldown1 = true;
+                        setTimeout( function(){
+                            bombCooldown1 = false;
+                        }, 1000);
+                    }
                     break;
             }
         }
@@ -143,16 +180,37 @@ export class Player extends Phaser.GameObjects.Sprite
             switch(this.weaponType)
             {
                 case 'shotgun': // if the weapon type is a shotgun
-                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key))
+                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key) && (shotgunCooldown2 == false))
+                    {
                         this.shootShotGun();
+
+                        shotgunCooldown2 = true;
+                        setTimeout( function(){
+                            shotgunCooldown2 = false;
+                        }, 1000);
+                    }
                     break;
                 case 'gun': // if the weapon type is a gun
-                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key))
+                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key) && (gunCooldown2 == false))
+                    {
                         this.shootGun();
+
+                        gunCooldown2 = true;
+                        setTimeout( function(){
+                            gunCooldown2 = false;
+                        }, 1000);
+                    }
                     break;
                 case 'bomb':
-                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key))
+                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key) && (bombCooldown2 == false))
+                    {
                         this.throwBomb();
+
+                        bombCooldown2 = true;
+                        setTimeout( function(){
+                            bombCooldown2 = false;
+                        }, 1000);
+                    }
                     break;
             }
         }
@@ -263,7 +321,18 @@ export class Player extends Phaser.GameObjects.Sprite
     {
         this.hasWeapon = true;
         this.weaponType = texture;
-        console.log(this.weaponType);
+        switch(this.weaponType)
+        {
+            case 'gun':
+                this.arrow.setFrame(0);
+                break;
+            case 'shotgun':
+                this.arrow.setFrame(1);
+                break;
+            case 'bomb':
+                this.arrow.setFrame(2);
+                break;
+        }
     }
 
     update(){
@@ -281,8 +350,7 @@ export class Player extends Phaser.GameObjects.Sprite
                 this.movement2();
                 this.shooting2()
             }
-        }
-        
+        }      
 
     }
 

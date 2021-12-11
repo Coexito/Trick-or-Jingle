@@ -34,6 +34,10 @@ export class Game extends Phaser.Scene {
     );
     this.load.spritesheet('heart', 'Resources/TestAssets/heart.png', { frameWidth: 200, frameHeight: 53 });
 
+    this.load.spritesheet('weapons', 
+        '../Resources/TestAssets/weapons.png',
+        { frameWidth: 600, frameHeight: 600 }
+    );
     this.load.image('bullet', '../Resources/TestAssets/bullet.png');
     this.load.image('sprite', '../Resources/TestAssets/sprite.png');
   }

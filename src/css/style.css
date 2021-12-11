@@ -1,1 +1,47 @@
+canvas {
+    display: block;
+    margin: auto;
+    
+}
+a{
+    color: lightgoldenrodyellow;
+}
+a:hover{
+    color: skyblue;
+}
 
+
+#RRSS{
+    font-family: Helvetica, Arial;
+    color: white;
+    text-align: center;
+
+}
+#game{
+    
+    margin: auto;
+}
+#banner{
+    text-align: center;
+}
+#Aditional{
+    text-align: center;
+}
+
+
+footer{
+     position: fixed;
+    padding: 10px 10px 0px 10px;
+    bottom: 0;
+    color: ghostwhite;
+
+}
+body{
+    height: 2189px;
+    width:  1920;
+    background-image: url(/Resources/WebAssets/background.png);
+    background-color: darkred; 
+}
+html{
+    overflow: scroll;
+}

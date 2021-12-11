@@ -1,15 +1,18 @@
 export class RestartButton {
-    constructor(scene) {
+    constructor(scene, x, y) {
       this.relatedScene = scene;
+      this.x = x;
+      this.y = y;
     }
   
     // other class methods
     preload() {
-        this.relatedScene.load.spritesheet('button', '../Resources/TestAssets/star.png', { frameWidth: 190, frameHeight: 49 });
+        this.relatedScene.load.image('button', '../../Resources/Art/UI/SC_Choose/BT_select_small.png');
     }
 
     create() {
-        this.startButton = this.relatedScene.add.sprite(400, 230, 'button').setInteractive();
+
+        this.startButton = this.relatedScene.add.sprite(this.x, this.y, 'button').setInteractive();
 
         // Used for interaction when hovering
         // this.startButton.on('pointerover', () => {

@@ -10,8 +10,9 @@ export class Game extends Phaser.Scene {
     super({ key: 'game' });
   }
   
-  init() {
-    
+  init(data) {
+    this.player1team = data.p1team;
+    this.player2team = data.p2team;
   }
 
   preload() {
@@ -42,6 +43,10 @@ export class Game extends Phaser.Scene {
   }
 
   create() {
+
+    console.log(this.player1team);
+    console.log(this.player2team);
+
     // objects in order from farther to nearest on screen
     this.add.image(0, 0, 'sky').setOrigin(0,0); // by default elements are positioned based on their center. Change so it matches the origin of the screen
     

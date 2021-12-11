@@ -1,4 +1,4 @@
-class Player extends Phaser.GameObjects.Sprite
+export class Player extends Phaser.GameObjects.Sprite
 {
     constructor(scene, _speed, _lives, x, y, sprite, _idx) {
         super(scene, x, y, sprite);
@@ -34,12 +34,12 @@ class Player extends Phaser.GameObjects.Sprite
 
     movement1()
     {
-        if (a_key.isDown)
+        if (this.scene.a_key.isDown)
         {
             this.body.setVelocityX(-this.speed);
             this.anims.play('left2', true);
         }
-        else if (d_key.isDown)
+        else if (this.scene.d_key.isDown)
         {
             this.body.setVelocityX(this.speed);
             this.anims.play('right2', true);
@@ -50,7 +50,7 @@ class Player extends Phaser.GameObjects.Sprite
             this.anims.play('turn2');
         }
 
-        if (w_key.isDown && this.body.touching.down)
+        if (this.scene.w_key.isDown && this.body.touching.down)
         {
             this.body.setVelocityY(-330);
         }
@@ -58,12 +58,12 @@ class Player extends Phaser.GameObjects.Sprite
     movement2()
     {
         // Movement
-        if (cursors.left.isDown)
+        if (this.scene.cursors.left.isDown)
         {
             this.body.setVelocityX(-this.speed);
             this.anims.play('left1', true);
         }
-        else if (cursors.right.isDown)
+        else if (this.scene.cursors.right.isDown)
         {
             this.body.setVelocityX(this.speed);
             this.anims.play('right1', true);
@@ -75,7 +75,7 @@ class Player extends Phaser.GameObjects.Sprite
         }
 
         // Jumping
-        if (cursors.up.isDown && this.body.touching.down)
+        if (this.scene.cursors.up.isDown && this.body.touching.down)
         {
             this.body.setVelocityY(-330);
         }
@@ -91,12 +91,12 @@ class Player extends Phaser.GameObjects.Sprite
             this.arrow.y = this.y;
 
             // rotate arrow
-            if (e_key.isDown)
+            if (this.scene.e_key.isDown)
             {
                 this.arrow.angle += 2;
             }
 
-            if (q_key.isDown)
+            if (this.scene.q_key.isDown)
             {
                 this.arrow.angle -= 2;
             }
@@ -105,15 +105,15 @@ class Player extends Phaser.GameObjects.Sprite
             switch(this.weaponType)
             {
                 case 'shotgun': // if the weapon type is a shotgun
-                    if (Phaser.Input.Keyboard.JustDown(space_key))
+                    if (Phaser.Input.Keyboard.JustDown(this.scene.space_key))
                         this.shootShotGun();
                     break;
                 case 'gun': // if the weapon type is a gun
-                    if (Phaser.Input.Keyboard.JustDown(space_key))    
+                    if (Phaser.Input.Keyboard.JustDown(this.scene.space_key))    
                         this.shootGun();
                     break;
                 case 'bomb':
-                    if (Phaser.Input.Keyboard.JustDown(space_key))
+                    if (Phaser.Input.Keyboard.JustDown(this.scene.space_key))
                         this.throwBomb();
                     break;
             }
@@ -129,12 +129,12 @@ class Player extends Phaser.GameObjects.Sprite
             this.arrow.y = this.y;
 
             // rotate arrow
-            if (numpad_9_key.isDown)
+            if (this.scene.numpad_9_key.isDown)
             {
                 this.arrow.angle += 2;
             }
 
-            if (numpad_7_key.isDown)
+            if (this.scene.numpad_7_key.isDown)
             {
                 this.arrow.angle -= 2;
             }
@@ -143,15 +143,15 @@ class Player extends Phaser.GameObjects.Sprite
             switch(this.weaponType)
             {
                 case 'shotgun': // if the weapon type is a shotgun
-                    if(Phaser.Input.Keyboard.JustDown(numpad_0_key))
+                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key))
                         this.shootShotGun();
                     break;
                 case 'gun': // if the weapon type is a gun
-                    if(Phaser.Input.Keyboard.JustDown(numpad_0_key))
+                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key))
                         this.shootGun();
                     break;
                 case 'bomb':
-                    if(Phaser.Input.Keyboard.JustDown(numpad_0_key))
+                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key))
                         this.throwBomb();
                     break;
             }

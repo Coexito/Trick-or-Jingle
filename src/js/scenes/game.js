@@ -340,7 +340,7 @@ function outOfTime() {
     else // if draw, player 1 wins because i want to 
     {
         this.scene.stop();
-        this.scene.start("gameover", { winnerteam: this.player1team });
+        this.scene.start("gameover", { winnerteam: "draw" });
     }
     
 }

@@ -65,9 +65,9 @@ export class Player extends Phaser.GameObjects.Sprite
             this.anims.play('turn2');
         }
 
-        if (this.scene.w_key.isDown && this.body.touching.down)
+        if ((Phaser.Input.Keyboard.JustDown(this.scene.w_key) && this.body.touching.down))
         {
-            this.body.setVelocityY(-450);
+            this.body.setVelocityY(-470);
         }
     }
     movement2()
@@ -90,9 +90,9 @@ export class Player extends Phaser.GameObjects.Sprite
         }
 
         // Jumping
-        if (this.scene.cursors.up.isDown && this.body.touching.down)
+        if ((Phaser.Input.Keyboard.JustDown(this.scene.cursors.up) && this.body.touching.down))
         {
-            this.body.setVelocityY(-450);
+            this.body.setVelocityY(-470);
         }
 
         return this;

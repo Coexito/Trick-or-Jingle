@@ -284,6 +284,18 @@ export class Game extends Phaser.Scene {
         }
   }
 
+  checkWinners() {
+    // Checks which player died
+    if (player1.getLives() == 0) {
+        this.scene.stop();
+        this.scene.start("gameover", { winnerteam: this.player2team });      
+    }
+    if (player2.getLives() == 0) {
+        this.scene.stop();
+        this.scene.start("gameover", { winnerteam: this.player1team });
+    }
+  }
+
   unpause()
   {
       isPaused = false;
@@ -291,9 +303,40 @@ export class Game extends Phaser.Scene {
   
 }
 
-function outOfTime() // i was playing with this for the 5 minute timeout
-{
-    console.log("Time over buddy");
+
+function updateText() {
+    if (isPaused == false) {
+      countdownTime--;
+      text.setText(formatTime(countdownTime));
+    }
+}
+
+function updateWeapon() {
+    // updates the weapons every x seconds
+
+    if (isPaused == false) {
+      weapon1.updateWeapon();
+      weapon2.updateWeapon();
+    }
+}
+
+function outOfTime() {    
+    // Checks who's with most lives
+    if (player1.getLives() < player2.getLives()) {
+        this.scene.stop();
+        this.scene.start("gameover", { winnerteam: this.player2team });  
+    }
+    else if(player2.getLives() < player1.getLives())
+    {
+        this.scene.stop();
+        this.scene.start("gameover", { winnerteam: this.player1team });
+    }
+    else // if draw, player 1 wins because i want to 
+    {
+        this.scene.stop();
+        this.scene.start("gameover", { winnerteam: this.player1team });
+    }
+    
 }
 
 // -- Bullet collisions --

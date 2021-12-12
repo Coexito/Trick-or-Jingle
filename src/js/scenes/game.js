@@ -19,48 +19,43 @@ export class Game extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('sky', '../Resources/TestAssets/sky.png');
-    this.load.image('ground', '../Resources/TestAssets/platform.png');
-    this.load.image('star', '../Resources/TestAssets/star.png');
+    // weapons assets
     this.load.image('bomb', '../Resources/TestAssets/bomb.png');
     this.load.image('explosion', '../Resources/TestAssets/explosion.png');
     this.load.image('gun', '../Resources/TestAssets/gun.png');
     this.load.image('shotgun', '../Resources/TestAssets/shotgun.png');
-    this.load.image('pause_button', '../Resources/Art/UI/BT_pause.png');
-    
-
-    this.load.spritesheet('dude', 
-        '../Resources/Art/Sprites/N_MariaKarei/SPS_MariaKarei_RUN.png',
-        { frameWidth: 182, frameHeight: 249 }
-    );
-    this.load.spritesheet('bad', 
-        '../Resources/Art/Sprites/H_EdwardCullon/spritesheet_edward.png',
-        { frameWidth: 182, frameHeight: 249 }
-    );
-    this.load.spritesheet('heart', 'Resources/TestAssets/heart.png', { frameWidth: 200, frameHeight: 53 });
-
     this.load.spritesheet('weapons', 
         '../Resources/TestAssets/weapons.png',
         { frameWidth: 600, frameHeight: 600 }
     );
     this.load.image('bullet', '../Resources/TestAssets/bullet.png');
-    this.load.image('sprite', '../Resources/TestAssets/sprite.png');
+    // pause button
+    this.load.image('pause_button', '../Resources/Art/UI/BT_pause.png');
+
+    // players sprites
+    this.load.spritesheet('maria', 
+        '../Resources/Art/Sprites/N_MariaKarei/SPS_MariaKarei_RUN.png',
+        { frameWidth: 182, frameHeight: 249 }
+    );
+    this.load.spritesheet('edward', 
+        '../Resources/Art/Sprites/H_EdwardCullon/spritesheet_edward.png',
+        { frameWidth: 182, frameHeight: 244 }
+    );
+
+    // lives
+    this.load.spritesheet('heart', 'Resources/TestAssets/heart.png', { frameWidth: 200, frameHeight: 53 });
 
     // stage assets
         // main walls
-    this.load.image('rightWall', '../Resources/Art/Scenery/rightWall.png');
-    this.load.image('leftWall', '../Resources/Art/Scenery/leftWall.png');
-    this.load.image('ground', '../Resources/Art/Scenery/ground.png');
-    this.load.image('ceiling', '../Resources/Art/Scenery/ceiling.png');
-    this.load.image('central', '../Resources/Art/Scenery/central.png')
-    this.load.image('grass', '../Resources/Art/Scenery/grass.png');
-        // backgrounds
-    this.load.image('bck_mix', '../Resources/Art/Scenery/Backgrounds/bck_mix.png');
-    this.load.image('bck_mix', '../Resources/Art/Scenery/Backgrounds/bck_mix.png');
-    this.load.image('bck_mix', '../Resources/Art/Scenery/Backgrounds/bck_mix.png');
-        // platforms image
-    this.load.spritesheet('platforms_spritesheet', 
-        '../Resources/Art/Scenery/Platforms/platforms_spritesheet.png',
+    this.load.image('rightWall', '../Resources/Art/Scenery/Platforms/BasicWalls/rightWall.png');
+    this.load.image('leftWall', '../Resources/Art/Scenery/Platforms/BasicWalls/leftWall.png');
+    this.load.image('ground', '../Resources/Art/Scenery/Platforms/BasicWalls/ground.png');
+    this.load.image('ceiling', '../Resources/Art/Scenery/Platforms/BasicWalls/ceiling.png');
+    this.load.image('central', '../Resources/Art/Scenery/Platforms/BasicWalls/central.png')
+    this.load.image('grass', '../Resources/Art/Scenery/Platforms/BasicWalls/grass.png');
+        // backgrounds & platforms spritesheet
+    this.load.spritesheet('stage_spritesheet', 
+        '../Resources/Art/Scenery/stage_spritesheet.png',
         { frameWidth: 1280, frameHeight: 680 }
     );
         // basic platforms
@@ -72,12 +67,24 @@ export class Game extends Phaser.Scene {
   }
 
   create() {
+    // create variable to store players sprites depending on what the first player choose on the previous menu
+    var spriteP1;
+    var spriteP2;
+
+    if (this.player1team == 'halloween') // player 1 is edward cullon and player 2 maria karei
+    {
+        spriteP1 = 'edward';
+        spriteP2 = 'maria';
+    } else // player 2 is edward cullon and player 1 maria karei
+    {
+        spriteP1 = 'maria';
+        spriteP2 = 'edward';
+    }
 
     this.events.on('resume', this.unpause);
 
     // objects in order from farther to nearest on screen
     this.add.image(0, 0, 'sky').setOrigin(0,0); // by default elements are positioned based on their center. Change so it matches the origin of the screen
-    
     
     // create platforms
     this.platforms = this.physics.add.staticGroup();
@@ -92,19 +99,16 @@ export class Game extends Phaser.Scene {
     this.platforms.create(312, 166, 'base_smallcandy_platform');
     this.platforms.create(10, 307, 'base_bigcandy_platform');
     this.platforms.create(1260, 307, 'base_bigcandy_platform');
-        // background image
-    this.add.image(0, 0, 'bck_mix').setOrigin(0,0); // by default elements are positioned based on their center. Change so it matches the origin of the screen
-    
+        // stage spritesheet
+    this.stage = this.add.image(0,0,'stage_spritesheet').setOrigin(0,0);
+    this.stage.setFrame(1);
         // basic walls
     this.platforms.create(633, 11, 'ceiling');
     this.platforms.create(1262, 301, 'rightWall');
     this.platforms.create(15, 301, 'leftWall');
     this.platforms.create(650, 656, 'ground');
     this.platforms.create(640, 600, 'central');
-
-    // platforms image
-    this.add.image(0,0,'platforms_spritesheet').setOrigin(0,0);
-    
+        // grass image
     var grass = this.add.image(0,0, 'grass').setOrigin(0,0);
     grass.depth = 100;
     
@@ -127,20 +131,20 @@ export class Game extends Phaser.Scene {
     // Player 1 animations
     this.anims.create({
         key: 'left1',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 8 }),
+        frames: this.anims.generateFrameNumbers(spriteP1, { start: 0, end: 8 }),
         frameRate: 15,
         repeat: -1
     });
 
     this.anims.create({
         key: 'turn1',
-        frames: [ { key: 'dude', frame: 10 } ],
+        frames: [ { key: spriteP1, frame: 10 } ],
         frameRate: 20
     });
 
     this.anims.create({
         key: 'right1',
-        frames: this.anims.generateFrameNumbers('dude', { start: 11, end: 19 }), //fixed animation
+        frames: this.anims.generateFrameNumbers(spriteP1, { start: 11, end: 19 }), //fixed animation
         frameRate: 15,
         repeat: -1
     });
@@ -149,30 +153,30 @@ export class Game extends Phaser.Scene {
     // Player 2 animations
     this.anims.create({
         key: 'left2',
-        frames: this.anims.generateFrameNumbers('bad', { start: 0, end: 10  }),
-        frameRate: 20,
+        frames: this.anims.generateFrameNumbers(spriteP2, { start: 0, end: 8  }),
+        frameRate: 15,
         repeat: -1
     });
 
     this.anims.create({
         key: 'turn2',
-        frames: [ { key: 'bad', frame: 11} ],
+        frames: [ { key: spriteP2, frame: 10} ],
         frameRate: 20 
     });
 
     this.anims.create({
         key: 'right2',
-        frames: this.anims.generateFrameNumbers('bad', { start: 12, end: 22 }),
-        frameRate: 20,
+        frames: this.anims.generateFrameNumbers(spriteP2, { start: 11, end: 19 }),
+        frameRate: 15,
         repeat: -1
     });
     
 
     // Initializes the players
-    player1 = this.physics.add.existing(new Player(this, 350, 3, 200, 100, "dude", 1)) //scene, speed, lives, x, y, sprite, index
-    player1.body.allowGravity = true;
-    player2 = this.physics.add.existing(new Player(this, 300, 3, 500, 100, "bad", 2))
-    player2.body.allowGravity = true;    
+    player1 = this.physics.add.existing(new Player(this, 350, 3, 200, 100, spriteP1, 1)) //scene, speed, lives, x, y, sprite, index
+    player2 = this.physics.add.existing(new Player(this, 300, 3, 500, 100, spriteP2, 2))   
+       
+    
 
     player1.setScale(0.4); // Increases the scale cause they're tiny uwu
     player2.setScale(0.4);
@@ -260,12 +264,31 @@ export class Game extends Phaser.Scene {
     player2.update();
   }
 
+  changeStage()
+  {
+        if (player1.getLives() == player2.getLives()) // if the players have the same lives
+            this.stage.setFrame(1); // mixed stage
+        else if (player1.getLives() > player2.getLives()) // if player1 has more lives
+        {
+            if (this.player1team == 'halloween'){ // if player1 is on the halloween team
+                this.stage.setFrame(0); // halloween stage
+            }
+            else
+                this.stage.setFrame(2); // christams stage
+        } else if (player1.getLives() < player2.getLives()) // if player2 has more lives
+        {
+            if (this.player2team == 'halloween') // if player2 is on the halloween team
+                this.stage.setFrame(0); // halloween stage
+            else
+                this.stage.setFrame(2); // christams stage
+        }
+  }
+
   unpause()
   {
       isPaused = false;
   }
-
-
+  
 }
 
 function outOfTime() // i was playing with this for the 5 minute timeout
@@ -344,8 +367,9 @@ function pickUpWeapon(player, weaponBody)
 {
     // move out of the canvas so the player can't interact with it anymore but
     // the object still exits for the next call
-    weaponBody.x = 1000;
-    weaponBody.y = 1000
+    weaponBody.x = 3000;
+    weaponBody.y = 3000;
+    weaponBody.setVelocity(0, 0);
     player.pickWeapon(weaponBody.texture.key);
 }
 

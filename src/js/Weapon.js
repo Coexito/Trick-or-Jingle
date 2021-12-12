@@ -1,10 +1,11 @@
 let weaponTypes =  ['gun', 'shotgun', 'bomb']; // global variable of an array with the diferent types of weapons
 
 // there are two weapons in scene, each one has different valid positions so they don't overlap
-let validX_1 = [300, 200, 100]; // global variable of an array with the valid x positions the weapon can be generated in
-let validX_2 = [350, 250, 150]; 
-let validY_1 = [200, 300, 400]; // global variable of an array with the valid y positions the weapon can be generated in
-let validY_2 = [250, 350, 450];
+let validX_1 = [640, 127, 234]; // global variable of an array with the valid x positions the weapon can be generated in
+let validY_1 = [124, 235, 469]; // global variable of an array with the valid y positions the weapon can be generated in
+
+let validX_2 = [640, 1140, 1031]; 
+let validY_2 = [400, 235, 469];
 
 export class Weapon extends Phaser.GameObjects.Sprite{
     
@@ -15,7 +16,9 @@ export class Weapon extends Phaser.GameObjects.Sprite{
 
         this.sprite = this.type; // the name of the sprite matches the name of the type of the weapon
 
-        if (_idx == 1) // to check if it is weapon 1 or 2
+        this.idx = _idx;
+
+        if (this.idx == 1) // to check if it is weapon 1 or 2
         {
             this.x = validX_1[Phaser.Math.Between(0,2)]; // choose a random x position for weapon 1
             this.y = validY_1[Phaser.Math.Between(0,2)]; // choose a random y position for weapon 1
@@ -36,7 +39,7 @@ export class Weapon extends Phaser.GameObjects.Sprite{
     {
         this.type = weaponTypes[Phaser.Math.Between(0,2)]; // choose a random weaponType again
 
-        if (this._idx == 1)
+        if (this.idx == 1)
         {
             this.x = validX_1[Phaser.Math.Between(0,2)]; // choose a random x position for weapon 1
             this.y = validY_1[Phaser.Math.Between(0,2)]; // choose a random y position for weapon 1

@@ -52,33 +52,9 @@ export class Player extends Phaser.GameObjects.Sprite
         if (this.scene.a_key.isDown)
         {
             this.body.setVelocityX(-this.speed);
-            this.anims.play('left2', true);
-        }
-        else if (this.scene.d_key.isDown)
-        {
-            this.body.setVelocityX(this.speed);
-            this.anims.play('right2', true);
-        }
-        else
-        {
-            this.body.setVelocityX(0);
-            this.anims.play('turn2');
-        }
-
-        if (this.scene.w_key.isDown && this.body.touching.down)
-        {
-            this.body.setVelocityY(-330);
-        }
-    }
-    movement2()
-    {
-        // Movement
-        if (this.scene.cursors.left.isDown)
-        {
-            this.body.setVelocityX(-this.speed);
             this.anims.play('left1', true);
         }
-        else if (this.scene.cursors.right.isDown)
+        else if (this.scene.d_key.isDown)
         {
             this.body.setVelocityX(this.speed);
             this.anims.play('right1', true);
@@ -89,10 +65,34 @@ export class Player extends Phaser.GameObjects.Sprite
             this.anims.play('turn1');
         }
 
-        // Jumping
-        if (this.scene.cursors.up.isDown && this.body.touching.down)
+        if ((Phaser.Input.Keyboard.JustDown(this.scene.w_key) && this.body.touching.down))
         {
-            this.body.setVelocityY(-330);
+            this.body.setVelocityY(-470);
+        }
+    }
+    movement2()
+    {
+        // Movement
+        if (this.scene.cursors.left.isDown)
+        {
+            this.body.setVelocityX(-this.speed);
+            this.anims.play('left2', true);
+        }
+        else if (this.scene.cursors.right.isDown)
+        {
+            this.body.setVelocityX(this.speed);
+            this.anims.play('right2', true);
+        }
+        else
+        {
+            this.body.setVelocityX(0);
+            this.anims.play('turn2');
+        }
+
+        // Jumping
+        if ((Phaser.Input.Keyboard.JustDown(this.scene.cursors.up) && this.body.touching.down))
+        {
+            this.body.setVelocityY(-470);
         }
 
         return this;
@@ -293,6 +293,9 @@ export class Player extends Phaser.GameObjects.Sprite
         this.lives--;
         this.hearts.setFrame(this.lives); // change the frame of the spriteSheet to match the player lives (frame 3 has 3 hearts etc.)
 
+        // the situation between players lives has changed, so we got to update the stage
+        this.scene.changeStage();
+
         if(this.lives > 0) // If has enough lives to survive, takes damage
         {
             this.canBeDamaged = false;
@@ -308,7 +311,11 @@ export class Player extends Phaser.GameObjects.Sprite
             this.destroy();         // Destroys the player itself
             return false;
         }
-        
+    }
+
+    getLives()
+    {
+        return this.lives;
     }
 
     makeVulnerable()

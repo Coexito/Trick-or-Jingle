@@ -31,11 +31,11 @@ export class Player extends Phaser.GameObjects.Sprite
 
         // Create hearts image to represent the player lives
         if (this.idx == 1) // the position of the lives on scene in the x axis depends on the player (player 1 to the left, player 2 to the right)
-            var posHeartsX = 100;
+            var posHeartsX = 150;
         else
-            var posHeartsX = 700;
+            var posHeartsX = 1140;
 
-        this.hearts = scene.add.image(posHeartsX, 75, 'heart').setScale(0.5);
+        this.hearts = scene.add.image(posHeartsX, 65, 'heart').setScale(0.5);
         this.hearts.setFrame(this.lives); // change the frame of the spriteSheet to match the player lives (frame 3 has 3 hearts etc.)
 
         // Add to scene
@@ -198,7 +198,7 @@ export class Player extends Phaser.GameObjects.Sprite
                         gunCooldown2 = true;
                         setTimeout( function(){
                             gunCooldown2 = false;
-                        }, 1000);
+                        }, 500);
                     }
                     break;
                 case 'bomb':

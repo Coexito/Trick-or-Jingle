@@ -17,7 +17,9 @@ export class StartMenu extends Phaser.Scene {
     // music
     var backgroundMusic = this.sound.add('Halloween_lofi');
     backgroundMusic.loop = true;
+
     backgroundMusic.play();
+    backgroundMusic.volume = 0.1; // Sets the volume to a minimun so it doesn't bother the player
 
     this.bg_start = this.add.image(640, 340, 'background_startmenu');
 

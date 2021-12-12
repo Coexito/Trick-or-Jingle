@@ -4,6 +4,8 @@ import { Weapon } from '../Weapon.js';
 var player1;
 var player2;
 
+var isPaused = false;
+
 export class Game extends Phaser.Scene {
 
   constructor() {
@@ -13,6 +15,7 @@ export class Game extends Phaser.Scene {
   init(data) {
     this.player1team = data.p1team;
     this.player2team = data.p2team;
+    
   }
 
   preload() {
@@ -26,6 +29,8 @@ export class Game extends Phaser.Scene {
         { frameWidth: 600, frameHeight: 600 }
     );
     this.load.image('bullet', '../Resources/TestAssets/bullet.png');
+    // pause button
+    this.load.image('pause_button', '../Resources/Art/UI/BT_pause.png');
 
     // players sprites
     this.load.spritesheet('maria', 
@@ -62,7 +67,6 @@ export class Game extends Phaser.Scene {
   }
 
   create() {
-
     // create variable to store players sprites depending on what the first player choose on the previous menu
     var spriteP1;
     var spriteP2;
@@ -77,11 +81,12 @@ export class Game extends Phaser.Scene {
         spriteP2 = 'edward';
     }
 
-    console.log(this.player1team);
-    console.log(this.player2team);
+    this.events.on('resume', this.unpause);
 
-    // objects in scene in order from farther to nearest on screen
-        // create platforms group
+    // objects in order from farther to nearest on screen
+    this.add.image(0, 0, 'sky').setOrigin(0,0); // by default elements are positioned based on their center. Change so it matches the origin of the screen
+    
+    // create platforms
     this.platforms = this.physics.add.staticGroup();
         // basic platforms (they are not to be shown on screen, that's why they are under the background image)
     this.platforms.create(637, 400, 'base_hw_platform');
@@ -106,6 +111,15 @@ export class Game extends Phaser.Scene {
         // grass image
     var grass = this.add.image(0,0, 'grass').setOrigin(0,0);
     grass.depth = 100;
+    
+    // Pause button
+    this.pause_button = this.add.image(50, 50, 'pause_button');
+
+    this.pause_button.setInteractive().on('pointerdown', () => {
+        this.scene.launch('pause');
+        this.scene.pause();
+        isPaused = true;
+    });
 
     // Creates a group for the players, bullets & weapons
     this.players = this.add.group();
@@ -174,9 +188,13 @@ export class Game extends Phaser.Scene {
     var updateWeaponSeconds = 5;
 
     setTimeout(function updateWeapon() { // updates the weapons every x seconds
-      weapon1.updateWeapon();
-      weapon2.updateWeapon();
-
+            
+        if(isPaused == false)
+        {
+            weapon1.updateWeapon();
+            weapon2.updateWeapon();
+        }
+        
         setTimeout(updateWeapon, updateWeaponSeconds * 1000); // i don't know if this is the best way to make a loop
     }, updateWeaponSeconds * 1000);
 
@@ -225,10 +243,14 @@ export class Game extends Phaser.Scene {
     var text = this.add.text(320, 50, formatTime(countdownTime)).setScale(3); // create text
 
         //function to update the text every second
-    setTimeout(function updateWeapon() {
-      countdownTime--;
-      text.setText(formatTime(countdownTime));
-        setTimeout(updateWeapon, 1000); // loop every second
+    setTimeout(function updateText() {
+
+        if(isPaused == false)
+        {
+            countdownTime--;
+            text.setText(formatTime(countdownTime));
+        }
+            setTimeout(updateText, 1000); // loop every second
     }, 1000);
 
     // after the 5 minutes call outOfTime function
@@ -262,6 +284,11 @@ export class Game extends Phaser.Scene {
         }
   }
 
+  unpause()
+  {
+      isPaused = false;
+  }
+  
 }
 
 function outOfTime() // i was playing with this for the 5 minute timeout

@@ -2,9 +2,6 @@ export class MainMenu extends Phaser.Scene {
   constructor() {
     super({ key: 'mainmenu' });
 
-  }
-
-  init() {
     this.p1team = "None";
     this.p2team = "None";
   }
@@ -33,7 +30,7 @@ export class MainMenu extends Phaser.Scene {
       this.c_button.setTexture("c_button_small");
 
       this.p1team = "halloween";
-      this.p2team = "christmas";  // THIS SHOULD ME CHANGED IN PHASE 3
+      this.p2team = "christmas";  // THIS SOULD ME CHANGED IN PHASE 3
 
       this.startButton.setTexture("button_ready");
 
@@ -45,7 +42,7 @@ export class MainMenu extends Phaser.Scene {
       this.h_button.setTexture("h_button_small");
 
       this.p1team = "christmas";
-      this.p2team = "halloween";  // THIS SHOULD ME CHANGED IN PHASE 3
+      this.p2team = "halloween";  // THIS SOULD ME CHANGED IN PHASE 3
       
       this.startButton.setTexture("button_ready");
     });
@@ -54,11 +51,10 @@ export class MainMenu extends Phaser.Scene {
 
     this.startButton.setInteractive().on('pointerdown', () => {
       if(this.p1team != "None" || this.p2team != "None")
-      {
         this.scene.stop();
         this.scene.start('game', { p1team: this.p1team, p2team: this.p2team });
-      }
     });
     
+    //this.restartButton.setScale(0.1);
   }
 }

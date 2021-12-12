@@ -50,7 +50,17 @@ export class Game extends Phaser.Scene {
     this.load.image('bck_mix', '../Resources/Art/Scenery/Backgrounds/bck_mix.png');
     this.load.image('bck_mix', '../Resources/Art/Scenery/Backgrounds/bck_mix.png');
     this.load.image('bck_mix', '../Resources/Art/Scenery/Backgrounds/bck_mix.png');
-        // platforms
+        // platforms image
+    this.load.spritesheet('platforms_spritesheet', 
+        '../Resources/Art/Scenery/Platforms/platforms_spritesheet.png',
+        { frameWidth: 1280, frameHeight: 680 }
+    );
+        // basic platforms
+    this.load.image('base_bigcandy_platform', '../Resources/Art/Scenery/Platforms/Base/base_bigcandy_platform.png');
+    this.load.image('base_hw_platform', '../Resources/Art/Scenery/Platforms/Base/base_hw_platform.png');
+    this.load.image('base_ribbon_platform', '../Resources/Art/Scenery/Platforms/Base/base_ribbon_platform.png');
+    this.load.image('base_smallcandy_platform', '../Resources/Art/Scenery/Platforms/Base/base_smallcandy_platform.png');
+    
   }
 
   create() {
@@ -58,11 +68,23 @@ export class Game extends Phaser.Scene {
     console.log(this.player1team);
     console.log(this.player2team);
 
-    // objects in order from farther to nearest on screen
-    this.add.image(0, 0, 'bck_mix').setOrigin(0,0); // by default elements are positioned based on their center. Change so it matches the origin of the screen
-
-    // create platforms
+    // objects in scene in order from farther to nearest on screen
+        // create platforms group
     this.platforms = this.physics.add.staticGroup();
+        // basic platforms (they are not to be shown on screen, that's why they are under the background image)
+    this.platforms.create(637, 400, 'base_hw_platform');
+    this.platforms.create(1040, 540, 'base_hw_platform');
+    this.platforms.create(236, 540, 'base_hw_platform');
+    this.platforms.create(649, 191, 'base_bigcandy_platform');
+    this.platforms.create(910, 375, 'base_ribbon_platform');
+    this.platforms.create(369, 375, 'base_ribbon_platform');
+    this.platforms.create(967, 166, 'base_smallcandy_platform');
+    this.platforms.create(312, 166, 'base_smallcandy_platform');
+    this.platforms.create(10, 307, 'base_bigcandy_platform');
+    this.platforms.create(1260, 307, 'base_bigcandy_platform');
+        // background image
+    this.add.image(0, 0, 'bck_mix').setOrigin(0,0); // by default elements are positioned based on their center. Change so it matches the origin of the screen
+    
         // basic walls
     this.platforms.create(633, 11, 'ceiling');
     this.platforms.create(1262, 301, 'rightWall');
@@ -70,9 +92,11 @@ export class Game extends Phaser.Scene {
     this.platforms.create(650, 656, 'ground');
     this.platforms.create(640, 600, 'central');
 
+    // platforms image
+    this.add.image(0,0,'platforms_spritesheet').setOrigin(0,0);
+    
     var grass = this.add.image(0,0, 'grass').setOrigin(0,0);
-    grass.depth = 100;
-        
+    grass.depth = 100;    
 
     // Creates a group for the players, bullets & weapons
     this.players = this.add.group();
@@ -131,8 +155,8 @@ export class Game extends Phaser.Scene {
     player2 = this.physics.add.existing(new Player(this, 300, 3, 500, 100, "bad", 2))
     player2.body.allowGravity = true;    
 
-    player1.setScale(0.5); // Increases the scale cause they're tiny uwu
-    player2.setScale(0.5);
+    player1.setScale(0.4); // Increases the scale cause they're tiny uwu
+    player2.setScale(0.4);
 
     // Initialize first weapons
     var weapon1 = this.physics.add.existing(new Weapon(this, 1)); // scene, idx

@@ -25,7 +25,7 @@ export class RestartButton {
         
         // Starts the game
         this.startButton.on('pointerdown', () => {
-          this.relatedScene.scene.start('game');
+          this.relatedScene.scene.start('mainmenu');
         });
     }
     

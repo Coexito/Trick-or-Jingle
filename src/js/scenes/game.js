@@ -51,7 +51,7 @@ export class Game extends Phaser.Scene {
     );
 
     // lives
-    this.load.spritesheet('heart', 'Resources/Art/Weapons/heart.png', { frameWidth: 200, frameHeight: 53 });
+    this.load.spritesheet('heart', 'Resources/Art/UI/SP_heart.png', { frameWidth: 200, frameHeight: 53 });
 
     // stage assets
         // main walls
@@ -252,7 +252,7 @@ export class Game extends Phaser.Scene {
 
      // Countdown text
      countdownTime = 300; // 300 seconds are 5 minutes
-     text = this.add.text(320, 50, formatTime(countdownTime)).setScale(3); // create text
+     text = this.add.text(600, 50, formatTime(countdownTime)).setScale(3); // create text
  
      //function to update the text every second
      timedEventText = this.time.addEvent( { delay: 1000, callback: updateText, callbackScope: this, loop: true});

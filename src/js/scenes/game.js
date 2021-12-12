@@ -76,7 +76,6 @@ export class Game extends Phaser.Scene {
     this.load.audio('Bomb_impact', 'Resources/Sounds/sounds/Bomb_impact.wav');
     this.load.audio('Fire_shotgun','Resources/Sounds/sounds/Fire_shotgun.wav');
     this.load.audio('Fire_gun','Resources/Sounds/sounds/Fire_gun.mp3');
-    this.load.audio('Halloween_lofi','Resources/Sounds/Music/halloween_lofi.wav');
 
   }
 
@@ -87,9 +86,6 @@ export class Game extends Phaser.Scene {
     this.shotgunSound = this.sound.add('Fire_shotgun');
     this.gunSound = this.sound.add('Fire_gun');
 
-    var backgroundMusic = this.sound.add('Halloween_lofi');
-    backgroundMusic.loop = true;
-    backgroundMusic.play();
     // Handling phaser3 events
     this.events.on("resume", this.unpause);
 

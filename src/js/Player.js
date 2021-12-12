@@ -67,7 +67,7 @@ export class Player extends Phaser.GameObjects.Sprite
 
         if (this.scene.w_key.isDown && this.body.touching.down)
         {
-            this.body.setVelocityY(-330);
+            this.body.setVelocityY(-450);
         }
     }
     movement2()
@@ -92,7 +92,7 @@ export class Player extends Phaser.GameObjects.Sprite
         // Jumping
         if (this.scene.cursors.up.isDown && this.body.touching.down)
         {
-            this.body.setVelocityY(-330);
+            this.body.setVelocityY(-450);
         }
 
         return this;

@@ -220,6 +220,9 @@ export class Player extends Phaser.GameObjects.Sprite
     {
         // shoot gun bullets (the collide box is tinier, but they reload faster and scroll the entire screen)
 
+        // play sound
+        this.scene.gunSound.play();
+
         // create bullet
         var bullet = this.scene.physics.add.image(this.arrow.x, this.arrow.y, 'bullet').setImmovable(true).setScale(0.5); // Creates a bullet on the scene
         bullet.body.setAllowGravity(false);
@@ -240,6 +243,9 @@ export class Player extends Phaser.GameObjects.Sprite
     shootShotGun()
     {
         // shoot shotgun bullets (the collide box is bigger, but they take longer to load and dissapear after a few pixels)
+
+        // play sound
+        this.scene.shotgunSound.play();
 
         // create bullet
         var bullet = this.scene.physics.add.image(this.arrow.x, this.arrow.y, 'bullet').setImmovable(true); // Creates a bullet on the scene

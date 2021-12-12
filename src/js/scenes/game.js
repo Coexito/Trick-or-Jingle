@@ -104,12 +104,35 @@ export class Game extends Phaser.Scene {
       "base_smallcandy_platform",
       "../Resources/Art/Scenery/Platforms/Base/base_smallcandy_platform.png"
     );
+        // basic platforms
+    this.load.image('base_bigcandy_platform', '../Resources/Art/Scenery/Platforms/Base/base_bigcandy_platform.png');
+    this.load.image('base_hw_platform', '../Resources/Art/Scenery/Platforms/Base/base_hw_platform.png');
+    this.load.image('base_ribbon_platform', '../Resources/Art/Scenery/Platforms/Base/base_ribbon_platform.png');
+    this.load.image('base_smallcandy_platform', '../Resources/Art/Scenery/Platforms/Base/base_smallcandy_platform.png');
+    
+    // preload sounds
+    this.load.audio('Bomb_impact', 'Resources/Sounds/sounds/Bomb_impact.wav');
+    this.load.audio('Fire_shotgun','Resources/Sounds/sounds/Fire_shotgun.wav');
+    this.load.audio('Fire_gun','Resources/Sounds/sounds/Fire_gun.mp3');
+    this.load.audio('Halloween_lofi','Resources/Sounds/Music/halloween_lofi.wav');
+    
+
   }
 
   create() {
 
+    // add audio to scene
+    this.bombSound = this.sound.add('Bomb_impact');
+    this.shotgunSound = this.sound.add('Fire_shotgun');
+    this.gunSound = this.sound.add('Fire_gun');
+
+    var backgroundMusic = this.sound.add('Halloween_lofi');
+    backgroundMusic.loop = true;
+    backgroundMusic.play();
+
     // Handling phaser3 events
     this.events.on("resume", this.unpause);
+
 
     // create variable to store players sprites depending on what the first player choose on the previous menu
     var spriteP1;
@@ -161,6 +184,11 @@ export class Game extends Phaser.Scene {
 
     // Pause button
     this.pause_button = this.add.image(50, 50, "pause_button");
+
+    this.pause_button.setInteractive().on('pointerdown', () => {
+        this.scene.launch('pause');
+        this.scene.pause();
+        isPaused = true;
 
     this.pause_button.setInteractive().on("pointerdown", () => {
       this.scene.launch("pause");
@@ -446,6 +474,33 @@ function bulletOnPlayer(player, bullet) {
 }
 
 // -- Bomb collisions --
+
+
+function bombCollision(first, bomb)
+{
+    // play bomb impact sound
+    this.bombSound.play();
+
+    // create an explosion object so it can collide with the player
+    var explosion = this.explosions.create(bomb.x, bomb.y, 'explosion').setScale(1.3);
+    explosion.setVelocity(0, 0);
+
+    bomb.disableBody(true, true); // delete the bomb body
+
+    // fade effect for the explosion
+    this.tweens.add({
+        targets: [explosion],
+        ease: 'Sine.easeInOut',
+        duration: 500, // time doing the fading effect
+        delay: 0, // time since it is called till it does the effect
+        alpha: {
+          getStart: () => 1,
+          getEnd: () => 0
+        },
+        onComplete: () => {
+            explosion.disableBody(true, true); 
+        }
+    });
 
 function bombCollision(first, bomb) {
   // create an explosion object so it can collide with the player

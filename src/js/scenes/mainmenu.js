@@ -50,7 +50,8 @@ export class MainMenu extends Phaser.Scene {
     this.startButton = this.add.sprite(650, 600, 'button');
 
     this.startButton.setInteractive().on('pointerdown', () => {
-      if(this.team != "None")
+      if(this.p1team != "None" || this.p2team != "None")
+        this.scene.stop();
         this.scene.start('game', { p1team: this.p1team, p2team: this.p2team });
     });
     

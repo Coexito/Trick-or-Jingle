@@ -78,14 +78,6 @@ export class Game extends Phaser.Scene {
     // objects in order from farther to nearest on screen
     this.add.image(0, 0, 'sky').setOrigin(0,0); // by default elements are positioned based on their center. Change so it matches the origin of the screen
     
-    // Pause button
-    this.pause_button = this.add.image(50, 50, 'pause_button');
-
-    this.pause_button.setInteractive().on('pointerdown', () => {
-        this.scene.launch('pause');
-        this.scene.pause();
-        isPaused = true;
-      });
     
     // create platforms
     this.platforms = this.physics.add.staticGroup();
@@ -114,7 +106,16 @@ export class Game extends Phaser.Scene {
     this.add.image(0,0,'platforms_spritesheet').setOrigin(0,0);
     
     var grass = this.add.image(0,0, 'grass').setOrigin(0,0);
-    grass.depth = 100;    
+    grass.depth = 100;
+    
+    // Pause button
+    this.pause_button = this.add.image(50, 50, 'pause_button');
+
+    this.pause_button.setInteractive().on('pointerdown', () => {
+        this.scene.launch('pause');
+        this.scene.pause();
+        isPaused = true;
+    });
 
     // Creates a group for the players, bullets & weapons
     this.players = this.add.group();

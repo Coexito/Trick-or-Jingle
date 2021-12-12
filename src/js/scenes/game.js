@@ -4,6 +4,14 @@ import { Weapon } from '../Weapon.js';
 var player1;
 var player2;
 
+var weapon1;
+var weapon2;
+
+var text;
+var countdownTime;
+var timedEventText;
+var timedEventWeapon;
+
 var isPaused = false;
 
 export class Game extends Phaser.Scene {
@@ -200,21 +208,11 @@ export class Game extends Phaser.Scene {
     player2.setScale(0.4);
 
     // Initialize first weapons
-    var weapon1 = this.physics.add.existing(new Weapon(this, 1)); // scene, idx
-    var weapon2 = this.physics.add.existing(new Weapon(this, 2)); // scene, idx
+    weapon1 = this.physics.add.existing(new Weapon(this, 1)); // scene, idx
+    weapon2 = this.physics.add.existing(new Weapon(this, 2)); // scene, idx
 
     var updateWeaponSeconds = 20;
-
-    setTimeout(function updateWeapon() { // updates the weapons every x seconds
-            
-        if(isPaused == false)
-        {
-            weapon1.updateWeapon();
-            weapon2.updateWeapon();
-        }
-        
-        setTimeout(updateWeapon, updateWeaponSeconds * 1000); // i don't know if this is the best way to make a loop
-    }, updateWeaponSeconds * 1000);
+    timedEventWeapon = this.time.addEvent( { delay: updateWeaponSeconds * 1000, callback: updateWeapon, callbackScope: this, loop: true} );
 
 
     // Adds colliders
@@ -256,20 +254,12 @@ export class Game extends Phaser.Scene {
     this.numpad_7_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SEVEN);
     this.numpad_9_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_NINE);
 
-    // Countdown text
-    var countdownTime = 300; // 300 seconds are 5 minutes
-    var text = this.add.text(320, 50, formatTime(countdownTime)).setScale(3); // create text
-
-        //function to update the text every second
-    setTimeout(function updateText() {
-
-        if(isPaused == false)
-        {
-            countdownTime--;
-            text.setText(formatTime(countdownTime));
-        }
-            setTimeout(updateText, 1000); // loop every second
-    }, 1000);
+     // Countdown text
+     countdownTime = 300; // 300 seconds are 5 minutes
+     text = this.add.text(320, 50, formatTime(countdownTime)).setScale(3); // create text
+ 
+     //function to update the text every second
+     timedEventText = this.time.addEvent( { delay: 1000, callback: updateText, callbackScope: this, loop: true});
 
     // after the 5 minutes call outOfTime function
     var secondsToEnd = 300;
@@ -280,6 +270,8 @@ export class Game extends Phaser.Scene {
   update() {
     player1.update();
     player2.update();
+
+    this.checkWinners();
   }
 
   changeStage()
@@ -306,12 +298,55 @@ export class Game extends Phaser.Scene {
   {
       isPaused = false;
   }
-  
+
+  checkWinners() {
+    if (player1.getLives() == 0) {
+        this.scene.stop();
+        this.scene.start("gameover", { winnerteam: this.player2team });
+      
+    }
+    if (player2.getLives() == 0) {
+        this.scene.stop();
+        this.scene.start("gameover", { winnerteam: this.player1team });
+    }
+  }
+
 }
 
-function outOfTime() // i was playing with this for the 5 minute timeout
-{
-    console.log("Time over buddy");
+
+function updateText() {
+    if (isPaused == false) {
+      countdownTime--;
+      text.setText(formatTime(countdownTime));
+    }
+}
+
+function updateWeapon() {
+    // updates the weapons every x seconds
+
+    if (isPaused == false) {
+      weapon1.updateWeapon();
+      weapon2.updateWeapon();
+    }
+}
+
+function outOfTime() {    
+    // Checks who's with most lives
+    if (player1.getLives() < player2.getLives()) {
+        this.scene.stop();
+        this.scene.start("gameover", { winnerteam: this.player2team });  
+    }
+    else if(player2.getLives() < player1.getLives())
+    {
+        this.scene.stop();
+        this.scene.start("gameover", { winnerteam: this.player1team });
+    }
+    else // if draw, player 1 wins because i want to 
+    {
+        this.scene.stop();
+        this.scene.start("gameover", { winnerteam: this.player1team });
+    }
+    
 }
 
 // -- Bullet collisions --

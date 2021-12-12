@@ -17,7 +17,6 @@ export class Game extends Phaser.Scene {
 
   preload() {
     this.load.image('sky', '../Resources/TestAssets/sky.png');
-    this.load.image('ground', '../Resources/TestAssets/platform.png');
     this.load.image('star', '../Resources/TestAssets/star.png');
     this.load.image('bomb', '../Resources/TestAssets/bomb.png');
     this.load.image('explosion', '../Resources/TestAssets/explosion.png');
@@ -40,6 +39,12 @@ export class Game extends Phaser.Scene {
     );
     this.load.image('bullet', '../Resources/TestAssets/bullet.png');
     this.load.image('sprite', '../Resources/TestAssets/sprite.png');
+
+    // stage assets
+    this.load.image('rightWall', '../Resources/Art/Scenery/rightWall.png');
+    this.load.image('leftWall', '../Resources/Art/Scenery/leftWall.png');
+    this.load.image('ground', '../Resources/Art/Scenery/ground.png');
+    this.load.image('ceiling', '../Resources/Art/Scenery/ceiling.png');
   }
 
   create() {
@@ -52,8 +57,10 @@ export class Game extends Phaser.Scene {
     
     // create platforms
     this.platforms = this.physics.add.staticGroup();
-    this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-    this.platforms.create(600, 400, 'ground');
+    this.platforms.create(633, 11, 'ceiling');
+    this.platforms.create(1262, 301, 'rightWall');
+    this.platforms.create(15, 301, 'leftWall');
+    this.platforms.create(650, 646, 'ground');
 
     // Creates a group for the players, bullets & weapons
     this.players = this.add.group();

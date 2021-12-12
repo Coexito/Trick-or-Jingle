@@ -29,7 +29,8 @@ alrededor de octubre cada año entre los amantes de Halloween y los de la Navida
 De esta manera se enfrentarían dos jugadores (ampliable), el primero elegiría su personaje entre los disponibles
 con temática de Halloween y el segundo de los de Navidad
 
-Los tipos de armas son 3, de usos ilimitados y diferenciados por su tipo de usabilidad:
+Los tipos de armas son 3, de usos ilimitados y diferenciados por su tipo de usabilidad.
+Al pasar por encima de un arma, el jugador la cogerá automáticamente. Las armas son:
 1.	Pistola: arma a distancia de una sola bala por disparo en línea recta y rango ilimitado.
 2.	Escopeta: arma a corta distancia con amplio cono de daño en área.
 3.	Granada: objeto lanzable que explota e inflige amplio daño en área allá donde se activa.
@@ -44,9 +45,20 @@ Los tipos de armas son 3, de usos ilimitados y diferenciados por su tipo de usab
 
 ## Controles
 
+Jugador 1:
+- Movimiento: AD (izquierda, derecha), W (saltar)
+- Disparo de arma: barra espaciadora
+- Rotar arma: QE (rotar hacia izquierda o derecha)
+
+Jugador 2:
+- Movimiento: flechas de dirección (izquierda, derecha), flecha hacia arriba (saltar)
+- Disparo de arma: tecla 0 de teclado numérico
+- Rotar arma: teclas 7 y 9 de teclado numérico
+
+Los siguientes controles son los planeados para la versión final en red:
+
 Teclado para movimiento/acción y ratón para apuntar.
 - Movimiento: AD (izquierda, derecha), barra espaciadora (saltar).
-- Tecla de acción: E (coger/soltar objetos).
 - Apuntado de arma: posición del ratón en la pantalla (raycast desde el personaje hasta el puntero, 360º).
 - Disparo: click izquierdo del ratón.
 
@@ -73,11 +85,12 @@ De esta forma se pueden tener en cuenta todas las interacciones y calcularlas co
 
 ## Escenarios / Niveles
 
-Se incluirán 2 escenarios temáticos de cada festivo, uno representativo de Halloween y otro de Navidad, 
-cada uno estará compuesto de un fondo y de diversas plataformas distribuidas por el nivel
+Se incluye un escenario temático y dinámico que representa las dos festividades.
+Este escenario va cambiando según el jugador que vaya ganando, siendo uno representativo de Halloween 
+y otro de Navidad. Cada uno estará compuesto de un fondo y de diversas plataformas distribuidas por el nivel
 para poder moverse libremente por él.
 
-Ambos escenarios estarán totalmente cerrados de manera que resulte imposible caer al vacío o salir del mapa.
+Ambos escenarios (incluidos en uno) estarán totalmente cerrados de manera que resulte imposible caer al vacío o salir del mapa.
 
 ![Halloween Level](/src/Resources/Art/Scenery/Halloween_boceto.jpg)
 ![Christmas Level](/src/Resources/Art/Scenery/Navidad_boceto.jpg)

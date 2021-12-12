@@ -76,7 +76,6 @@ export class Game extends Phaser.Scene {
     this.load.audio('Bomb_impact', 'Resources/Sounds/sounds/Bomb_impact.wav');
     this.load.audio('Fire_shotgun','Resources/Sounds/sounds/Fire_shotgun.wav');
     this.load.audio('Fire_gun','Resources/Sounds/sounds/Fire_gun.mp3');
-    this.load.audio('Halloween_lofi','Resources/Sounds/Music/halloween_lofi.wav');
 
   }
 
@@ -87,9 +86,6 @@ export class Game extends Phaser.Scene {
     this.shotgunSound = this.sound.add('Fire_shotgun');
     this.gunSound = this.sound.add('Fire_gun');
 
-    var backgroundMusic = this.sound.add('Halloween_lofi');
-    backgroundMusic.loop = true;
-    backgroundMusic.play();
     // Handling phaser3 events
     this.events.on("resume", this.unpause);
 
@@ -154,45 +150,45 @@ export class Game extends Phaser.Scene {
     this.explosions = this.physics.add.group({inmovable: true, allowGravity:false});
     this.weapons = this.physics.add.group({inmovable:true, allowGravity:false});
 
-    // Player 1 animations
+    // Edward animations
     this.anims.create({
-        key: 'left1',
-        frames: this.anims.generateFrameNumbers(spriteP1, { start: 0, end: 8 }),
+        key: 'edwardLeft',
+        frames: this.anims.generateFrameNumbers('edward', { start: 0, end: 8 }),
         frameRate: 15,
         repeat: -1
     });
 
     this.anims.create({
-        key: 'turn1',
-        frames: [ { key: spriteP1, frame: 10 } ],
+        key: 'edwardTurn',
+        frames: [ { key: 'edward', frame: 10 } ],
         frameRate: 20
     });
 
     this.anims.create({
-        key: 'right1',
-        frames: this.anims.generateFrameNumbers(spriteP1, { start: 11, end: 19 }), //fixed animation
+        key: 'edwardRight',
+        frames: this.anims.generateFrameNumbers('edward', { start: 11, end: 19 }), //fixed animation
         frameRate: 15,
         repeat: -1
     });
 
     
-    // Player 2 animations
+    // Maria animations
     this.anims.create({
-        key: 'left2',
-        frames: this.anims.generateFrameNumbers(spriteP2, { start: 0, end: 8  }),
+        key: 'mariaLeft',
+        frames: this.anims.generateFrameNumbers('maria', { start: 0, end: 8  }),
         frameRate: 15,
         repeat: -1
     });
 
     this.anims.create({
-        key: 'turn2',
-        frames: [ { key: spriteP2, frame: 10} ],
+        key: 'mariaTurn',
+        frames: [ { key: 'maria', frame: 10} ],
         frameRate: 20 
     });
 
     this.anims.create({
-        key: 'right2',
-        frames: this.anims.generateFrameNumbers(spriteP2, { start: 11, end: 19 }),
+        key: 'mariaRight',
+        frames: this.anims.generateFrameNumbers('maria', { start: 11, end: 19 }),
         frameRate: 15,
         repeat: -1
     });
@@ -344,7 +340,7 @@ function outOfTime() {
     else // if draw, player 1 wins because i want to 
     {
         this.scene.stop();
-        this.scene.start("gameover", { winnerteam: this.player1team });
+        this.scene.start("gameover", { winnerteam: "draw" });
     }
     
 }

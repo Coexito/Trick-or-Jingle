@@ -11,8 +11,8 @@ let bombCooldown2 = false;
 
 export class Player extends Phaser.GameObjects.Sprite
 {
-    constructor(scene, _speed, _lives, x, y, sprite, _idx) {
-        super(scene, x, y, sprite);
+    constructor(scene, _speed, _lives, x, y, _sprite, _idx) {
+        super(scene, x, y, _sprite);
 
         this.speed = _speed;
         this.lives = _lives;
@@ -23,6 +23,8 @@ export class Player extends Phaser.GameObjects.Sprite
 
         this.hasWeapon = false;
         this.weaponType;
+
+        this.sprite = _sprite;
 
         // Pointer sprite for bullets arrow marker
         this.arrow = scene.physics.add.staticSprite(1000,1000, 'weapons').setScale(0.4); // create out of frame because it has no weapon when created
@@ -52,17 +54,17 @@ export class Player extends Phaser.GameObjects.Sprite
         if (this.scene.a_key.isDown)
         {
             this.body.setVelocityX(-this.speed);
-            this.anims.play('left1', true);
+            this.anims.play(this.sprite+'Left', true);
         }
         else if (this.scene.d_key.isDown)
         {
             this.body.setVelocityX(this.speed);
-            this.anims.play('right1', true);
+            this.anims.play(this.sprite+'Right', true);
         }
         else
         {
             this.body.setVelocityX(0);
-            this.anims.play('turn1');
+            this.anims.play(this.sprite+'Turn');
         }
 
         if ((Phaser.Input.Keyboard.JustDown(this.scene.w_key) && this.body.touching.down))
@@ -76,17 +78,17 @@ export class Player extends Phaser.GameObjects.Sprite
         if (this.scene.cursors.left.isDown)
         {
             this.body.setVelocityX(-this.speed);
-            this.anims.play('left2', true);
+            this.anims.play(this.sprite+'Left', true);
         }
         else if (this.scene.cursors.right.isDown)
         {
             this.body.setVelocityX(this.speed);
-            this.anims.play('right2', true);
+            this.anims.play(this.sprite+'Right', true);
         }
         else
         {
             this.body.setVelocityX(0);
-            this.anims.play('turn2');
+            this.anims.play(this.sprite+'Turn');
         }
 
         // Jumping

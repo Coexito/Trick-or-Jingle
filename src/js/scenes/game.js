@@ -21,13 +21,13 @@ export class Game extends Phaser.Scene {
     this.load.image('gun', '../Resources/TestAssets/gun.png');
     this.load.image('shotgun', '../Resources/TestAssets/shotgun.png');
 
-    this.load.spritesheet('dude', 
+    this.load.spritesheet('maria', 
         '../Resources/Art/Sprites/N_MariaKarei/SPS_MariaKarei_RUN.png',
         { frameWidth: 182, frameHeight: 249 }
     );
-    this.load.spritesheet('bad', 
+    this.load.spritesheet('edward', 
         '../Resources/Art/Sprites/H_EdwardCullon/spritesheet_edward.png',
-        { frameWidth: 182, frameHeight: 249 }
+        { frameWidth: 182, frameHeight: 244 }
     );
     this.load.spritesheet('heart', 'Resources/TestAssets/heart.png', { frameWidth: 200, frameHeight: 53 });
 
@@ -65,8 +65,25 @@ export class Game extends Phaser.Scene {
 
   create() {
 
+    // create variable to store players sprites depending on what the first player choose on the previous menu
+    var spriteP1;
+    var spriteP2;
+
+    if (this.player1team == 'halloween') // player 1 is edward cullon and player 2 maria karei
+    {
+        spriteP1 = 'edward';
+        spriteP2 = 'maria';
+    } else
+    {
+        spriteP1 = 'maria';
+        spriteP2 = 'edward';
+    }
+
     console.log(this.player1team);
     console.log(this.player2team);
+
+    console.log(spriteP1);
+    console.log(spriteP2);
 
     // objects in scene in order from farther to nearest on screen
         // create platforms group
@@ -108,20 +125,20 @@ export class Game extends Phaser.Scene {
     // Player 1 animations
     this.anims.create({
         key: 'left1',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 8 }),
+        frames: this.anims.generateFrameNumbers(spriteP1, { start: 0, end: 8 }),
         frameRate: 15,
         repeat: -1
     });
 
     this.anims.create({
         key: 'turn1',
-        frames: [ { key: 'dude', frame: 10 } ],
+        frames: [ { key: spriteP1, frame: 10 } ],
         frameRate: 20
     });
 
     this.anims.create({
         key: 'right1',
-        frames: this.anims.generateFrameNumbers('dude', { start: 11, end: 19 }), //fixed animation
+        frames: this.anims.generateFrameNumbers(spriteP1, { start: 11, end: 19 }), //fixed animation
         frameRate: 15,
         repeat: -1
     });
@@ -130,30 +147,30 @@ export class Game extends Phaser.Scene {
     // Player 2 animations
     this.anims.create({
         key: 'left2',
-        frames: this.anims.generateFrameNumbers('bad', { start: 0, end: 10  }),
-        frameRate: 20,
+        frames: this.anims.generateFrameNumbers(spriteP2, { start: 0, end: 8  }),
+        frameRate: 15,
         repeat: -1
     });
 
     this.anims.create({
         key: 'turn2',
-        frames: [ { key: 'bad', frame: 11} ],
+        frames: [ { key: spriteP2, frame: 10} ],
         frameRate: 20 
     });
 
     this.anims.create({
         key: 'right2',
-        frames: this.anims.generateFrameNumbers('bad', { start: 12, end: 22 }),
-        frameRate: 20,
+        frames: this.anims.generateFrameNumbers(spriteP2, { start: 11, end: 19 }),
+        frameRate: 15,
         repeat: -1
     });
     
 
     // Initializes the players
-    player1 = this.physics.add.existing(new Player(this, 350, 3, 200, 100, "dude", 1)) //scene, speed, lives, x, y, sprite, index
-    player1.body.allowGravity = true;
-    player2 = this.physics.add.existing(new Player(this, 300, 3, 500, 100, "bad", 2))
-    player2.body.allowGravity = true;    
+    player1 = this.physics.add.existing(new Player(this, 350, 3, 200, 100, spriteP1, 1)) //scene, speed, lives, x, y, sprite, index
+    player2 = this.physics.add.existing(new Player(this, 300, 3, 500, 100, spriteP2, 2))   
+       
+    
 
     player1.setScale(0.4); // Increases the scale cause they're tiny uwu
     player2.setScale(0.4);

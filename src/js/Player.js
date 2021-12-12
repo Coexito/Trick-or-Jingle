@@ -52,17 +52,17 @@ export class Player extends Phaser.GameObjects.Sprite
         if (this.scene.a_key.isDown)
         {
             this.body.setVelocityX(-this.speed);
-            this.anims.play('left2', true);
+            this.anims.play('left1', true);
         }
         else if (this.scene.d_key.isDown)
         {
             this.body.setVelocityX(this.speed);
-            this.anims.play('right2', true);
+            this.anims.play('right1', true);
         }
         else
         {
             this.body.setVelocityX(0);
-            this.anims.play('turn2');
+            this.anims.play('turn1');
         }
 
         if ((Phaser.Input.Keyboard.JustDown(this.scene.w_key) && this.body.touching.down))
@@ -76,17 +76,17 @@ export class Player extends Phaser.GameObjects.Sprite
         if (this.scene.cursors.left.isDown)
         {
             this.body.setVelocityX(-this.speed);
-            this.anims.play('left1', true);
+            this.anims.play('left2', true);
         }
         else if (this.scene.cursors.right.isDown)
         {
             this.body.setVelocityX(this.speed);
-            this.anims.play('right1', true);
+            this.anims.play('right2', true);
         }
         else
         {
             this.body.setVelocityX(0);
-            this.anims.play('turn1');
+            this.anims.play('turn2');
         }
 
         // Jumping

@@ -20,15 +20,15 @@ export class Game extends Phaser.Scene {
 
   preload() {
     // weapons assets
-    this.load.image('bomb', '../Resources/TestAssets/bomb.png');
-    this.load.image('explosion', '../Resources/TestAssets/explosion.png');
-    this.load.image('gun', '../Resources/TestAssets/gun.png');
-    this.load.image('shotgun', '../Resources/TestAssets/shotgun.png');
+    this.load.image('bomb', '../Resources/Art/Weapons/bomb.png');
+    this.load.image('explosion', '../Resources/Art/Weapons/explosion.png');
+    this.load.image('gun', '../Resources/Art/Weapons/gun.png');
+    this.load.image('shotgun', '../Resources/Art/Weapons/shotgun.png');
     this.load.spritesheet('weapons', 
-        '../Resources/TestAssets/weapons.png',
+        '../Resources/Art/Weapons/weapons.png',
         { frameWidth: 600, frameHeight: 600 }
     );
-    this.load.image('bullet', '../Resources/TestAssets/bullet.png');
+    this.load.image('bullet', '../Resources/Art/Weapons/bullet.png');
     // pause button
     this.load.image('pause_button', '../Resources/Art/UI/BT_pause.png');
 
@@ -43,7 +43,7 @@ export class Game extends Phaser.Scene {
     );
 
     // lives
-    this.load.spritesheet('heart', 'Resources/TestAssets/heart.png', { frameWidth: 200, frameHeight: 53 });
+    this.load.spritesheet('heart', 'Resources/Art/Weapons/heart.png', { frameWidth: 200, frameHeight: 53 });
 
     // stage assets
         // main walls
@@ -185,7 +185,7 @@ export class Game extends Phaser.Scene {
     var weapon1 = this.physics.add.existing(new Weapon(this, 1)); // scene, idx
     var weapon2 = this.physics.add.existing(new Weapon(this, 2)); // scene, idx
 
-    var updateWeaponSeconds = 5;
+    var updateWeaponSeconds = 20;
 
     setTimeout(function updateWeapon() { // updates the weapons every x seconds
             

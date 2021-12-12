@@ -293,6 +293,9 @@ export class Player extends Phaser.GameObjects.Sprite
         this.lives--;
         this.hearts.setFrame(this.lives); // change the frame of the spriteSheet to match the player lives (frame 3 has 3 hearts etc.)
 
+        // the situation between players lives has changed, so we got to update the stage
+        this.scene.changeStage();
+
         if(this.lives > 0) // If has enough lives to survive, takes damage
         {
             this.canBeDamaged = false;
@@ -308,7 +311,11 @@ export class Player extends Phaser.GameObjects.Sprite
             this.destroy();         // Destroys the player itself
             return false;
         }
-        
+    }
+
+    getLives()
+    {
+        return this.lives;
     }
 
     makeVulnerable()

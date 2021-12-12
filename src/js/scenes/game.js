@@ -16,11 +16,18 @@ export class Game extends Phaser.Scene {
   }
 
   preload() {
+    // weapons assets
     this.load.image('bomb', '../Resources/TestAssets/bomb.png');
     this.load.image('explosion', '../Resources/TestAssets/explosion.png');
     this.load.image('gun', '../Resources/TestAssets/gun.png');
     this.load.image('shotgun', '../Resources/TestAssets/shotgun.png');
+    this.load.spritesheet('weapons', 
+        '../Resources/TestAssets/weapons.png',
+        { frameWidth: 600, frameHeight: 600 }
+    );
+    this.load.image('bullet', '../Resources/TestAssets/bullet.png');
 
+    // players sprites
     this.load.spritesheet('maria', 
         '../Resources/Art/Sprites/N_MariaKarei/SPS_MariaKarei_RUN.png',
         { frameWidth: 182, frameHeight: 249 }
@@ -29,30 +36,21 @@ export class Game extends Phaser.Scene {
         '../Resources/Art/Sprites/H_EdwardCullon/spritesheet_edward.png',
         { frameWidth: 182, frameHeight: 244 }
     );
-    this.load.spritesheet('heart', 'Resources/TestAssets/heart.png', { frameWidth: 200, frameHeight: 53 });
 
-    this.load.spritesheet('weapons', 
-        '../Resources/TestAssets/weapons.png',
-        { frameWidth: 600, frameHeight: 600 }
-    );
-    this.load.image('bullet', '../Resources/TestAssets/bullet.png');
-    this.load.image('sprite', '../Resources/TestAssets/sprite.png');
+    // lives
+    this.load.spritesheet('heart', 'Resources/TestAssets/heart.png', { frameWidth: 200, frameHeight: 53 });
 
     // stage assets
         // main walls
-    this.load.image('rightWall', '../Resources/Art/Scenery/rightWall.png');
-    this.load.image('leftWall', '../Resources/Art/Scenery/leftWall.png');
-    this.load.image('ground', '../Resources/Art/Scenery/ground.png');
-    this.load.image('ceiling', '../Resources/Art/Scenery/ceiling.png');
-    this.load.image('central', '../Resources/Art/Scenery/central.png')
-    this.load.image('grass', '../Resources/Art/Scenery/grass.png');
-        // backgrounds
-    this.load.image('bck_mix', '../Resources/Art/Scenery/Backgrounds/bck_mix.png');
-    this.load.image('bck_mix', '../Resources/Art/Scenery/Backgrounds/bck_mix.png');
-    this.load.image('bck_mix', '../Resources/Art/Scenery/Backgrounds/bck_mix.png');
-        // platforms image
-    this.load.spritesheet('platforms_spritesheet', 
-        '../Resources/Art/Scenery/Platforms/platforms_spritesheet.png',
+    this.load.image('rightWall', '../Resources/Art/Scenery/Platforms/BasicWalls/rightWall.png');
+    this.load.image('leftWall', '../Resources/Art/Scenery/Platforms/BasicWalls/leftWall.png');
+    this.load.image('ground', '../Resources/Art/Scenery/Platforms/BasicWalls/ground.png');
+    this.load.image('ceiling', '../Resources/Art/Scenery/Platforms/BasicWalls/ceiling.png');
+    this.load.image('central', '../Resources/Art/Scenery/Platforms/BasicWalls/central.png')
+    this.load.image('grass', '../Resources/Art/Scenery/Platforms/BasicWalls/grass.png');
+        // backgrounds & platforms spritesheet
+    this.load.spritesheet('stage_spritesheet', 
+        '../Resources/Art/Scenery/stage_spritesheet.png',
         { frameWidth: 1280, frameHeight: 680 }
     );
         // basic platforms
@@ -73,7 +71,7 @@ export class Game extends Phaser.Scene {
     {
         spriteP1 = 'edward';
         spriteP2 = 'maria';
-    } else
+    } else // player 2 is edward cullon and player 1 maria karei
     {
         spriteP1 = 'maria';
         spriteP2 = 'edward';
@@ -81,9 +79,6 @@ export class Game extends Phaser.Scene {
 
     console.log(this.player1team);
     console.log(this.player2team);
-
-    console.log(spriteP1);
-    console.log(spriteP2);
 
     // objects in scene in order from farther to nearest on screen
         // create platforms group
@@ -99,21 +94,18 @@ export class Game extends Phaser.Scene {
     this.platforms.create(312, 166, 'base_smallcandy_platform');
     this.platforms.create(10, 307, 'base_bigcandy_platform');
     this.platforms.create(1260, 307, 'base_bigcandy_platform');
-        // background image
-    this.add.image(0, 0, 'bck_mix').setOrigin(0,0); // by default elements are positioned based on their center. Change so it matches the origin of the screen
-    
+        // stage spritesheet
+    this.stage = this.add.image(0,0,'stage_spritesheet').setOrigin(0,0);
+    this.stage.setFrame(1);
         // basic walls
     this.platforms.create(633, 11, 'ceiling');
     this.platforms.create(1262, 301, 'rightWall');
     this.platforms.create(15, 301, 'leftWall');
     this.platforms.create(650, 656, 'ground');
     this.platforms.create(640, 600, 'central');
-
-    // platforms image
-    this.add.image(0,0,'platforms_spritesheet').setOrigin(0,0);
-    
+        // grass image
     var grass = this.add.image(0,0, 'grass').setOrigin(0,0);
-    grass.depth = 100;    
+    grass.depth = 100;
 
     // Creates a group for the players, bullets & weapons
     this.players = this.add.group();
@@ -250,6 +242,26 @@ export class Game extends Phaser.Scene {
     player2.update();
   }
 
+  changeStage()
+  {
+        if (player1.getLives() == player2.getLives()) // if the players have the same lives
+            this.stage.setFrame(1); // mixed stage
+        else if (player1.getLives() > player2.getLives()) // if player1 has more lives
+        {
+            if (this.player1team == 'halloween'){ // if player1 is on the halloween team
+                this.stage.setFrame(0); // halloween stage
+            }
+            else
+                this.stage.setFrame(2); // christams stage
+        } else if (player1.getLives() < player2.getLives()) // if player2 has more lives
+        {
+            if (this.player2team == 'halloween') // if player2 is on the halloween team
+                this.stage.setFrame(0); // halloween stage
+            else
+                this.stage.setFrame(2); // christams stage
+        }
+  }
+
 }
 
 function outOfTime() // i was playing with this for the 5 minute timeout
@@ -328,8 +340,9 @@ function pickUpWeapon(player, weaponBody)
 {
     // move out of the canvas so the player can't interact with it anymore but
     // the object still exits for the next call
-    weaponBody.x = 1000;
-    weaponBody.y = 1000
+    weaponBody.x = 3000;
+    weaponBody.y = 3000;
+    weaponBody.setVelocity(0, 0);
     player.pickWeapon(weaponBody.texture.key);
 }
 

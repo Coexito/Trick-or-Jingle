@@ -16,8 +16,6 @@ export class Game extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('sky', '../Resources/TestAssets/sky.png');
-    this.load.image('star', '../Resources/TestAssets/star.png');
     this.load.image('bomb', '../Resources/TestAssets/bomb.png');
     this.load.image('explosion', '../Resources/TestAssets/explosion.png');
     this.load.image('gun', '../Resources/TestAssets/gun.png');
@@ -41,10 +39,18 @@ export class Game extends Phaser.Scene {
     this.load.image('sprite', '../Resources/TestAssets/sprite.png');
 
     // stage assets
+        // main walls
     this.load.image('rightWall', '../Resources/Art/Scenery/rightWall.png');
     this.load.image('leftWall', '../Resources/Art/Scenery/leftWall.png');
     this.load.image('ground', '../Resources/Art/Scenery/ground.png');
     this.load.image('ceiling', '../Resources/Art/Scenery/ceiling.png');
+    this.load.image('central', '../Resources/Art/Scenery/central.png')
+    this.load.image('grass', '../Resources/Art/Scenery/grass.png');
+        // backgrounds
+    this.load.image('bck_mix', '../Resources/Art/Scenery/Backgrounds/bck_mix.png');
+    this.load.image('bck_mix', '../Resources/Art/Scenery/Backgrounds/bck_mix.png');
+    this.load.image('bck_mix', '../Resources/Art/Scenery/Backgrounds/bck_mix.png');
+        // platforms
   }
 
   create() {
@@ -53,14 +59,20 @@ export class Game extends Phaser.Scene {
     console.log(this.player2team);
 
     // objects in order from farther to nearest on screen
-    this.add.image(0, 0, 'sky').setOrigin(0,0); // by default elements are positioned based on their center. Change so it matches the origin of the screen
-    
+    this.add.image(0, 0, 'bck_mix').setOrigin(0,0); // by default elements are positioned based on their center. Change so it matches the origin of the screen
+
     // create platforms
     this.platforms = this.physics.add.staticGroup();
+        // basic walls
     this.platforms.create(633, 11, 'ceiling');
     this.platforms.create(1262, 301, 'rightWall');
     this.platforms.create(15, 301, 'leftWall');
-    this.platforms.create(650, 646, 'ground');
+    this.platforms.create(650, 656, 'ground');
+    this.platforms.create(640, 600, 'central');
+
+    var grass = this.add.image(0,0, 'grass').setOrigin(0,0);
+    grass.depth = 100;
+        
 
     // Creates a group for the players, bullets & weapons
     this.players = this.add.group();

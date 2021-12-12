@@ -305,13 +305,11 @@ export class Player extends Phaser.GameObjects.Sprite
         if(this.lives > 0) // If has enough lives to survive, takes damage
         {
             this.canBeDamaged = false;
-            console.log("Damaged player" + this.idx + ", " + this.lives + " lives left");
             return true;
         }
         else // If not, dies :-(
         {
             this.alive = false;
-            console.log("Player" + this.idx + " dies");
 
             this.arrow.destroy();   // Destroys the pointer
             this.destroy();         // Destroys the player itself
@@ -327,7 +325,6 @@ export class Player extends Phaser.GameObjects.Sprite
     makeVulnerable()
     {
         this.canBeDamaged = true;
-        console.log("Player" + this.idx + " vulnerable again");
     }
 
     pickWeapon(texture)

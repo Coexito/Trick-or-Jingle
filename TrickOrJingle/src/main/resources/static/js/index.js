@@ -9,6 +9,10 @@ const config = {
   width: 1280,
   height: 680,
   scene: [StartMenu, MainMenu, Game, Gameover, Pause],
+  parent: "game",
+  dom: {
+    createContainer: true
+  },
   physics: {
     default: 'arcade',
     arcade: {

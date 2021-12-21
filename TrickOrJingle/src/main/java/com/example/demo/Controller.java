@@ -13,19 +13,28 @@ import org.springframework.http.HttpStatus;
 public class Controller {
     
     private List<User> users = new ArrayList<>(); // list of users
-
-    @GetMapping("/getUsers")
+    
+    @GetMapping("/users")
     public List<User> getUsers(){
         return users;
     }
     
-    @PostMapping("/postUsers")
+    @PostMapping("/users")
     public ResponseEntity<Boolean> addUser(@RequestBody User newUser) 
     {
-        if(!users.contains(newUser)) {
             users.add(newUser);
             return new ResponseEntity<>(true, HttpStatus.CREATED);
-        } else
-            return new ResponseEntity<>(false, HttpStatus.OK);
     }
+    
+    /*@PutMapping("/users")
+    public void updateUserScore(@RequestBody String user) 
+    {
+    	for (User u : users) {
+            if (u.getNick().equals(user)) {
+            	int lastScore = u.getScore();
+            	u.setScore(lastScore++);
+            }
+        }
+    }*/ // El put no se hace así, ni idea de como se hace la vd
+    
 }

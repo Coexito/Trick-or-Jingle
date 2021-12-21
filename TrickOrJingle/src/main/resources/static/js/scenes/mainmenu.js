@@ -6,9 +6,8 @@ export class MainMenu extends Phaser.Scene {
     this.p2team = "None";
   }
   
-   init(data) {
-    this.username = data.username;    
-    
+  init(data) {
+    this.username = data.username;
     console.log(this.username);
   }
 
@@ -54,7 +53,7 @@ export class MainMenu extends Phaser.Scene {
     });
 
     this.startButton = this.add.sprite(650, 600, 'button');
-
+    
     this.startButton.setInteractive().on('pointerdown', () => {
       if(this.p1team != "None" || this.p2team != "None")
         this.scene.stop();

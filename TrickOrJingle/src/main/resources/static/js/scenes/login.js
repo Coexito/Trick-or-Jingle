@@ -34,28 +34,28 @@ export class Login extends Phaser.Scene {
 			this.username = name.value;
 			
 			// Connects to the server
-			this.connectUser();
-		}
-    });
+				//$(document).ready(function() {
+			      $.ajax({
+			        type: "POST",
+			        headers: {
+						'Accept': 'application/json',
+						'Content-type' : 'application/json'
+				
+					},
+			        url: "http://localhost:8080/users",
+			        data: JSON.stringify("" + this.username),
+			        dataType: "json" })
+			//});
+			this.scene.stop();
+        	this.scene.start('mainmenu', { username: this.username});
+    
+    }});
     
   }
   
-  connectUser(){
-    $(document).ready(function() {
-      $.ajax({
-        type: "POST",
-        url: "http://localhost:8080/postUsers",
-        data: this.username,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        success: function(data) {
-          console.log(data);
-        }
-      });
-    });
-  }
+ 
+    
+  
   
   
   

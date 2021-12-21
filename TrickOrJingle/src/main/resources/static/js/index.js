@@ -1,4 +1,5 @@
 import { StartMenu } from './scenes/startmenu.js';
+import { Login } from './scenes/login.js';
 import { MainMenu } from './scenes/mainmenu.js';
 import { Game } from './scenes/game.js';
 import { Gameover } from './scenes/gameover.js';
@@ -8,7 +9,7 @@ const config = {
   type: Phaser.AUTO,
   width: 1280,
   height: 680,
-  scene: [StartMenu, MainMenu, Game, Gameover, Pause],
+  scene: [StartMenu, Login, MainMenu, Game, Gameover, Pause],
   parent: "game",
   dom: {
     createContainer: true

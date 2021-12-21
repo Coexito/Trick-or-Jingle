@@ -5,6 +5,12 @@ export class MainMenu extends Phaser.Scene {
     this.p1team = "None";
     this.p2team = "None";
   }
+  
+   init(data) {
+    this.username = data.username;    
+    
+    console.log(this.username);
+  }
 
   preload() {
     this.load.image('welcome', '../../Resources/Art/UI/SC_Choose/BT_select_small.png');
@@ -52,7 +58,7 @@ export class MainMenu extends Phaser.Scene {
     this.startButton.setInteractive().on('pointerdown', () => {
       if(this.p1team != "None" || this.p2team != "None")
         this.scene.stop();
-        this.scene.start('game', { p1team: this.p1team, p2team: this.p2team });
+        this.scene.start('game', { p1team: this.p1team, p2team: this.p2team, username: this.username });
     });
     
     //this.restartButton.setScale(0.1);

@@ -1,3 +1,7 @@
+$(document).ready(function(){
+  console.log('El DOM está cargado (login)')
+});
+
 export class Login extends Phaser.Scene {
   constructor() {
     super({ key: 'login' });
@@ -30,24 +34,27 @@ export class Login extends Phaser.Scene {
 			this.username = name.value;
 			
 			// Connects to the server
-			/*$(document).ready(function() {
-		      $.ajax({
-		        type: "POST",
-		        url: "http://localhost:8080/users",
-		        data: 'json',
-		        headers: {
-		          'Accept': 'application/json',
-		          'Content-Type': 'application/json'
-		        },
-		        success: function(data) {
-		          console.log(data);
-		        }
-		      });
-		    });
-		    */
+			this.connectUser();
 		}
     });
     
+  }
+  
+  connectUser(){
+    $(document).ready(function() {
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/postUsers",
+        data: this.username,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        success: function(data) {
+          console.log(data);
+        }
+      });
+    });
   }
   
   

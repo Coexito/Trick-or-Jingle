@@ -8,7 +8,6 @@ export class MainMenu extends Phaser.Scene {
   
   init(data) {
     this.username = data.username;
-    console.log(this.username);
   }
 
   preload() {
@@ -20,8 +19,11 @@ export class MainMenu extends Phaser.Scene {
     this.load.image('h_button_big', '../../Resources/Art/UI/SC_Choose/BT_halloween_big.png');
     this.load.image('c_button_big', '../../Resources/Art/UI/SC_Choose/BT_christmas_big.png');
 
-    this.load.image('button', '../../Resources/Art/UI/SC_Choose/BT_select_small.png');
+    this.load.image('button_not_ready', '../../Resources/Art/UI/SC_Choose/BT_select_small.png');
     this.load.image('button_ready', '../../Resources/Art/UI/SC_Choose/BT_select_big.png');
+    
+    this.load.image('button_delete_user', '../../Resources/Art/UI/SC_Username/BT_deleteUser_small.png');
+    
     
   }
   
@@ -52,7 +54,7 @@ export class MainMenu extends Phaser.Scene {
       this.startButton.setTexture("button_ready");
     });
 
-    this.startButton = this.add.sprite(650, 600, 'button');
+    this.startButton = this.add.sprite(650, 600, 'button_not_ready');
     
     this.startButton.setInteractive().on('pointerdown', () => {
       if(this.p1team != "None" || this.p2team != "None")
@@ -60,6 +62,29 @@ export class MainMenu extends Phaser.Scene {
         this.scene.start('game', { p1team: this.p1team, p2team: this.p2team, username: this.username });
     });
     
-    //this.restartButton.setScale(0.1);
+    
+    this.deleteUserButton = this.add.sprite(950, 600, 'button_delete_user');
+    this.deleteUserButton.setScale(0.5);
+    this.deleteUserButton.setInteractive().on('pointerdown', () => {
+	
+	let username = this.username;
+		
+	$.ajax({
+        method: "DELETE",
+        url: "localhost:8080/users/"+username,
+        success : function () {
+			console.log("User removed");
+		},
+		error : function () {
+			console.log("Failed to delete");
+			console.log("The URL was:\nlocalhost:8080/users/"+username)
+		}
+     })	
+     	        
+		this.scene.stop();
+    	this.scene.start('login');
+    });
+    
+    
   }
 }

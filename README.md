@@ -1,14 +1,14 @@
 # Trick or Jingle
 ***Halloween VS Navidad!***
 
-![Trick or Jingle](/src/Resources/Art/Logos/Trick_or_Jingle_logo.png)
+![Trick or Jingle](/Documents/Readme-resources/Logos/Trick_or_Jingle_logo.png)
 
 ## Identidad del juego
 
 *Trick or Jingle* se trata de un juego gratuito estilo plataformas y acción
 que dará fin a la rivalidad Halloween contra Navidad en una ***ÉPICA*** batalla.
 
-![Trick or Jingle isotype](/src/Resources/Art/Logos/Trick_or_Jingle_isotipo.png)
+![Trick or Jingle isotype](/Documents/Readme-resources/Logos/Trick_or_Jingle_isotipo.png)
 
 ## Lanzamiento
 **Plataformas**: Navegador ([Chrome](https://www.google.es/chrome/)).
@@ -74,14 +74,14 @@ De esta forma se pueden tener en cuenta todas las interacciones y calcularlas co
 
 ## Referencias artísticas
 
-![Brawlhalla Cover](/src/Resources/Artistic_References/brawlhalla_cover.jpg)
-![Brawlhalla Fight](/src/Resources/Artistic_References/brawlhalla_fight.jpg)
-![Brawlhalla Character](/src/Resources/Artistic_References/brawlhalla_oc.png)
-![Spelunky Cover](/src/Resources/Artistic_References/spelunky_cover.jpg)
-![Spelunky Level](/src/Resources/Artistic_References/spelunky_level.png)
-![Spelunky Character](/src/Resources/Artistic_References/spelunky_oc.png)
-![Super Animal Royale](/src/Resources/Artistic_References/super_animal_royale.jpg)
-![Hell Yeah](/src/Resources/Artistic_References/hell_yeah.jpg)
+![Brawlhalla Cover](/Documents/Readme-resources/brawlhalla_cover.jpg)
+![Brawlhalla Fight](/Documents/Readme-resources/brawlhalla_fight.jpg)
+![Brawlhalla Character](/Documents/Readme-resources/brawlhalla_oc.png)
+![Spelunky Cover](/Documents/Readme-resources/spelunky_cover.jpg)
+![Spelunky Level](/Documents/Readme-resources/spelunky_level.png)
+![Spelunky Character](/Documents/Readme-resources/spelunky_oc.png)
+![Super Animal Royale](/Documents/Readme-resources/super_animal_royale.jpg)
+![Hell Yeah](/Documents/Readme-resources/hell_yeah.jpg)
 
 ## Escenarios / Niveles
 
@@ -92,8 +92,8 @@ para poder moverse libremente por él.
 
 Ambos escenarios (incluidos en uno) estarán totalmente cerrados de manera que resulte imposible caer al vacío o salir del mapa.
 
-![Halloween Level](/src/Resources/Art/Scenery/Halloween_boceto.jpg)
-![Christmas Level](/src/Resources/Art/Scenery/Navidad_boceto.jpg)
+![Halloween Level](/Documents/Readme-resources/Scenery/Sketches/Halloween_boceto.jpg)
+![Christmas Level](/Documents/Readme-resources/Scenery/Sketches/Navidad_boceto.jpg)
 
 ## Personajes
 
@@ -107,18 +107,18 @@ Por esto, para la creación de los personajes, se juega mucho con la posible vir
 utilizando el humor conocido en Internet como memes.
 
 - **Personajes navideños**:
-    - **María Karei**: Mariah Carey es una cantante conocida mundialmente por su gran éxito navideño “*All I Want for Christmas is You*”. Desde que la canción salió en el año 1994 se puede observar cómo sus ventas crecen de manera exponencial al acercarse Navidad desde finales de septiembre y decrecen de manera drástica pasada la Navidad. Este es un meme muy conocido en Internet y por ello se ha decidido incluirla en el juego.![Maria Karei](/src/Resources/Art/Concept/N_Maria_Karei.png)
+    - **María Karei**: Mariah Carey es una cantante conocida mundialmente por su gran éxito navideño “*All I Want for Christmas is You*”. Desde que la canción salió en el año 1994 se puede observar cómo sus ventas crecen de manera exponencial al acercarse Navidad desde finales de septiembre y decrecen de manera drástica pasada la Navidad. Este es un meme muy conocido en Internet y por ello se ha decidido incluirla en el juego.![Maria Karei](/Documents/Readme-resources/Concept/N_Maria_Karei.png)
 
-    - **Papá Noel**: Papá Noel es una de las figuras más conocidas de la Navidad, pero para encajar más con el humor de la temática del juego se ha decidido que este fuera un poco inusual, representando a un Papá Noel con problemas de alcohol.![Papa Noel](/src/Resources/Art/Concept/N_Papa_Noel.png)
+    - **Papá Noel**: /Documents/Readme-resources/Scenery/Sketches/Papá Noel es una de las figuras más conocidas de la Navidad, pero para encajar más con el humor de la temática del juego se ha decidido que este fuera un poco inusual, representando a un Papá Noel con problemas de alcohol.![Papa Noel](/Documents/Readme-resources/Concept/N_Papa_Noel.png)
 
-    - **Pavo**: El pavo es una de las comidas navideñas más famosas. En el videojuego se ha querido representar con guantes de boxeo para mostrar que está listo para la pelea. Hace un par de años se viralizó en España un tweet sobre una fuente de pavo de Navidad destrozada tras caerse al suelo y el comentario “nos acabamos de quedar sin cena”. Por ello, al matar a este personaje sonaría “nos acabamos de quedar sin cena”.![Pavo](/src/Resources/Art/Concept/N_Pavo.png)
+    - **Pavo**: El pavo es una de las comidas navideñas más famosas. En el videojuego se ha querido representar con guantes de boxeo para mostrar que está listo para la pelea. Hace un par de años se viralizó en España un tweet sobre una fuente de pavo de Navidad destrozada tras caerse al suelo y el comentario “nos acabamos de quedar sin cena”. Por ello, al matar a este personaje sonaría “nos acabamos de quedar sin cena”.![Pavo](/Documents/Readme-resources/Concept/N_Pavo.png)
     
 - **Personajes de Halloween**
-    -  **Edward Cullon**: Edward Cullen es el protagonista principal de las sagas adolescentes sobre vampiros “Crepúsculo”. Hace un tiempo se viralizó una imagen del actor en chándal por lo que se ha decidido incluir al personaje con esta estética en el juego.![Edward Cullon](/src/Resources/Art/Concept/H_Edward_Cullon.png)
+    -  **Edward Cullon**: Edward Cullen es el protagonista principal de las sagas adolescentes sobre vampiros “Crepúsculo”. Hace un tiempo se viralizó una imagen del actor en chándal por lo que se ha decidido incluir al personaje con esta estética en el juego.![Edward Cullon](/Documents/Readme-resources/Concept/H_Edward_Cullon.png)
 
-    -  **Vanessa**: En España se viralizó un audio de Whatsapp que se difundió por todas las plataformas en el que una tal “Vanessa” intentaba felicitar Halloween a un grupo de WhatsApp sin suerte para pronunciar el nombre de la festividad. Desde entonces las referencias a este audio y su mítico “Feliz Jabulín grupo soy Vanessa” son tradición y por ello lo hemos incluido en el videojuego. Como Vanessa es solo una voz, se ha decidido representarla como una persona calabaza, ya que estas también son muy conocidas por Halloween.![Vanessa](/src/Resources/Art/Concept/H_Vanessa.png)
+    -  **Vanessa**: En España se viralizó un audio de Whatsapp que se difundió por todas las plataformas en el que una tal “Vanessa” intentaba felicitar Halloween a un grupo de WhatsApp sin suerte para pronunciar el nombre de la festividad. Desde entonces las referencias a este audio y su mítico “Feliz Jabulín grupo soy Vanessa” son tradición y por ello lo hemos incluido en el videojuego. Como Vanessa es solo una voz, se ha decidido representarla como una persona calabaza, ya que estas también son muy conocidas por Halloween.![Vanessa](/Documents/Readme-resources/Concept/H_Vanessa.png)
 
-    -  **Fantasma**: Uno de los disfraces más populares en Halloween es el de usar una manta con dos agujeros para representar un fantasma.![Fantasma](/src/Resources/Art/Concept/H_Fantasma.png)
+    -  **Fantasma**: Uno de los disfraces más populares en Halloween es el de usar una manta con dos agujeros para representar un fantasma.![Fantasma](/Documents/Readme-resources/Concept/H_Fantasma.png)
 
 ## Música / Sonido
 
@@ -134,7 +134,7 @@ Se utilizarán bibliotecas de sonido en su mayor parte. Habrá música dentro de
 # Autoría
 
 Proyecto creado enteramente por ***Gamer Ferret***.
-![Gamer Ferret](/src/Resources/Gamer_Ferret/Gamer_Ferret_logo_letras.png)
+![Gamer Ferret](/Documents/Readme-resources/Logos/Gamer_Ferret_logo_letras.png)
 
 Integrantes del equipo:
 

@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.net.URL;
 
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
@@ -17,6 +17,7 @@ public class UserController {
     
     private Map<String, User> users = new HashMap<String, User>(); // Map of users
     String usersFileURL = "src/main/resources/static/db/users.txt"; // Users file url
+    String tempUsersFileURL = "src/main/resources/static/db/tempUsers.txt"; // File used to delete one user
     
     public UserController()
     {
@@ -43,17 +44,28 @@ public class UserController {
     	    }
     }
     
-    
     @GetMapping("/users")
     public Map<String, User> getUsers(){
     	
         return users;
     }
     
+    
     @GetMapping("/users/{nickname}")
-    public User getUser(@PathVariable("nickname") String nick) {
-    	User user = users.get(nick);    	
-    	return user;
+    public User getUser(@PathVariable("nickname") @RequestBody String nick) {
+
+    	if(users.containsKey(nick))	// User is found
+    	{
+    		User user = users.get(nick);   
+            return user;    		
+    	}
+    	else	// User is not found
+    	{
+    		throw new ResponseStatusException(
+    				  HttpStatus.NOT_FOUND, "entity not found"
+    		);
+    	}
+    	
     }
     
     @PostMapping("/users")
@@ -96,12 +108,43 @@ public class UserController {
     }
     
    @DeleteMapping("/users/{nick}")
-    public void deleteUser(@PathVariable("nick") String nick) {
-    	
-	   System.out.println("Entra en delete");
+    public void deleteUser(@PathVariable("nick") String nick) throws IOException {
+	   
+	   /*
+	    * This method deletes the user in the .txt file by creating a
+	    * new file to write the users that are NOT deleted,
+	    * then deletes the old users file and uses the new
+	   */
+	   
 	   if(users.containsKey(nick))
 	   {
-		   System.out.println("Entra en if");
+		   User deleteUser = users.get(nick); // The user to delete
+		   
+		   File inputFile = new File(usersFileURL);
+		   File tempFile = new File(tempUsersFileURL);
+
+		   BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+		   BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+		   String lineToRemove = deleteUser.getNick() + ";" + deleteUser.getPassword() + ";" + deleteUser.getScore();
+		   String currentLine;
+
+		   while((currentLine = reader.readLine()) != null) {
+		       // trim newline when comparing with lineToRemove
+		       String trimmedLine = currentLine.trim();
+		       
+		       if(trimmedLine.equals(lineToRemove)) 
+		    	   continue;
+		       
+		       writer.write(currentLine + System.getProperty("line.separator"));
+		   }
+		   writer.close(); 
+		   reader.close();
+		   
+		   inputFile.delete();
+		   boolean successful = tempFile.renameTo(inputFile);
+		   
+		   
 		   users.remove(nick);
 	   }
     }

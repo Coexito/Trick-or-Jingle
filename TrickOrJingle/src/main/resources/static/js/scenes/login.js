@@ -32,30 +32,23 @@ export class Login extends Phaser.Scene {
 	    this.startButton = this.add.sprite(650, 600, 'button');	
 	    this.startButton.setInteractive().on('pointerdown', () => {
 			if(name.value != "" && password.value != "")
-			{
-				this.username = name.value;
-				this.password = password.value;
-						
-				// Checks if the user exists
-				let username = this.username;
-				let password = this.password;
-				console.log("Preparing to login");
-				
+			{			
+				// Checks if the user exists				
 				$.ajax({
 			        method: "GET",
-			        url: "http://localhost:8080/users/"+username,
+			        url: "http://localhost:8080/users/"+name.value,
 			        success : function () {
-						console.log("User exists. Logging in");
-						this.scene.stop();
-	        			this.scene.start('mainmenu', { username: username});
+						console.log("User " + name.value +" exists. Logging in");
 					},
 					error : function () {
 						console.log("User does not exist.\nProcceeding to create it");
-						createUser(username, password);
-						this.scene.stop();
-	        			this.scene.start('mainmenu', { username: this.username});
+						createUser(name.value, password.value);
 					}
-		     	})	
+		     	})
+		     	
+		     	// Starts the next scene
+		     	this.scene.stop();
+	        	this.scene.start('mainmenu', { username: name.value});	
 	    	}
 	    });
     

@@ -21,45 +21,60 @@ export class Login extends Phaser.Scene {
     
   }
   
-  create() {
-    this.add.image(640, 340, 'background_login');
-    
-    // Creates variable for managing the textview
-    this.userInput = this.add.dom(640, 360).createFromCache("form");
-	let name = this.userInput.getChildByName("name");
-	let password = this.userInput.getChildByName("password");
-    
-    this.startButton = this.add.sprite(650, 600, 'button');	
-    this.startButton.setInteractive().on('pointerdown', () => {
-		if(name.value != "" && password.value != "")
-		{
-			this.username = name.value;
-			this.password = password.value;
+	create() {
+	    this.add.image(640, 340, 'background_login');
+	    
+	    // Creates variable for managing the textview
+	    this.userInput = this.add.dom(640, 360).createFromCache("form");
+		let name = this.userInput.getChildByName("name");
+		let password = this.userInput.getChildByName("password");
+	    
+	    this.startButton = this.add.sprite(650, 600, 'button');	
+	    this.startButton.setInteractive().on('pointerdown', () => {
+			if(name.value != "" && password.value != "")
+			{
+				this.username = name.value;
+				this.password = password.value;
 						
-			// Connects to the server
-				//$(document).ready(function() {
-			      $.ajax({
-			        type: "POST",
-			        headers: {
-						'Accept': 'application/json',
-						'Content-type' : 'application/json'
+				// Checks if the user exists
+				let username = this.username;
+				let password = this.password;
+				console.log("Preparing to login");
 				
+				$.ajax({
+			        method: "GET",
+			        url: "http://localhost:8080/users/"+username,
+			        success : function () {
+						console.log("User exists. Logging in");
+						this.scene.stop();
+	        			this.scene.start('mainmenu', { username: username});
 					},
-			        url: "http://localhost:8080/users",
-			        data: JSON.stringify( { nick: ""+this.username, password: ""+this.password } ),
-			        dataType: "json" })
-			//});
-			this.scene.stop();
-        	this.scene.start('mainmenu', { username: this.username});
+					error : function () {
+						console.log("User does not exist.\nProcceeding to create it");
+						createUser(username, password);
+						this.scene.stop();
+	        			this.scene.start('mainmenu', { username: this.username});
+					}
+		     	})	
+	    	}
+	    });
     
-    }});
-    
-  }
+	}
   
- 
-    
-  
-  
-  
-  
+}
+
+
+function createUser(user, pass)
+{
+	$.ajax({
+		type: "POST",
+		headers: {
+			'Accept': 'application/json',
+			'Content-type' : 'application/json'
+						
+		},
+		url: "http://localhost:8080/users",
+		data: JSON.stringify( { nick: ""+user, password: ""+pass } ),
+		dataType: "json" 
+	})
 }

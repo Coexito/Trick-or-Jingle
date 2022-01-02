@@ -71,7 +71,7 @@ export class MainMenu extends Phaser.Scene {
 		
 		$.ajax({
 	        method: "DELETE",
-	        url: "localhost:8080/users/"+username,
+	        url: "http://localhost:8080/users/"+username,
 	        success : function () {
 				console.log("User removed");
 			},

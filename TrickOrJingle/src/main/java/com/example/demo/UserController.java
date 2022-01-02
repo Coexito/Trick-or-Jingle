@@ -59,8 +59,10 @@ public class UserController {
     
     @RequestMapping(value = "/users/{nick}", method = RequestMethod.DELETE)
     public void deleteUser(@PathVariable("nick") String nick) {
+    	System.out.println("Entra en delete");
     	if(users.containsKey(nick))
     	{
+    		System.out.println("Entra en if");
     		users.remove(nick);
     	}
     }

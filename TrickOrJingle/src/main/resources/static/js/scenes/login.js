@@ -28,6 +28,9 @@ export class Login extends Phaser.Scene {
 	    this.userInput = this.add.dom(640, 360).createFromCache("form");
 		let name = this.userInput.getChildByName("name");
 		let password = this.userInput.getChildByName("password");
+		
+		let text = this.add.text(450,500, '').setScale(2);
+		let change = false; // boolean to change scene
 	    
 	    this.startButton = this.add.sprite(650, 600, 'button');	
 	    this.startButton.setInteractive().on('pointerdown', () => {
@@ -36,19 +39,30 @@ export class Login extends Phaser.Scene {
 				// Checks if the user exists				
 				$.ajax({
 			        method: "GET",
-			        url: "http://localhost:8080/users/"+name.value,
-			        success : function () {
-						console.log("User " + name.value +" exists. Logging in");
+			        url: "http://localhost:8080/password/"+name.value,
+			        success : function (userPassword) {
+						if (userPassword == password.value){
+							console.log("User " + name.value +" exists. Logging in");
+							change = true; // boolean to change scene
+						}
+						else {
+							console.log("Password doesn't match the existing user");
+							text.setText('Wrong password. Try again');
+						}
 					},
 					error : function () {
 						console.log("User does not exist.\nProcceeding to create it");
 						createUser(name.value, password.value);
+		     			change = true; // boolean to change scene
 					}
+					
 		     	})
 		     	
 		     	// Starts the next scene
-		     	this.scene.stop();
-	        	this.scene.start('mainmenu', { username: name.value});	
+		     	if(change){	
+		     		this.scene.stop();
+	        		this.scene.start('mainmenu', { username: name.value});	
+				}
 	    	}
 	    });
     

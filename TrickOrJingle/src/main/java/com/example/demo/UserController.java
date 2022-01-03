@@ -51,13 +51,30 @@ public class UserController {
     }
     
     
-    @GetMapping("/users/{nickname}")
-    public User getUser(@PathVariable("nickname") @RequestBody String nick) {
+    @GetMapping("/users/{nick}")
+    public User getUser(@PathVariable("nick") String nick) {
 
     	if(users.containsKey(nick))	// User is found
     	{
     		User user = users.get(nick);   
             return user;    		
+    	}
+    	else	// User is not found
+    	{
+    		throw new ResponseStatusException(
+    				  HttpStatus.NOT_FOUND, "entity not found"
+    		);
+    	}
+    	
+    }
+    
+    @GetMapping("/password/{nick}")
+    public String getPassword(@PathVariable("nick") String nick) {
+
+    	if(users.containsKey(nick))	// User is found
+    	{
+    		User user = users.get(nick);   
+            return user.getPassword();    		
     	}
     	else	// User is not found
     	{

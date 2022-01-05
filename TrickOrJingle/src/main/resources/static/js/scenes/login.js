@@ -39,6 +39,7 @@ export class Login extends Phaser.Scene {
 				// Checks if the user exists				
 				$.ajax({
 			        method: "GET",
+			        async: false,
 			        url: "http://localhost:8080/password/"+name.value,
 			        success : function (userPassword) {
 						if (userPassword == password.value){
@@ -77,8 +78,7 @@ function createUser(user, pass)
 		type: "POST",
 		headers: {
 			'Accept': 'application/json',
-			'Content-type' : 'application/json'
-						
+			'Content-type' : 'application/json'	
 		},
 		url: "http://localhost:8080/users",
 		data: JSON.stringify( { nick: ""+user, password: ""+pass } ),

@@ -116,12 +116,44 @@ public class UserController {
     } 
     
     
-    @PutMapping("/users")
-    public void updateUserScore(@RequestBody String u) 
+    @PutMapping("/users/{nickname}")
+    public void updateUserScore(@PathVariable("nickname") String nickname) throws IOException 
     {
-    	User user = users.get(u);
-    	int lastScore = user.getScore();
-    	user.setScore(lastScore++);
+		// ---- Re-write the users to update the BD ------
+		User updateUser = users.get(nickname); // The user to delete
+
+		File inputFile = new File(usersFileURL);
+		File tempFile = new File(tempUsersFileURL);
+
+		BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+		String lineToUpdate = updateUser.getNick() + ";" + updateUser.getPassword() + ";" + updateUser.getScore();
+		String currentLine;
+		
+		// Updates it in memory
+		users.get(nickname).setScore(users.get(nickname).getScore() + 1);
+		
+		while ((currentLine = reader.readLine()) != null) {
+			// trim newline when comparing with lineToRemove
+			String trimmedLine = currentLine.trim();
+
+			if (trimmedLine.equals(lineToUpdate))
+			{
+				// Updates that line
+				writer.write(updateUser.getNick() + ";" + updateUser.getPassword() + ";" + updateUser.getScore() + System.getProperty("line.separator"));
+				continue;
+			}
+				
+
+			writer.write(currentLine + System.getProperty("line.separator"));
+		}
+		writer.close();
+		reader.close();
+
+		inputFile.delete();
+		boolean successful = tempFile.renameTo(inputFile);
+    	
     }
     
    @DeleteMapping("/users/{nick}")

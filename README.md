@@ -147,7 +147,10 @@ En esta pantalla el jugador podrá iniciar sesión con su usuario ya creado, o b
 El jugador podrá escoger con qué equipo quiere jugar. No podrá avanzar hasta haber seleccionado al menos uno de los dos. Como adición, también podrá borrar su usuario en caso de que quisiera, simplemente pulsando en el botón indicado.
 
 ![Game screen](/Documents/Readme-resources/Diagrams/Pantalla4.PNG)
-Escena de juego principal. Aquí los jugadores podrán competir para ver quién es el mejor.
+Escena de juego principal. Aquí los jugadores podrán competir para ver quién es el mejor. Puede pausarse el juego pulsando en el botón de la esquina superior izquierda.
+
+![Pause screen](/Documents/Readme-resources/Diagrams/Pantalla5.PNG)
+A través de esta pantalla podrán consultarse los controles, autoría y volver al juego.
 
 ![Endgame screen halloween](/Documents/Readme-resources/Diagrams/Pantalla6_1.PNG)
 ![Endgame screen christmas](/Documents/Readme-resources/Diagrams/Pantalla6_2.PNG)

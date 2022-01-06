@@ -131,6 +131,35 @@ Se utilizarán bibliotecas de sonido en su mayor parte. Habrá música dentro de
 - Morir
 - Saltar
 
+## Navegación de pantallas
+Trick or Jingle cuenta con varias escenas de juego diseñadas individualmente. A continuación, se presenta su correspondiente diagrama de flujo para establecer la relación que guardan entre ellas:
+![Gamescreens diagram](/Documents/Readme-resources/Diagrams/D_Nav_Escenas.png)
+
+Seguidamente se presentan capturas de pantalla de las escenas junto a una breve descripción que ayuda a entender su sentido y funcionalidad:
+
+![Title screen](/Documents/Readme-resources/Diagrams/Pantalla1.png)
+Pantalla de bienvenida del juego mostrando la ilustración inicial. Puede hacerse click encima de ella para empezar a navegar por la aplicación.
+
+![Login screen](/Documents/Readme-resources/Diagrams/Pantalla2.png)
+En esta pantalla el jugador podrá iniciar sesión con su usuario ya creado, o bien crear uno en caso de que no existiera. Iniciar sesión sirve para almacenar el número de partidas ganadas en total.
+
+![Team selection screen](/Documents/Readme-resources/Diagrams/Pantalla3.png)
+El jugador podrá escoger con qué equipo quiere jugar. No podrá avanzar hasta haber seleccionado al menos uno de los dos. Como adición, también podrá borrar su usuario en caso de que quisiera, simplemente pulsando en el botón indicado.
+
+![Game screen](/Documents/Readme-resources/Diagrams/Pantalla4.png)
+Escena de juego principal. Aquí los jugadores podrán competir para ver quién es el mejor.
+
+![Endgame screen halloween](/Documents/Readme-resources/Diagrams/Pantalla6_1.png)
+![Endgame screen christmas](/Documents/Readme-resources/Diagrams/Pantalla6_2.png)
+![Endgame screen draw](/Documents/Readme-resources/Diagrams/Pantalla6_3.png)
+Pantallas de fin de juego que muestran el ganador de la partida. Podrá ser el equipo de Halloween, el de Navidad o incluso llegar a empate.
+
+## Implementación con API REST
+Se ha implementado una API REST utilizada para labores de red tales como inicio de sesión a través de la comunicación con el servidor o uso de chat de juego. Estos datos de usuario y de registro de chats se guardan de forma permanente dentro del servidor.
+
+A continuación se presenta el sencillo pero eficaz diagrama de clases utilizado para este propósito:
+![API REST Class Diagram](/Documents/Readme-resources/Diagrams/D_API_REST_fondo.jpg)
+
 # Autoría
 
 Proyecto creado enteramente por ***Gamer Ferret***.

@@ -137,21 +137,21 @@ Trick or Jingle cuenta con varias escenas de juego diseñadas individualmente. A
 
 Seguidamente se presentan capturas de pantalla de las escenas junto a una breve descripción que ayuda a entender su sentido y funcionalidad:
 
-![Title screen](/Documents/Readme-resources/Diagrams/Pantalla1.png)
+![Title screen](/Documents/Readme-resources/Diagrams/Pantalla1.PNG)
 Pantalla de bienvenida del juego mostrando la ilustración inicial. Puede hacerse click encima de ella para empezar a navegar por la aplicación.
 
-![Login screen](/Documents/Readme-resources/Diagrams/Pantalla2.png)
+![Login screen](/Documents/Readme-resources/Diagrams/Pantalla2.PNG)
 En esta pantalla el jugador podrá iniciar sesión con su usuario ya creado, o bien crear uno en caso de que no existiera. Iniciar sesión sirve para almacenar el número de partidas ganadas en total.
 
-![Team selection screen](/Documents/Readme-resources/Diagrams/Pantalla3.png)
+![Team selection screen](/Documents/Readme-resources/Diagrams/Pantalla3.PNG)
 El jugador podrá escoger con qué equipo quiere jugar. No podrá avanzar hasta haber seleccionado al menos uno de los dos. Como adición, también podrá borrar su usuario en caso de que quisiera, simplemente pulsando en el botón indicado.
 
-![Game screen](/Documents/Readme-resources/Diagrams/Pantalla4.png)
+![Game screen](/Documents/Readme-resources/Diagrams/Pantalla4.PNG)
 Escena de juego principal. Aquí los jugadores podrán competir para ver quién es el mejor.
 
-![Endgame screen halloween](/Documents/Readme-resources/Diagrams/Pantalla6_1.png)
-![Endgame screen christmas](/Documents/Readme-resources/Diagrams/Pantalla6_2.png)
-![Endgame screen draw](/Documents/Readme-resources/Diagrams/Pantalla6_3.png)
+![Endgame screen halloween](/Documents/Readme-resources/Diagrams/Pantalla6_1.PNG)
+![Endgame screen christmas](/Documents/Readme-resources/Diagrams/Pantalla6_2.PNG)
+![Endgame screen draw](/Documents/Readme-resources/Diagrams/Pantalla6_3.PNG)
 Pantallas de fin de juego que muestran el ganador de la partida. Podrá ser el equipo de Halloween, el de Navidad o incluso llegar a empate.
 
 ## Implementación con API REST

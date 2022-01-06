@@ -163,6 +163,16 @@ Se ha implementado una API REST utilizada para labores de red tales como inicio 
 A continuación se presenta el sencillo pero eficaz diagrama de clases utilizado para este propósito:
 ![API REST Class Diagram](/Documents/Readme-resources/Diagrams/D_API_REST_fondo.jpg)
 
+## Instrucciones de ejecución
+
+Para ejecutar *Trick or Jingle* basta con tener el archivo **TrickOrJingle.jar** en su computador y ejecutarlo. Podrá hacer doble click sobre el archivo o, en caso de que no funcionara con debería, puede abrir la consola de comandos en la ubicación del archivo y ejecutar la siguiente instrucción:
+
+*java -jar TrickOrJingle.jar*
+
+Tenga en cuenta que para ejecutar este archivo, así como para utilizar la instrucción indicada, es necesario tener [Java](https://www.java.com) instalado en su computador, siendo preferible la última versión disponible. También se recomienda instalar el *Java Software Development Kit* o [Java SDK](https://www.oracle.com/java/technologies/sdk-downloads.html) instalado para evitar cualquier tipo de problema.
+
+Una vez se ejecute el archivo TrickOrJingle.jar con éxito, podrá ejecutar su navegador de confianza y acceder al juego escribiendo *localhost:8080* en la barra de direcciones. ¡A partir de ahí, a jugar!
+
 # Autoría
 
 Proyecto creado enteramente por ***Gamer Ferret***.

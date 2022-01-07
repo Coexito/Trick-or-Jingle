@@ -24,7 +24,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class WebSocketEchoHandler extends TextWebSocketHandler{
 	//uso de hashmaps para evitar problemas con la concurrencia
-	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
+	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //hashmap de sesiones(?)
+	//a lo mejor se podrían hacer más hashmaps para otras cosas? idk
 	private ObjectMapper mapper = new ObjectMapper();
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -35,6 +36,9 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	sendOtherParticipants(session, node);
 	}
 	
+	//para enviar los datos a los demás participantes.
+	//datos que enviar: cambios en posiciones de personajes, tipo de disparo, ángulo, origen y velocidad
+	//habría que enviar varios nodos del árbol?
 	private void sendOtherParticipants(WebSocketSession session, JsonNode node) throws IOException {
 
 		System.out.println("Message sent: " + node.toString());
@@ -52,11 +56,16 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	}
 	
 	//Ejercicios del aula
-	@Override
+	@Override //notificar un alta de sesión
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		System.out.println("New user: " + session.getId());
 		sessions.put(session.getId(), session);
 	}
 	
+	@Override //notificar una baja de sesión
+	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+		System.out.println("Session closed: " + session.getId());
+		sessions.remove(session.getId());
+	}
 	
 }

@@ -65,25 +65,24 @@ export class MainMenu extends Phaser.Scene {
     
     this.deleteUserButton = this.add.sprite(950, 600, 'button_delete_user');
     this.deleteUserButton.setScale(0.5);
-    this.deleteUserButton.setInteractive().on('pointerdown', () => 
-    {
-		let username = this.username;
+    this.deleteUserButton.setInteractive().on('pointerdown', () => {
+	
+	let username = this.username;
 		
-		$.ajax({
-	        method: "DELETE",
-	        url: "http://localhost:8080/users/"+username,
-	        success : function () {
-				console.log("User removed");
-			},
-			error : function () {
-				console.log("Failed to delete");
-				console.log("The URL was:\nlocalhost:8080/users/"+username)
-			}
-	     })	
-	     	
-	     	// Changes scene after making the Delete  
-			this.scene.stop();
-	    	this.scene.start('login');
+	$.ajax({
+        method: "DELETE",
+        url: "localhost:8080/users/"+username,
+        success : function () {
+			console.log("User removed");
+		},
+		error : function () {
+			console.log("Failed to delete");
+			console.log("The URL was:\nlocalhost:8080/users/"+username)
+		}
+     })	
+     	        
+		this.scene.stop();
+    	this.scene.start('login');
     });
     
     // -------------- CHAT ---------------

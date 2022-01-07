@@ -5,8 +5,6 @@ export class Gameover extends Phaser.Scene {
   
   init(data) {
     this.winnerteam = data.winnerteam;
-    this.username = data.username;
-    this.win = data.win;
   }
 
   preload() {
@@ -32,19 +30,5 @@ export class Gameover extends Phaser.Scene {
       this.scene.start('mainmenu');
       this.scene.stop();
     });
-    
-    console.log("Player 1 won?: " + this.win)
-    
-    if(this.win)
-    {
-		// Updates the user score
-	    $.ajax({
-	        type: 'PUT',
-	        async: false,
-	        url: 'http://localhost:8080/users/' + this.username,
-	    });
-	}
-    
-    
   }
 }

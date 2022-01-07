@@ -39,16 +39,16 @@ public class MessageController {
 		System.out.println("user: "+i + " size: " + size);
 		
 		String message = "";
-		if(i.equals("0")) {
+		if(i.equals("0") && size>=1) {
 			message = messages.get(size-1);
 		}
-		if(i.equals("1")) {
+		if(i.equals("1") && size>=2) {
 			message = messages.get(size-2);
 		}
-		if(i.equals("2")) {
+		if(i.equals("2") && size>=3) {
 			message = messages.get(size-3);
 		}
-		if(i.equals("3")) {
+		if(i.equals("3") && size>=4) {
 			message = messages.get(size-4);
 		}
 			

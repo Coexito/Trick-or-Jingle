@@ -1,0 +1,7 @@
+Aurora;contraAurora;0
+Ceci;contraCeci;0
+Sergio;contraSergio;2
+AURORA GARCÍA RAIGÓN;hh;0
+null;null;0
+null;null;0
+hh;AURORA;0

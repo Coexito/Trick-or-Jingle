@@ -45,6 +45,7 @@ export class Login extends Phaser.Scene {
 						'Content-type' : 'application/json'
 				
 					},
+<<<<<<< Updated upstream
 			        url: "http://localhost:8080/users",
 			        data: JSON.stringify( { nick: ""+this.username, password: ""+this.password } ),
 			        dataType: "json" })
@@ -53,6 +54,23 @@ export class Login extends Phaser.Scene {
         	this.scene.start('mainmenu', { username: this.username});
     
     }});
+=======
+					error : function () {
+						console.log("User does not exist.\nProcceeding to create it");
+						createUser(name.value, password.value);
+		     			change = true; // boolean to change scene
+					}
+					
+		     	})
+		     	
+		     	// Starts the next scene
+		     	if(change){
+		     		this.scene.stop();
+	        		this.scene.start('mainmenu', { username: name.value});	
+				}
+	    	}
+	    });
+>>>>>>> Stashed changes
     
   }
   

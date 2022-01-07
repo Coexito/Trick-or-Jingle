@@ -9,6 +9,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
+
 @SpringBootApplication
 @EnableWebSocket
 public class TrickOrJingleApplication implements WebSocketConfigurer{ //implementamos la interfaz necesaria
@@ -27,8 +28,8 @@ public class TrickOrJingleApplication implements WebSocketConfigurer{ //implemen
 	}
 	
 	@Bean //le indicamos a spring que se trata de un componente
-	public WebSocketGameHandler gameHander() {
-		return new WebSocketGameHandler();
+	public WebSocketEchoHandler gameHander() {
+		return new WebSocketEchoHandler();
 	}
 
 }

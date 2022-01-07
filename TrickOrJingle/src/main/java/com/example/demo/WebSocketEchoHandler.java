@@ -23,11 +23,40 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class WebSocketEchoHandler extends TextWebSocketHandler{
+	//uso de hashmaps para evitar problemas con la concurrencia
+	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
 	private ObjectMapper mapper = new ObjectMapper();
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		System.out.println("400 OK. Message received: "
 	 + message.getPayload());
-	String msg = message.getPayload();
-	session.sendMessage(new TextMessage(msg)); //mensaje de vuelta
+	JsonNode node = mapper.readTree(message.getPayload());
+	
+	sendOtherParticipants(session, node);
+	}
+	
+	private void sendOtherParticipants(WebSocketSession session, JsonNode node) throws IOException {
+
+		System.out.println("Message sent: " + node.toString());
+		
+		ObjectNode newNode = mapper.createObjectNode();
+		newNode.put("name", node.get("name").asText());
+		newNode.put("message", node.get("message").asText());
+		
+		
+		for(WebSocketSession participant : sessions.values()) {
+			if(!participant.getId().equals(session.getId())) {
+				participant.sendMessage(new TextMessage(newNode.toString()));
+			}
+		}
+	}
+	
+	//Ejercicios del aula
+	@Override
+	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+		System.out.println("New user: " + session.getId());
+		sessions.put(session.getId(), session);
+	}
+	
+	
 }

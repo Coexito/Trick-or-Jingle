@@ -87,5 +87,50 @@ export class MainMenu extends Phaser.Scene {
     });
     
     
+  // -------------- CHAT ---------------
+	
+	let username = this.username;
+	
+	document.getElementById('chatBox').placeholder='Enter message';
+	
+	$("#chatButton").click(function () {
+	if($("#chatBox").val() != null){
+			sendMessage(username, $("#chatBox").val());
+		}
+	})
+	
+	setInterval (getMessage, 2500); // reloads the chat every so often
+	// ------------------------------------
   }
+}
+
+// --------- CHAT ------------------
+
+function sendMessage(user, message)
+{
+	$.ajax({
+		type: "POST",
+		async:false,
+		headers: {
+			'Accept': 'application/json',
+			'Content-type' : 'application/json'	
+		},
+		url: "http://localhost:8080/chat",
+		data: JSON.stringify( { user: ""+user, message: ""+message } ),
+		dataType: "json" 
+	})
+	getMessage();
+}
+
+function getMessage() {
+	for (let i = 0; i < 4; i++) {
+		$.ajax({
+			method: "GET",
+			url: "http://localhost:8080/chat/" + i.toString()
+		}).done(function(data){
+			if(data != "")
+				document.getElementById("message"+i.toString()).innerHTML = data;
+		})
+	}
+
 }

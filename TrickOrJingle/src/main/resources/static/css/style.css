@@ -45,3 +45,16 @@ body{
 html{
     overflow: scroll;
 }
+
+#chatField{
+	float: right;
+    left: -50%;
+    position: relative;
+}
+
+#chatTable{
+	background-color:lightgoldenrodyellow;
+	margin:auto;
+	height: 200px;
+    width:  500px;
+}

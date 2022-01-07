@@ -77,7 +77,6 @@ export class Game extends Phaser.Scene {
     this.load.audio('Bomb_impact', 'Resources/Sounds/sounds/Bomb_impact.wav');
     this.load.audio('Fire_shotgun','Resources/Sounds/sounds/Fire_shotgun.wav');
     this.load.audio('Fire_gun','Resources/Sounds/sounds/Fire_gun.mp3');
-
   }
 
   create() {
@@ -261,7 +260,6 @@ export class Game extends Phaser.Scene {
     // after the 5 minutes call outOfTime function
     var secondsToEnd = 300;
     this.time.delayedCall(secondsToEnd * 1000, outOfTime, null, this);  // delay in ms
-
   }
 
   update() {

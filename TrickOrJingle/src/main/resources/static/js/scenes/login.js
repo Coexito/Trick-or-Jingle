@@ -60,12 +60,15 @@ export class Login extends Phaser.Scene {
 		     	})
 		     	
 		     	// Starts the next scene
+
 		     	if(change){	
 		     		this.scene.stop();
 	        		this.scene.start('mainmenu', { username: name.value});	
 				}
 	    	}
 	    });
+    
+  }
     
 	}
   

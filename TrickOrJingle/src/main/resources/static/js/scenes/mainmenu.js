@@ -121,3 +121,16 @@ function sendMessage(user, message)
 	})
 	getMessage();
 }
+
+function getMessage() {
+	for (let i = 0; i < 4; i++) {
+		$.ajax({
+			method: "GET",
+			url: "http://localhost:8080/chat/" + i.toString()
+		}).done(function(data){
+			if(data != "")
+				document.getElementById("message"+i.toString()).innerHTML = data;
+		})
+	}
+
+}

@@ -37,7 +37,7 @@ export class MainMenu extends Phaser.Scene {
       this.c_button.setTexture("c_button_small");
 
       this.p1team = "halloween";
-      this.p2team = "christmas";  // THIS SOULD ME CHANGED IN PHASE 3
+      this.p2team = "christmas";  // THIS SOULD BE CHANGED IN PHASE 3
 
       this.startButton.setTexture("button_ready");
 

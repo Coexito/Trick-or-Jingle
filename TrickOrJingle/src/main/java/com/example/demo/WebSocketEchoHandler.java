@@ -66,10 +66,10 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 		newNode.put("animation", node.get("animation")).asText();
 		
 		//Vida
-		newNode.put("lives", node.get("lives"));
+		newNode.put("lives", node.get("lives")).asInt();
+		//Con las vidas se puede calcular la victoria
 		
-		//armas
-		newNode.put("hasWeapon", node.get("hasWeapon")).asBoolean();
+		//armas. No se incluye HasWeapon porque no se llamara a la conexión si no se tiene una
 		newNode.put("isShooting", node.get("isShooting").asBoolean());
 		newNode.put("weapon", node.get("weapon").asText());
 		newNode.put("angle", node.get("angle").asDouble());

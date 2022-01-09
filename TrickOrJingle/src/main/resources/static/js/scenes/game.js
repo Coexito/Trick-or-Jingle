@@ -12,7 +12,13 @@ var countdownTime;
 var timedEventText;
 var timedEventWeapon;
 
+
 var isPaused = false;
+
+//Communication with websockets
+var isSocketOpen;
+var gameStarted;
+var connection;
 
 export class Game extends Phaser.Scene {
 
@@ -230,7 +236,7 @@ export class Game extends Phaser.Scene {
     this.physics.add.collider(this.players, this.weapons, pickUpWeapon, null, this); // collider between player and weapons
 
 
-    // Player 1 inputs
+    // Players  inputs
         // Mooving
     this.w_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.a_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -242,15 +248,7 @@ export class Game extends Phaser.Scene {
     this.e_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
 
-    // Player 2 inputs
-        // Mooving
-    this.cursors = this.input.keyboard.createCursorKeys();
-
-        //Shooting
-    this.numpad_0_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO);
-    this.numpad_7_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SEVEN);
-    this.numpad_9_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_NINE);
-
+    
      // Countdown text
      countdownTime = 300; // 300 seconds are 5 minutes
      text = this.add.text(600, 50, formatTime(countdownTime)).setScale(3); // create text
@@ -265,11 +263,17 @@ export class Game extends Phaser.Scene {
   }
 
   update() {
-    player1.update();
-    player2.update();
-
+	if(isSocketOpen){
+		if(player1){
+			 player1.update();
+		}
+		else{
+			 player2.update();
+		}
+	}
     this.checkWinners();
   }
+  
 
   changeStage()
   {
@@ -432,4 +436,29 @@ function formatTime(totalSeconds){
     seconds = seconds.toString().padStart(2,'0'); // add left zeros to seconds
 
     return `${minutes}:${seconds}`;     // return formated time
+}
+
+//Websockets
+$(document).ready(function() {
+
+	function webSocketConnection(){
+		
+		//Fuente: Ejercicio 2 tema 5
+		connection = new WebSocket("ws://127.0.0.1:8080/trickorjingle");
+		
+		connection.onerror = function(e) {
+			console.log("WS error: " + e);
+		}
+		connection.onmessage = function(msg) {
+			console.log("WS message: " + msg.data);
+			var message = JSON.parse(msg.data);
+			//TERMINAR ESTO
+		}
+		connection.onclose = function() {
+			console.log("Closing socket");
+		}
+}
+
+	
+
 }

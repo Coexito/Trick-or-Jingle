@@ -8,22 +8,26 @@ let bombCooldown1 = false;
 let shotgunCooldown2 = false;
 let gunCooldown2 = false;
 let bombCooldown2 = false;
+let currentAnimation;
+
+let connection;
 
 export class Player extends Phaser.GameObjects.Sprite
 {
     constructor(scene, _speed, _lives, x, y, _sprite, _idx) {
-        super(scene, x, y, _sprite);
+        super(scene, x, y, _sprite, _idx);
+
 
         this.speed = _speed;
         this.lives = _lives;
-        this.idx = _idx;
+        this.idx = _idx; //0 
         
         this.alive = true;
         this.canBeDamaged = true;
 
         this.hasWeapon = false;
         this.weaponType;
-
+		
         this.sprite = _sprite;
 
         // Pointer sprite for bullets arrow marker
@@ -32,7 +36,7 @@ export class Player extends Phaser.GameObjects.Sprite
         this.arrow.angle = 45;
 
         // Create hearts image to represent the player lives
-        if (this.idx == 1) // the position of the lives on scene in the x axis depends on the player (player 1 to the left, player 2 to the right)
+        if (this.host == 1) // the position of the lives on scene in the x axis depends on the player (player 1 to the left, player 2 to the right)
             var posHeartsX = 150;
         else
             var posHeartsX = 1140;
@@ -55,21 +59,25 @@ export class Player extends Phaser.GameObjects.Sprite
         {
             this.body.setVelocityX(-this.speed);
             this.anims.play(this.sprite+'Left', true);
+            currentAnimation = "Left";
         }
         else if (this.scene.d_key.isDown)
         {
             this.body.setVelocityX(this.speed);
             this.anims.play(this.sprite+'Right', true);
+            currentAnimation = "Right";
         }
         else
         {
             this.body.setVelocityX(0);
             this.anims.play(this.sprite+'Turn');
+            currentAnimation = "Turn";
         }
 
         if ((Phaser.Input.Keyboard.JustDown(this.scene.w_key) && this.body.touching.down))
         {
             this.body.setVelocityY(-470);
+            currentAnimation = "Jump";
         }
     }
     movement2() //client movement
@@ -79,30 +87,49 @@ export class Player extends Phaser.GameObjects.Sprite
         {
             this.body.setVelocityX(-this.speed);
             this.anims.play(this.sprite+'Left', true);
+            currentAnimation = "Left";
         }
         else if (this.scene.d_key.isDown)
         {
             this.body.setVelocityX(this.speed);
             this.anims.play(this.sprite+'Right', true);
+            currentAnimation = "Right";
         }
         else
         {
             this.body.setVelocityX(0);
             this.anims.play(this.sprite+'Turn');
+            currentAnimation = "Turn";
         }
 
         // Jumping
         if ((Phaser.Input.Keyboard.JustDown(this.scene.w_key) && this.body.touching.down))
         {
             this.body.setVelocityY(-470);
+            currentAnimation = "Jump";
         }
 
         return this;
     }
 
-    shooting1() //ShootingHost
+    shooting1( _connection) //ShootingHost
     {
+		var connection = _connection;
         if (this.hasWeapon){
+			connection.send(
+				JSON.stringify({
+					playerId: this.idx;
+					playerPositionX: this.x,
+					playerPositionY: this.y,
+					animation: this.currentAnimation,
+					lives: this.lives,
+					isShooting: true,
+					weapon:this.weaponType,
+					angle: this.arrow.angle,
+					bulletSpeed: this.bulletSpeed
+
+				})
+			);
             // update arrow position
             this.arrow.x = this.x;
             this.arrow.y = this.y;
@@ -163,6 +190,21 @@ export class Player extends Phaser.GameObjects.Sprite
     {
         if (this.hasWeapon)
         {
+			connection.send(
+						JSON.stringify({
+							playerId: this.idx;
+							playerPositionX: this.x,
+							playerPositionY: this.y,
+							animation: this.currentAnimation,
+							lives: this.lives,
+							isShooting: true,
+							weapon:this.weaponType,
+							angle: this.arrow.angle,
+							bulletSpeed: this.bulletSpeed
+		
+						})
+			);
+			
             // update arrow position
             this.arrow.x = this.x;
             this.arrow.y = this.y;

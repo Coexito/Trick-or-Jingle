@@ -49,7 +49,7 @@ export class Player extends Phaser.GameObjects.Sprite
 
     }
 
-    movement1()
+    movement1() //Host movement
     {
         if (this.scene.a_key.isDown)
         {
@@ -72,15 +72,15 @@ export class Player extends Phaser.GameObjects.Sprite
             this.body.setVelocityY(-470);
         }
     }
-    movement2()
+    movement2() //client movement
     {
         // Movement
-        if (this.scene.cursors.left.isDown)
+        if (this.scene.a_key.isDown)
         {
             this.body.setVelocityX(-this.speed);
             this.anims.play(this.sprite+'Left', true);
         }
-        else if (this.scene.cursors.right.isDown)
+        else if (this.scene.d_key.isDown)
         {
             this.body.setVelocityX(this.speed);
             this.anims.play(this.sprite+'Right', true);
@@ -92,7 +92,7 @@ export class Player extends Phaser.GameObjects.Sprite
         }
 
         // Jumping
-        if ((Phaser.Input.Keyboard.JustDown(this.scene.cursors.up) && this.body.touching.down))
+        if ((Phaser.Input.Keyboard.JustDown(this.scene.w_key) && this.body.touching.down))
         {
             this.body.setVelocityY(-470);
         }
@@ -100,7 +100,7 @@ export class Player extends Phaser.GameObjects.Sprite
         return this;
     }
 
-    shooting1()
+    shooting1() //ShootingHost
     {
         if (this.hasWeapon){
             // update arrow position
@@ -159,7 +159,7 @@ export class Player extends Phaser.GameObjects.Sprite
         }
     }
 
-    shooting2()
+    shooting2() //shootingClient
     {
         if (this.hasWeapon)
         {
@@ -168,12 +168,12 @@ export class Player extends Phaser.GameObjects.Sprite
             this.arrow.y = this.y;
 
             // rotate arrow
-            if (this.scene.numpad_9_key.isDown)
+            if (this.scene.e_key.isDown)
             {
                 this.arrow.angle += 2;
             }
 
-            if (this.scene.numpad_7_key.isDown)
+            if (this.scene.q_key.isDown)
             {
                 this.arrow.angle -= 2;
             }
@@ -182,7 +182,7 @@ export class Player extends Phaser.GameObjects.Sprite
             switch(this.weaponType)
             {
                 case 'shotgun': // if the weapon type is a shotgun
-                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key) && (shotgunCooldown2 == false))
+                    if(Phaser.Input.Keyboard.JustDown(this.scene.space_key) && (shotgunCooldown2 == false))
                     {
                         this.shootShotGun();
 
@@ -193,7 +193,7 @@ export class Player extends Phaser.GameObjects.Sprite
                     }
                     break;
                 case 'gun': // if the weapon type is a gun
-                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key) && (gunCooldown2 == false))
+                    if(Phaser.Input.Keyboard.JustDown(this.scene.space_key) && (gunCooldown2 == false))
                     {
                         this.shootGun();
 

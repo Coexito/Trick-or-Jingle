@@ -25,11 +25,13 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public class WebSocketEchoHandler extends TextWebSocketHandler{
 	//uso de hashmaps para evitar problemas con la concurrencia
 	private  int maxSessions = 2;
+	
+	
 	//se podría añadir un número con las sesiones actuales abiertas pero
 	//podemos utilizar sessions.size para saberlo.
 	
 	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //hashmap de sesiones(?)
-	//a lo mejor se podrían hacer más hashmaps para otras cosas? idk
+	
 	private ObjectMapper mapper = new ObjectMapper();
 	
 	
@@ -56,10 +58,22 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 		
 		//Cosas que vamos a enviar
 		newNode.put("playerId", node.get("playerId").asText());
-		newNode.put("playerPosition", node.get("playerPosition").asText());
+		
+		//Pasamos estado del contrincante
+		//Posición
+		newNode.put("playerPositionX", node.get("playerPositionX").asDouble());
+		newNode.put("playerPositionY", node.get("playerPositionY").asDouble());
+		newNode.put("animation", node.get("animation")).asText();
+		
+		//Vida
+		newNode.put("lives", node.get("lives"));
+		
+		//armas
+		newNode.put("hasWeapon", node.get("hasWeapon")).asBoolean();
+		newNode.put("isShooting", node.get("isShooting").asBoolean());
 		newNode.put("weapon", node.get("weapon").asText());
-		newNode.put("angle", node.get("angle").asText());
-		newNode.put("bulletSpeed", node.get("bulletSpeed").asText());
+		newNode.put("angle", node.get("angle").asDouble());
+		newNode.put("bulletSpeed", node.get("bulletSpeed").asDouble());
 
 		// model: newNode.put("message", node.get("message").asText());
 		
@@ -76,18 +90,25 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		if(sessions.size()<=maxSessions) {
 			System.out.println("New user: " + session.getId());
-			sessions.put(session.getId(), session); //añadimos la sesión al hashmap.
-			//key --> Id
+			ObjectNode aux = mapper.createObjectNode(); //nodo para indicar si está listo.
+			//funciona como un booleano.
+			aux.put("isReady", "1"); //1 --> está listo
 			
-			
-			//Sesiones en websockets
-			if(sessions.size()==1) { //si es el primer jugador
-				
+			//"booleano" para indicar si es host
+			ObjectNode host = mapper.createObjectNode();
+			//creamos un nodo para el host 
+			if(sessions.isEmpty()) { //player 1/host
+				sessions.put(session.getId(), session); //añadimos la sesión al hashmap.
+				host.put("isHost", 1); //si es el primero que se conecta, actúa como host
 				session.sendMessage(new TextMessage("Player 1: Ready"));
+
 			}
-			else if(sessions.size()==2) {//player 2
+			else { //player 2
+				host.put("isHost", 0); //si no es el primero, actúa como cliente
+				sessions.put(session.getId(), session);
 				session.sendMessage(new TextMessage("Player 2: Ready"));
 			}
+			
 		
 		}else {
 			System.out.println("The server is full. Try later again");

@@ -453,10 +453,56 @@ $(document).ready(function() {
 			console.log("WS message: " + msg.data);
 			var message = JSON.parse(msg.data);
 			//TERMINAR ESTO
+			if(message.isHost == 1)
+			{
+				idx = 1;
+			}
+			else if(msg.isReady == 1) //jugador 2 ya está listo
+			{
+				gameStarted = true; //se puede comenzar el juego
+			}
+			else if(idx == 1){
+				console.log("Host here");
+				messageH(msg, connection);
+			}
+			else{
+				idx = 2;
+				console.log("Client here");
+				messageC(msg, connection);
+			}
 		}
 		connection.onclose = function() {
 			console.log("Closing socket");
 		}
+}
+function messageH(msg, connection){
+	player2.x = msg.x;
+	player2.y = msg.y;
+	player2.anims.play(msg.animation, true);
+	player2.lives = msg.lives;
+
+	player2.isShooting = msg.isShooting;
+	
+	if(player2.isShooting){
+		player2.shooting2(connection);
+		player2.weaponType = msg.weapon;
+		player2.arrow.angle = msg.angle;
+	}
+}
+function messageC(msg, connection){
+	player1.x = msg.x;
+	player1.y = msg.y;
+	player1.anims.play(msg.animation, true);
+	player1.lives = msg.lives;
+
+	player1.isShooting = msg.isShooting;
+	
+		
+	if(player1.isShooting){
+		player1.shooting2(connection);
+		player1.weaponType = msg.weapon;
+		player1.arrow.angle = msg.angle;
+	}
 }
 
 	

@@ -79,6 +79,19 @@ export class Player extends Phaser.GameObjects.Sprite
             this.body.setVelocityY(-470);
             currentAnimation = "Jump";
         }
+        
+        connection.send(
+		    JSON.stringify({
+		      playerId: this.idx,
+					playerPositionX: this.x,
+					playerPositionY: this.y,
+					animation: this.currentAnimation,
+					lives: this.lives,
+					isShooting: false,
+					weapon:this.weaponType,
+					angle: this.arrow.angle,
+		    })
+		  );
     }
     movement2() //client movement
     {
@@ -108,6 +121,19 @@ export class Player extends Phaser.GameObjects.Sprite
             this.body.setVelocityY(-470);
             currentAnimation = "Jump";
         }
+        
+        connection.send(
+		    JSON.stringify({
+		      playerId: this.idx,
+					playerPositionX: this.x,
+					playerPositionY: this.y,
+					animation: this.currentAnimation,
+					lives: this.lives,
+					isShooting: false,
+					weapon:this.weaponType,
+					angle: this.arrow.angle,
+		    })
+		  );
 
         return this;
     }
@@ -118,7 +144,7 @@ export class Player extends Phaser.GameObjects.Sprite
         if (this.hasWeapon){
 			connection.send(
 				JSON.stringify({
-					playerId: this.idx;
+					playerId: this.idx,
 					playerPositionX: this.x,
 					playerPositionY: this.y,
 					animation: this.currentAnimation,
@@ -126,7 +152,6 @@ export class Player extends Phaser.GameObjects.Sprite
 					isShooting: true,
 					weapon:this.weaponType,
 					angle: this.arrow.angle,
-					bulletSpeed: this.bulletSpeed
 
 				})
 			);
@@ -192,7 +217,7 @@ export class Player extends Phaser.GameObjects.Sprite
         {
 			connection.send(
 						JSON.stringify({
-							playerId: this.idx;
+							playerId: this.idx,
 							playerPositionX: this.x,
 							playerPositionY: this.y,
 							animation: this.currentAnimation,
@@ -200,7 +225,6 @@ export class Player extends Phaser.GameObjects.Sprite
 							isShooting: true,
 							weapon:this.weaponType,
 							angle: this.arrow.angle,
-							bulletSpeed: this.bulletSpeed
 		
 						})
 			);
@@ -348,6 +372,18 @@ export class Player extends Phaser.GameObjects.Sprite
         {
             this.canBeDamaged = false;
             console.log("Damaged player" + this.idx + ", " + this.lives + " lives left");
+            connection.send(
+		    JSON.stringify({
+		      playerId: this.idx,
+					playerPositionX: this.x,
+					playerPositionY: this.y,
+					animation: this.currentAnimation,
+					lives: this.lives,
+					isShooting: false,
+					weapon:this.weaponType,
+					angle: this.arrow.angle,
+		    })
+		  );
             return true;
         }
         else // If not, dies :-(
@@ -357,8 +393,22 @@ export class Player extends Phaser.GameObjects.Sprite
 
             this.arrow.destroy();   // Destroys the pointer
             this.destroy();         // Destroys the player itself
+            connection.send(
+		    JSON.stringify({
+		      playerId: this.idx,
+					playerPositionX: this.x,
+					playerPositionY: this.y,
+					animation: this.currentAnimation,
+					lives: this.lives,
+					isShooting: false,
+					weapon:this.weaponType,
+					angle: this.arrow.angle,
+		    })
+		  );
             return false;
         }
+        
+        
     }
 
     getLives()

@@ -73,7 +73,6 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 		newNode.put("isShooting", node.get("isShooting").asBoolean());
 		newNode.put("weapon", node.get("weapon").asText());
 		newNode.put("angle", node.get("angle").asDouble());
-		newNode.put("bulletSpeed", node.get("bulletSpeed").asDouble());
 
 		// model: newNode.put("message", node.get("message").asText());
 		

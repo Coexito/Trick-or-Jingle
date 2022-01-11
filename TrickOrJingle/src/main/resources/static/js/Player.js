@@ -319,7 +319,7 @@ export class Player extends Phaser.GameObjects.Sprite
         {
             this.canBeDamaged = false;
             console.log("Damaged player" + this.idx + ", " + this.lives + " lives left");
-            return true;
+             return true;
         }
         else // If not, dies :-(
         {

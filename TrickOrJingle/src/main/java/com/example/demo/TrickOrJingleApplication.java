@@ -14,22 +14,28 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class TrickOrJingleApplication implements WebSocketConfigurer{ //implementamos la interfaz necesaria
 
-	public static void main(String[] args) {
-		SpringApplication.run(TrickOrJingleApplication.class, args);
-	}
-
+	
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(gameHander(), "/game");
-		//de momento a "game" no le añadimos .setAllowedOrigins("*") porque no hay más páginas descargadas
-		//así evitamos problemas con el CORS
+		registry.addHandler(gameHander(), "/game").setAllowedOrigins("*");
+		
 		
 		
 	}
 	
 	@Bean //le indicamos a spring que se trata de un componente
 	public WebSocketEchoHandler gameHander() {
+		System.out.println("creando juego");
 		return new WebSocketEchoHandler();
 	}
+	
+	public static void main(String[] args) {
+		SpringApplication.run(TrickOrJingleApplication.class, args);
+		
+		System.out.println("Server iniciado con éxito.");
+
+	}
+
+	
 
 }

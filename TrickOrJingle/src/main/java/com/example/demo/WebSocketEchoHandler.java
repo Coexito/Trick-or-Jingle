@@ -8,6 +8,8 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
+
+
 //imports necesarios para websockets
 import java.io.IOException;
 import java.util.Map;
@@ -30,16 +32,16 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	//se podría añadir un número con las sesiones actuales abiertas pero
 	//podemos utilizar sessions.size para saberlo.
 	
-	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //hashmap de sesiones
+	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //hashmap de sesiones. Con esto controlamos la cola
 	
 	private ObjectMapper mapper = new ObjectMapper();
 	
 	
-	//done. No tocar
+	//Fuente: Ejercicios del aula
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		System.out.println("400 OK. Message received: "
-	 + message.getPayload());
+		
+		System.out.println("400 OK. Message received: " + message.getPayload());
 		JsonNode node = mapper.readTree(message.getPayload()); //accedemos al cuerpo del mensaje
 		
 		sendOtherParticipants(session, node);
@@ -47,46 +49,15 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	
 	
 	
-	//para enviar los datos a los demás participantes.
-	//datos que enviar: cambios en posiciones de personajes, tipo de disparo, ángulo, origen y velocidad
-	//Se envía un solo nodo con todos los datos
-	private void sendOtherParticipants(WebSocketSession session, JsonNode node) throws IOException {
-
-		System.out.println("Message sent: " + node.toString());
-		
-		ObjectNode newNode = mapper.createObjectNode(); //Nodo a través del que vamos a enviar las cosas
-		
-		//Cosas que vamos a enviar
-		newNode.put("playerId", node.get("playerId").asText());
-		
-		//Pasamos estado del contrincante
-		//Posición
-		newNode.put("playerPositionX", node.get("playerPositionX").asDouble());
-		newNode.put("playerPositionY", node.get("playerPositionY").asDouble());
-		newNode.put("animation", node.get("animation")).asText();
-		
-		//Vida
-		newNode.put("lives", node.get("lives")).asInt();
-		//Con las vidas se puede calcular la victoria
-		
-		//armas. No se incluye HasWeapon porque no se llamara a la conexión si no se tiene una
-		newNode.put("isShooting", node.get("isShooting").asBoolean());
-		newNode.put("weapon", node.get("weapon").asText());
-		newNode.put("angle", node.get("angle").asDouble());
-
-		// model: newNode.put("message", node.get("message").asText());
-		
-		//envío del nodo
-		for(WebSocketSession participant : sessions.values()) {
-			if(!participant.getId().equals(session.getId())) { //para no enviarlo al que ha enviado los datos
-				participant.sendMessage(new TextMessage(newNode.toString()));
-			}
-		}
-	}
+	
 	
 	//Fuente: Ejercicios del aula
 	@Override //notificar un alta de sesión
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+		System.out.println("Alguien se ha conectado"); //PROBLEMA: No lo detecta?=??
+		
+		//Sistema de cola: con un nodo
+		
 		if(sessions.size()<=maxSessions) {
 			System.out.println("New user: " + session.getId());
 			ObjectNode aux = mapper.createObjectNode(); //nodo para indicar si está listo.
@@ -95,17 +66,22 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 			
 			//"booleano" para indicar si es host
 			ObjectNode host = mapper.createObjectNode();
+			
 			//creamos un nodo para el host 
 			if(sessions.isEmpty()) { //player 1/host
 				sessions.put(session.getId(), session); //añadimos la sesión al hashmap.
 				host.put("isHost", 1); //si es el primero que se conecta, actúa como host
 				session.sendMessage(new TextMessage("Player 1: Ready"));
+                System.out.println("Probando: Host Listo");   
+
 
 			}
 			else { //player 2
 				host.put("isHost", 0); //si no es el primero, actúa como cliente
 				sessions.put(session.getId(), session);
 				session.sendMessage(new TextMessage("Player 2: Ready"));
+                System.out.println("Probando: Cliente listo");   
+
 			}
 			
 		
@@ -121,4 +97,44 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 		sessions.remove(session.getId());
 	}
 	
+	
+	
+	
+	//para enviar los datos a los demás participantes.
+		//datos que enviar: cambios en posiciones de personajes, tipo de disparo, ángulo, origen y velocidad
+		//Se envía un solo nodo con todos los datos
+		
+		private void sendOtherParticipants(WebSocketSession session, JsonNode node) throws IOException {
+
+			System.out.println("Message sent: " + node.toString());
+			
+			ObjectNode newNode = mapper.createObjectNode(); //Nodo a través del que vamos a enviar las cosas
+			
+			//Cosas que vamos a enviar
+			newNode.put("playerId", node.get("playerId").asText());
+			
+			//Pasamos estado del contrincante
+			//Posición
+			newNode.put("playerPositionX", node.get("playerPositionX").asDouble());
+			newNode.put("playerPositionY", node.get("playerPositionY").asDouble());
+			newNode.put("animation", node.get("animation")).asText();
+			
+			//Vida
+			newNode.put("lives", node.get("lives")).asInt();
+			//Con las vidas se puede calcular la victoria
+			
+			//armas. No se incluye HasWeapon porque no se llamara a la conexión si no se tiene una
+			newNode.put("isShooting", node.get("isShooting").asBoolean());
+			newNode.put("weapon", node.get("weapon").asText());
+			newNode.put("angle", node.get("angle").asDouble());
+
+			// model: newNode.put("message", node.get("message").asText());
+			
+			//envío del nodo
+			for(WebSocketSession participant : sessions.values()) {
+				if(!participant.getId().equals(session.getId())) { //para no enviarlo al que ha enviado los datos
+					participant.sendMessage(new TextMessage(newNode.toString()));
+				}
+			}
+		}
 }

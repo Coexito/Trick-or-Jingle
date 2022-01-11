@@ -30,7 +30,7 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	//se podría añadir un número con las sesiones actuales abiertas pero
 	//podemos utilizar sessions.size para saberlo.
 	
-	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //hashmap de sesiones(?)
+	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //hashmap de sesiones
 	
 	private ObjectMapper mapper = new ObjectMapper();
 	

@@ -266,13 +266,47 @@ export class Game extends Phaser.Scene {
 	if(isSocketOpen){
 		if(player1){
 			 player1.update();
+			 sendDatap1();
+			 
 		}
 		else{
 			 player2.update();
+			 sendDatap2();
 		}
 	}
     this.checkWinners();
   }
+  
+  sendDatap1(){
+	connection.send(
+		JSON.stringify({
+			playerId: 1,
+			playerPositionX: player1.x,
+			playerPositionY: player1.y,
+			animation: player1.currentAnimation,
+			lives: player1.lives,
+			isShooting: player1.isShooting,
+			weapon: player1.weaponType,
+			angle: player1.arrow.angle
+		    })
+		  );
+	}
+	
+	 sendDatap2(){
+	connection.send(
+		JSON.stringify({
+			playerId: 2,
+			playerPositionX: player2.x,
+			playerPositionY: player2.y,
+			animation: player2.currentAnimation,
+			lives: player2.lives,
+			isShooting: player2.isShooting,
+			weapon: player2.weaponType,
+			angle: player2.arrow.angle
+		    })
+		  );
+	}
+  
   
 
   changeStage()
@@ -444,7 +478,7 @@ $(document).ready(function() {
 	function webSocketConnection(){
 		
 		//Fuente: Ejercicio 2 tema 5
-		connection = new WebSocket("ws://127.0.0.1:8080/trickorjingle");
+		connection = new WebSocket("ws://localhost:8080");
 		
 		connection.onerror = function(e) {
 			console.log("WS error: " + e);
@@ -507,4 +541,4 @@ function messageC(msg, connection){
 
 	
 
-}
+});

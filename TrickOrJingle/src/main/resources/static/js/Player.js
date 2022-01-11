@@ -80,18 +80,7 @@ export class Player extends Phaser.GameObjects.Sprite
             currentAnimation = "Jump";
         }
         
-        connection.send(
-		    JSON.stringify({
-		      playerId: this.idx,
-					playerPositionX: this.x,
-					playerPositionY: this.y,
-					animation: this.currentAnimation,
-					lives: this.lives,
-					isShooting: false,
-					weapon:this.weaponType,
-					angle: this.arrow.angle,
-		    })
-		  );
+        
     }
     movement2() //client movement
     {
@@ -122,39 +111,13 @@ export class Player extends Phaser.GameObjects.Sprite
             currentAnimation = "Jump";
         }
         
-        connection.send(
-		    JSON.stringify({
-		      playerId: this.idx,
-					playerPositionX: this.x,
-					playerPositionY: this.y,
-					animation: this.currentAnimation,
-					lives: this.lives,
-					isShooting: false,
-					weapon:this.weaponType,
-					angle: this.arrow.angle,
-		    })
-		  );
 
         return this;
     }
 
-    shooting1( _connection) //ShootingHost
+    shooting1() //ShootingHost
     {
-		var connection = _connection;
-        if (this.hasWeapon){
-			connection.send(
-				JSON.stringify({
-					playerId: this.idx,
-					playerPositionX: this.x,
-					playerPositionY: this.y,
-					animation: this.currentAnimation,
-					lives: this.lives,
-					isShooting: true,
-					weapon:this.weaponType,
-					angle: this.arrow.angle,
-
-				})
-			);
+		
             // update arrow position
             this.arrow.x = this.x;
             this.arrow.y = this.y;
@@ -212,23 +175,7 @@ export class Player extends Phaser.GameObjects.Sprite
     }
 
     shooting2() //shootingClient
-    {
-        if (this.hasWeapon)
-        {
-			connection.send(
-						JSON.stringify({
-							playerId: this.idx,
-							playerPositionX: this.x,
-							playerPositionY: this.y,
-							animation: this.currentAnimation,
-							lives: this.lives,
-							isShooting: true,
-							weapon:this.weaponType,
-							angle: this.arrow.angle,
-		
-						})
-			);
-			
+    {			
             // update arrow position
             this.arrow.x = this.x;
             this.arrow.y = this.y;
@@ -282,7 +229,7 @@ export class Player extends Phaser.GameObjects.Sprite
                     break;
             }
         }
-    }
+    
 
     shootGun()
     {
@@ -372,18 +319,6 @@ export class Player extends Phaser.GameObjects.Sprite
         {
             this.canBeDamaged = false;
             console.log("Damaged player" + this.idx + ", " + this.lives + " lives left");
-            connection.send(
-		    JSON.stringify({
-		      playerId: this.idx,
-					playerPositionX: this.x,
-					playerPositionY: this.y,
-					animation: this.currentAnimation,
-					lives: this.lives,
-					isShooting: false,
-					weapon:this.weaponType,
-					angle: this.arrow.angle,
-		    })
-		  );
             return true;
         }
         else // If not, dies :-(
@@ -393,18 +328,7 @@ export class Player extends Phaser.GameObjects.Sprite
 
             this.arrow.destroy();   // Destroys the pointer
             this.destroy();         // Destroys the player itself
-            connection.send(
-		    JSON.stringify({
-		      playerId: this.idx,
-					playerPositionX: this.x,
-					playerPositionY: this.y,
-					animation: this.currentAnimation,
-					lives: this.lives,
-					isShooting: false,
-					weapon:this.weaponType,
-					angle: this.arrow.angle,
-		    })
-		  );
+            
             return false;
         }
         
@@ -440,8 +364,9 @@ export class Player extends Phaser.GameObjects.Sprite
         }
     }
 
-    update(){
-
+    update()
+    {
+	
         if(this.alive) // If the player is alive
         {
             // Checks for the controls of each player based on the index
@@ -453,10 +378,9 @@ export class Player extends Phaser.GameObjects.Sprite
             else if(this.idx == 2)
             {
                 this.movement2();
-                this.shooting2()
+                this.shooting2();
             }
         }      
 
     }
 
-}

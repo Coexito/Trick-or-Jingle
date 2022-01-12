@@ -30,58 +30,37 @@ export class Login extends Phaser.Scene {
 		let password = this.userInput.getChildByName("password");
 		
 		let text = this.add.text(450,500, '').setScale(2);
-		let change = false; // boolean to change scene
+		let change = false; // boolean to change scene (at first is set to false)
 	    
 	    this.startButton = this.add.sprite(650, 600, 'button');	
 	    this.startButton.setInteractive().on('pointerdown', () => {
 			if(name.value != "" && password.value != "")
-			{			
-				// Checks if the user exists				
+			{			     	
 				$.ajax({
-			        method: "GET",
-			        async: false,
-			        url: "http://localhost:8080/password/"+name.value,
-			        success : function (userPassword) {
-						if (userPassword == password.value){
-							console.log("User " + name.value +" exists. Logging in");
-							change = true; // boolean to change scene
-						}
-						else {
-							console.log("Password doesn't match the existing user");
-							text.setText('Wrong password. Try again');
-						}
+					type: "POST",
+					async: false,
+					headers: {
+						'Accept': 'application/json',
+						'Content-type': 'application/json'
 					},
-					error : function () {
-						console.log("User does not exist.\nProcceeding to create it");
-						createUser(name.value, password.value);
-		     			change = true; // boolean to change scene
-					}
-					
-		     	})
+					url: "http://localhost:8080/users",
+					data: JSON.stringify({ nick: "" + name.value, password: "" + password.value }),
+					dataType: "json",
+					success : function (boolean) { // returned variable to check if we can change the scene
+							change = boolean;
+						}
+				})
 		     	
 		     	// Starts the next scene
-		     	if(change){	
+		     	if(change){ // if we access with an existing user and correct password or create a new one we can change the scene
 		     		this.scene.stop();
 	        		this.scene.start('mainmenu', { username: name.value});	
+				} else { // if the given password doesn't match the one of the existing user, we can't change the scene
+					text.setText('Wrong password. Try again'); // 
 				}
 	    	}
 	    });
     
 	}
   
-}
-
-
-function createUser(user, pass)
-{
-	$.ajax({
-		type: "POST",
-		headers: {
-			'Accept': 'application/json',
-			'Content-type' : 'application/json'	
-		},
-		url: "http://localhost:8080/users",
-		data: JSON.stringify( { nick: ""+user, password: ""+pass } ),
-		dataType: "json" 
-	})
 }

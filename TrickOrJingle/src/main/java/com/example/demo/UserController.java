@@ -68,31 +68,15 @@ public class UserController {
     	
     }
     
-    @GetMapping("/password/{nick}")
-    public String getPassword(@PathVariable("nick") String nick) {
-
-    	if(users.containsKey(nick))	// User is found
-    	{
-    		User user = users.get(nick);   
-            return user.getPassword();    		
-    	}
-    	else	// User is not found
-    	{
-    		throw new ResponseStatusException(
-    				  HttpStatus.NOT_FOUND, "entity not found"
-    		);
-    	}
-    	
-    }
-    
     @PostMapping("/users")
-    public ResponseEntity<Boolean> addUser(@RequestBody User newUser) 
+    public boolean addUser(@RequestBody User newUser) 
     {
     	String nick = newUser.getNick();	// Uses the user nick as key
+    	String password = newUser.getPassword();
     	
-    	if(!users.containsKey(nick))
+    	if(!users.containsKey(nick)) // if the user doesn't exist
     	{
-    		users.put(nick, newUser);
+    		users.put(nick, newUser); // we add the new user
     		
     		// Add user to the txt file
             try (Writer writer = new BufferedWriter(new FileWriter(usersFileURL, true))) // "true" parameter is for appending
@@ -109,10 +93,16 @@ public class UserController {
                 System.out.println("Error writing user");
             }
     		
-    		return new ResponseEntity<>(true, HttpStatus.CREATED);
+    		return true; // we create the user and continue to the next scene
+    		
+    	} else { // the user exists
+    		if(users.get(nick).getPassword().equals(password)) { // if the password given matches the stored one
+    			return true; // we can change the scene
+    		} else // if the password isn't the same
+    			return false; // we can't change the scene
     	}
-    	else
-    		return new ResponseEntity<>(false, HttpStatus.FOUND);
+    		
+    	
     } 
     
     
@@ -192,7 +182,6 @@ public class UserController {
 		   
 		   inputFile.delete();
 		   boolean successful = tempFile.renameTo(inputFile);
-		   
 		   
 		   users.remove(nick);
 	   }

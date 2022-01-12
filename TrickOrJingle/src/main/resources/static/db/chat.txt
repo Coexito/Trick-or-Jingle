@@ -14,3 +14,8 @@ AURORA: hola
 AURORA: hola
 AURORA: hola
 AURORA: hola
+AURORA: hola
+paco: q tal?
+AURORA: bien y tu?
+AURORA: hola
+AURORA GARCÍA RAIGÓN: hello

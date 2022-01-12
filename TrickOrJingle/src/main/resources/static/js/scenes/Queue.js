@@ -15,9 +15,11 @@ export class Queue extends Phaser.Scene{
 	    this.bg_queue = this.add.image(640, 340, 'background_queue');
 		
 		let text = this.add.text(475,500, 'OtherPlayerName').setScale(2);
-	    /*this.bg_start.setInteractive().on('pointerdown', () => {
+	    this.bg_queue.setInteractive().on('pointerdown', () => {
 	      this.scene.stop();
-	      this.scene.start("MainMenu");*/
-    //});
+	      this.scene.start("MainMenu");
+   		});
 	}
+	
 }
+

@@ -154,20 +154,20 @@ export class Game extends Phaser.Scene {
     // Edward animations
     this.anims.create({
         key: 'edwardLeft',
-        frames: this.anims.generateFrameNumbers('edward', { start: 0, end: 8 }),
+        frames: this.anims.generateFrameNumbers('edward', { start: 0, end: 10 }),
         frameRate: 15,
         repeat: -1
     });
 
     this.anims.create({
         key: 'edwardTurn',
-        frames: [ { key: 'edward', frame: 10 } ],
+        frames: [ { key: 'edward', frame: 11 } ],
         frameRate: 20
     });
 
     this.anims.create({
         key: 'edwardRight',
-        frames: this.anims.generateFrameNumbers('edward', { start: 11, end: 19 }), //fixed animation
+        frames: this.anims.generateFrameNumbers('edward', { start: 12, end: 22 }), //fixed animation
         frameRate: 15,
         repeat: -1
     });

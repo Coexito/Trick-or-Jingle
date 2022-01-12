@@ -16,19 +16,23 @@ public class TrickOrJingleApplication implements WebSocketConfigurer{ //implemen
 
 	public static void main(String[] args) {
 		SpringApplication.run(TrickOrJingleApplication.class, args);
+		System.out.println("Servidor creado");
+
 	}
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(gameHander(), "/game");
-		//de momento a "game" no le añadimos .setAllowedOrigins("*") porque no hay más páginas descargadas
-		//así evitamos problemas con el CORS
+		registry.addHandler(gameHander(), "/game").setAllowedOrigins("*");
+		System.out.println("Manejador añadido");
+
 		
 		
 	}
 	
 	@Bean //le indicamos a spring que se trata de un componente
 	public WebSocketEchoHandler gameHander() {
+		System.out.println("Creando manejador...");
+
 		return new WebSocketEchoHandler();
 	}
 

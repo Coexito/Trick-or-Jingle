@@ -22,15 +22,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+
+@EnableWebSocket
 public class WebSocketEchoHandler extends TextWebSocketHandler{
+	
 	//uso de hashmaps para evitar problemas con la concurrencia
 	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //hashmap de sesiones(?)
 	//a lo mejor se podrían hacer más hashmaps para otras cosas? idk
 	private ObjectMapper mapper = new ObjectMapper();
+	
+	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		System.out.println("400 OK. Message received: "
-	 + message.getPayload());
+		System.out.println("400 OK. Message received: " + message.getPayload());
 	JsonNode node = mapper.readTree(message.getPayload());
 	
 	sendOtherParticipants(session, node);
@@ -58,6 +62,7 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	//Ejercicios del aula
 	@Override //notificar un alta de sesión
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+		
 		System.out.println("New user: " + session.getId());
 		sessions.put(session.getId(), session);
 	}

@@ -5,6 +5,9 @@ import { Game } from './scenes/game.js';
 import { Gameover } from './scenes/gameover.js';
 import { Pause } from './scenes/pause.js';
 
+
+
+//var websocket = new WebSocket("ws://localhost:8080/prueba");
 const config = {
   type: Phaser.AUTO,
   width: 1280,
@@ -24,3 +27,4 @@ const config = {
 }
 
 var game = new Phaser.Game(config);
+

@@ -2,12 +2,17 @@ $(document).ready(function(){
   console.log('El DOM está cargado (login)')
 });
 
+let url;
 
 export class Login extends Phaser.Scene {
   constructor() {
     super({ key: 'login' });
 
     this.username = 'Anonymous';
+  }
+  
+  init(data) {
+    url = data.url;
   }
 
   preload() {
@@ -43,7 +48,7 @@ export class Login extends Phaser.Scene {
 						'Accept': 'application/json',
 						'Content-type': 'application/json'
 					},
-					url: "http://localhost:8080/users",
+					url: url + "users",
 					data: JSON.stringify({ nick: "" + name.value, password: "" + password.value }),
 					dataType: "json",
 					success : function (boolean) { // returned variable to check if we can change the scene
@@ -54,7 +59,7 @@ export class Login extends Phaser.Scene {
 		     	// Starts the next scene
 		     	if(change){ // if we access with an existing user and correct password or create a new one we can change the scene
 		     		this.scene.stop();
-	        		this.scene.start('mainmenu', { username: name.value});	
+	        		this.scene.start('mainmenu', { username: name.value, url: url});	
 				} else { // if the given password doesn't match the one of the existing user, we can't change the scene
 					text.setText('Wrong password. Try again'); // 
 				}

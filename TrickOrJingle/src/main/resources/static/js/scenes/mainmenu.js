@@ -1,3 +1,5 @@
+let url;
+
 export class MainMenu extends Phaser.Scene {
   constructor() {
     super({ key: 'mainmenu' });
@@ -8,6 +10,7 @@ export class MainMenu extends Phaser.Scene {
   
   init(data) {
     this.username = data.username;
+    url = data.url;
   }
 
   preload() {
@@ -59,7 +62,7 @@ export class MainMenu extends Phaser.Scene {
     this.startButton.setInteractive().on('pointerdown', () => {
       if(this.p1team != "None" || this.p2team != "None")
         this.scene.stop();
-        this.scene.start('game', { p1team: this.p1team, p2team: this.p2team, username: this.username });
+        this.scene.start('game', { p1team: this.p1team, p2team: this.p2team, username: this.username, url: url });
     });
     
     
@@ -71,19 +74,19 @@ export class MainMenu extends Phaser.Scene {
 		
 		$.ajax({
 	        method: "DELETE",
-	        url: "http://localhost:8080/users/"+username,
+	        url: url+ "users/" + username,
 	        success : function () {
 				console.log("User removed");
 			},
 			error : function () {
 				console.log("Failed to delete");
-				console.log("The URL was:\nlocalhost:8080/users/"+username)
+				console.log("The URL was:\n" + url + "users/"+username)
 			}
 	     })	
 	     	
 	     	// Changes scene after making the Delete  
 			this.scene.stop();
-	    	this.scene.start('login');
+	    	this.scene.start('login', {url: url});
     });
     
     
@@ -115,7 +118,7 @@ function sendMessage(user, message)
 			'Accept': 'application/json',
 			'Content-type' : 'application/json'	
 		},
-		url: "http://localhost:8080/chat",
+		url: url + "chat",
 		data: JSON.stringify( { user: ""+user, message: ""+message } ),
 		dataType: "json" 
 	})
@@ -126,7 +129,7 @@ function getMessage() {
 	for (let i = 0; i < 4; i++) {
 		$.ajax({
 			method: "GET",
-			url: "http://localhost:8080/chat/" + i.toString()
+			url: url + "chat/" + i.toString()
 		}).done(function(data){
 			if(data != "")
 				document.getElementById("message"+i.toString()).innerHTML = data;

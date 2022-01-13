@@ -1,6 +1,8 @@
 import { Player } from '../Player.js';
 import { Weapon } from '../Weapon.js';
 
+let url;
+
 var player1;
 var player2;
 
@@ -24,6 +26,7 @@ export class Game extends Phaser.Scene {
     this.player1team = data.p1team;
     this.player2team = data.p2team;
     this.username = data.username;
+    url = data.url;
     
   }
 

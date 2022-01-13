@@ -1,4 +1,4 @@
-Aurora;contraAurora;0
+Aurora;contraAurora;1
 Ceci;contraCeci;0
 Sergio;contraSergio;4
 AURORA GARCÍA RAIGÓN;hh;0

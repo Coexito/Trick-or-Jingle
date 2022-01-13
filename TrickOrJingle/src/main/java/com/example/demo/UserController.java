@@ -19,6 +19,8 @@ public class UserController {
     String usersFileURL = "src/main/resources/static/db/users.txt"; // Users file url
     String tempUsersFileURL = "src/main/resources/static/db/tempUsers.txt"; // File used to delete one user
     
+    private Map <String, User> currentUsers = new HashMap<String, User>();
+    
     public UserController()
     {
     	// Fills the memory users map using the txt file.
@@ -50,6 +52,10 @@ public class UserController {
         return users;
     }
     
+    @GetMapping("/currentUsers")
+    public Map<String, User> getCurrentUsers(){
+    	return currentUsers;
+    }
     
     @GetMapping("/users/{nick}")
     public User getUser(@PathVariable("nick") String nick) {

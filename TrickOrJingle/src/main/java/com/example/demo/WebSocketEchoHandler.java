@@ -30,6 +30,7 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //hashmap de sesiones(?)
 	//a lo mejor se podrían hacer más hashmaps para otras cosas? idk
 	private ObjectMapper mapper = new ObjectMapper();
+	private boolean ready = false;
 	private int maxSessions = 2;
 	
 	
@@ -38,15 +39,15 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 		
 		System.out.println("400 OK. Message received: " + message.getPayload());
 		JsonNode node = mapper.readTree(message.getPayload());
-		
-		sendOtherParticipants(session, node);
+		if(ready )
+		sendOtherParticipantsInGame(session, node);
 	}
 	
 	//para enviar los datos a los demás participantes.
 	//datos que enviar: cambios en posiciones de personajes, tipo de disparo, ángulo, origen y velocidad
 
-	private void sendOtherParticipants(WebSocketSession session, JsonNode node) throws IOException {
-
+	private void sendOtherParticipantsInGame(WebSocketSession session, JsonNode node) throws IOException {
+		
 		System.out.println("Message sent: " + node.toString());
 		
 		ObjectNode newNode = mapper.createObjectNode();

@@ -3,6 +3,7 @@
 let shotgunCooldown1 = false; // at the start it hasn't used any weapons so they don't need to cooldown
 let gunCooldown1 = false;
 let bombCooldown1 = false;
+let currentAnimation = "turn";
 
 // player 2
 let shotgunCooldown2 = false;
@@ -55,19 +56,22 @@ export class Player extends Phaser.GameObjects.Sprite
         {
             this.body.setVelocityX(-this.speed);
             this.anims.play(this.sprite+'Left', true);
+            currentAnimation = "Left";
         }
         else if (this.scene.d_key.isDown)
         {
             this.body.setVelocityX(this.speed);
             this.anims.play(this.sprite+'Right', true);
+            currentAnimation = "Right";
         }
         else
         {
             this.body.setVelocityX(0);
             this.anims.play(this.sprite+'Turn');
+            currentAnimation = "Turn";
         }
 
-        if ((Phaser.Input.Keyboard.JustDown(this.scene.w_key) && this.body.touching.down))
+        if ((Phaser.Input.Keyboard.JustDown(this.scene.w_key) && this.body.touching.down)) //jump
         {
             this.body.setVelocityY(-470);
         }
@@ -75,7 +79,7 @@ export class Player extends Phaser.GameObjects.Sprite
     movement2() //client
     {
         // Movement
-        if (this.scene.cursors.left.isDown)
+        if (this.scene.a_key.isDown)
         {
             this.body.setVelocityX(-this.speed);
             this.anims.play(this.sprite+'Left', true);

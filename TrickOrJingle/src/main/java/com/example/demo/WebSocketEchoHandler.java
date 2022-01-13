@@ -39,7 +39,7 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 		
 		System.out.println("400 OK. Message received: " + message.getPayload());
 		JsonNode node = mapper.readTree(message.getPayload());
-		if(ready )
+		if(ready)
 		sendOtherParticipantsInGame(session, node);
 	}
 	

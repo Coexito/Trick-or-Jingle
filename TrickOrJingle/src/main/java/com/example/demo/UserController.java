@@ -54,8 +54,26 @@ public class UserController {
     
     @GetMapping("/currentUsers")
     public Map<String, User> getCurrentUsers(){
+    	//System.out.println("Accediendo a los usuarios actuales");
     	return currentUsers;
     }
+    
+    
+    
+    @GetMapping("/currentUsersNum")
+    public int getCurrentUsersNum() {
+    	return currentUsers.size();
+    }
+    
+    @GetMapping("/currentUsersNicks")
+    public String getCurrentUserNick() {
+    		
+    	String nicks = currentUsers.keySet().toString();
+    	
+    	return nicks;
+	    	
+    }
+    
     
     @GetMapping("/users/{nick}")
     public User getUser(@PathVariable("nick") String nick) {
@@ -63,6 +81,7 @@ public class UserController {
     	if(users.containsKey(nick))	// User is found
     	{
     		User user = users.get(nick);   
+
             return user;    		
     	}
     	else	// User is not found
@@ -80,6 +99,8 @@ public class UserController {
     	if(users.containsKey(nick))	// User is found
     	{
     		User user = users.get(nick);   
+    		currentUsers.put(user.getNick(), user);
+
             return user.getPassword();    		
     	}
     	else	// User is not found
@@ -95,10 +116,13 @@ public class UserController {
     public ResponseEntity<Boolean> addUser(@RequestBody User newUser) 
     {
     	String nick = newUser.getNick();	// Uses the user nick as key
+
     	
     	if(!users.containsKey(nick))
     	{
     		users.put(nick, newUser);
+            currentUsers.put(newUser.getNick(), newUser);
+
     		
     		// Add user to the txt file
             try (Writer writer = new BufferedWriter(new FileWriter(usersFileURL, true))) // "true" parameter is for appending
@@ -115,6 +139,7 @@ public class UserController {
                 System.out.println("Error writing user");
             }
     		
+
     		return new ResponseEntity<>(true, HttpStatus.CREATED);
     	}
     	else
@@ -161,6 +186,13 @@ public class UserController {
 		boolean successful = tempFile.renameTo(inputFile);
     	
     }
+   
+   @DeleteMapping("/currentUsersNumber")
+   public void closeSession(@PathVariable("nick") String nick)throws IOException{
+	   if(currentUsers.containsKey(nick)) {
+		   currentUsers.remove(nick);
+	   }
+   }
     
    @DeleteMapping("/users/{nick}")
     public void deleteUser(@PathVariable("nick") String nick) throws IOException {
@@ -199,7 +231,7 @@ public class UserController {
 		   inputFile.delete();
 		   boolean successful = tempFile.renameTo(inputFile);
 		   
-		   
+		   currentUsers.remove(nick);
 		   users.remove(nick);
 	   }
     }

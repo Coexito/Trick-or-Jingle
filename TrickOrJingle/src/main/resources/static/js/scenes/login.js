@@ -64,8 +64,6 @@ export class Login extends Phaser.Scene {
 		     		this.scene.stop();
 //<<<<<<< Updated upstream
 	        		
-//=======
-		     		
 	        		this.scene.start('Queue', { username: name.value});	
 				} else { // if the given password doesn't match the one of the existing user, we can't change the scene
 					text.setText('Wrong password. Try again'); // 

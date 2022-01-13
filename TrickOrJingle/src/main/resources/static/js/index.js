@@ -42,6 +42,7 @@ $(document).ready(function() {
 	
 	connection.onopen = function(){
 		console.log("Opening socket");
+		
 	}
 	connection.onmessage = function(msg) {
 		console.log("WS message: " + msg.data);

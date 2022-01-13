@@ -31,9 +31,10 @@ $(document).ready(function() {
 	
 	var game = new Phaser.Game(config);
 
+	var myIp = 'localhost:';
+	var port = '8080';
 
-
-	var connection = new WebSocket('ws://localhost:8080');
+	var connection = new WebSocket('ws://localhost:8080/game');
 	
 	connection.onerror = function(e) {
 		console.log("WS error: " + e);

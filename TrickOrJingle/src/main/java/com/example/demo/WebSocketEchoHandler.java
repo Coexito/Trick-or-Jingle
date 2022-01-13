@@ -42,7 +42,7 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	
 	//para enviar los datos a los demás participantes.
 	//datos que enviar: cambios en posiciones de personajes, tipo de disparo, ángulo, origen y velocidad
-	//habría que enviar varios nodos del árbol?
+
 	private void sendOtherParticipants(WebSocketSession session, JsonNode node) throws IOException {
 
 		System.out.println("Message sent: " + node.toString());

@@ -30,14 +30,16 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //hashmap de sesiones(?)
 	//a lo mejor se podrían hacer más hashmaps para otras cosas? idk
 	private ObjectMapper mapper = new ObjectMapper();
+	private int maxSessions = 2;
 	
 	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+		
 		System.out.println("400 OK. Message received: " + message.getPayload());
-	JsonNode node = mapper.readTree(message.getPayload());
-	
-	sendOtherParticipants(session, node);
+		JsonNode node = mapper.readTree(message.getPayload());
+		
+		sendOtherParticipants(session, node);
 	}
 	
 	//para enviar los datos a los demás participantes.
@@ -63,8 +65,15 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	@Override //notificar un alta de sesión
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		
-		System.out.println("New user: " + session.getId());
-		sessions.put(session.getId(), session);
+		if(sessions.size()<maxSessions) //control de usuarios
+		{
+			System.out.println("New user: " + session.getId());
+			sessions.put(session.getId(), session);
+		}else {
+			System.out.println("Server full. Try again later");
+			
+		}
+		
 	}
 	
 	@Override //notificar una baja de sesión

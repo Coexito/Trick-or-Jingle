@@ -49,7 +49,7 @@ export class Player extends Phaser.GameObjects.Sprite
 
     }
 
-    movement1()
+    movement1()  //Host
     {
         if (this.scene.a_key.isDown)
         {
@@ -72,7 +72,7 @@ export class Player extends Phaser.GameObjects.Sprite
             this.body.setVelocityY(-470);
         }
     }
-    movement2()
+    movement2() //client
     {
         // Movement
         if (this.scene.cursors.left.isDown)

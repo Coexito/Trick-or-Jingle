@@ -10,6 +10,7 @@ var maxUsers = 2;
 var activePrevUsersNumber = 0;
 var activeUsersNumber = 0;
 
+var conn;
 var username;
 var countdown = 10;
 var countdownText;
@@ -25,8 +26,9 @@ export class Queue extends Phaser.Scene{
 
 		
 	}
-	init (data){
+	init (data, connection){
 		username = data.username;
+		conn = connection;
 	}
 	preload(){
 		//background
@@ -68,7 +70,7 @@ export class Queue extends Phaser.Scene{
 				updateText();
      			if(countdown <= 0){
 					this.scene.stop();
-	      			this.scene.start("mainmenu", {username:username});
+	      			this.scene.start("mainmenu", {username:username, connection:conn});
 				}
 				
 			}

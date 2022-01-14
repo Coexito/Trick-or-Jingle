@@ -7,7 +7,7 @@ import { Pause } from './scenes/pause.js';
 import { Queue } from './scenes/queue.js';
 
 
-$(document).ready(function() {
+
 	
 	const config = {
 	  type: Phaser.AUTO,
@@ -33,26 +33,7 @@ $(document).ready(function() {
 
 	
 
-	var connection = new WebSocket('ws://localhost:8080/game');
-	
-	connection.onerror = function(e) {
-		console.log("WS error: " + e);
-	}
-	
-	connection.onopen = function(){
-		console.log("Opening socket");
-		
-	}
-	connection.onmessage = function(msg) {
-		console.log("WS message: " + msg.data);
-		var message = JSON.parse(msg.data)
-	}
-	connection.onclose = function() {
-		console.log("Closing socket");
-	}
 	
 	
 		
 
-		}
-	);

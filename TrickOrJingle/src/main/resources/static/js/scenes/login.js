@@ -1,7 +1,8 @@
-$(document).ready(function(){
-  console.log('El DOM está cargado (login)')
-});
 
+ 
+
+
+var connection;
 
 export class Login extends Phaser.Scene {
   constructor() {
@@ -64,7 +65,7 @@ export class Login extends Phaser.Scene {
 		     		this.scene.stop();
 //<<<<<<< Updated upstream
 	        		
-	        		this.scene.start('Queue', { username: name.value});	
+	        		this.scene.start('Queue', { username: name.value, conn: connection});	
 				} else { // if the given password doesn't match the one of the existing user, we can't change the scene
 					text.setText('Wrong password. Try again'); // 
 //>>>>>>> Stashed changes
@@ -75,6 +76,35 @@ export class Login extends Phaser.Scene {
 	}
   
 }
+
+
+$(document).ready(function() {
+	 console.log('El DOM está cargado (login)');
+		
+	
+	var connection = new WebSocket('ws://localhost:8080/game');
+	
+	connection.onerror = function(e) {
+		console.log("WS error: " + e);
+	}
+	
+	connection.onopen = function(){
+		console.log("Opening socket");
+		
+	}
+	connection.onmessage = function(msg) {
+		console.log("WS message: " + msg.data);
+		var message = JSON.parse(msg.data)
+	}
+	connection.onclose = function() {
+		console.log("Closing socket");
+	}
+	
+	
+		
+
+		}
+	);
 
 
 function createUser(user, pass)

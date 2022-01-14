@@ -6,8 +6,10 @@ export class MainMenu extends Phaser.Scene {
     this.p2team = "None";
   }
   
-  init(data) {
+  init(data, conn) {
     this.username = data.username;
+    this.connection = conn;
+    console.log("Conexión realizada con éxito");
   }
 
   preload() {

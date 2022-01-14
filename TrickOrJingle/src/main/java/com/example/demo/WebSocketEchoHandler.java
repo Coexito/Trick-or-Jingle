@@ -31,7 +31,6 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	
 
 	private ObjectMapper mapper = new ObjectMapper();
-	private boolean ready = false;
 	private int maxSessions = 2;
 	
 	
@@ -40,7 +39,7 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 		
 		System.out.println("400 OK. Message received: " + message.getPayload());
 		JsonNode node = mapper.readTree(message.getPayload());
-		if(ready)
+		
 		sendOtherParticipantsInGame(session, node);
 	}
 	
@@ -52,29 +51,51 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 		System.out.println("Message sent: " + node.toString());
 		
 		ObjectNode newNode = mapper.createObjectNode();
-		newNode.put("name", node.get("name").asText());
-		newNode.put("message", node.get("message").asText());
-		
-		
+        
+        newNode.put("x", node.get("x").asDouble());
+        newNode.put("y", node.get("y").asDouble());
+        newNode.put("isShooting", node.get("isShooting").asBoolean());
+        newNode.put("canBeDamaged", node.get("canBeDamaged").asBoolean());
+        newNode.put("lives", node.get("lives").asInt());
+        
+        
 		for(WebSocketSession participant : sessions.values()) {
 			if(!participant.getId().equals(session.getId())) {
 				participant.sendMessage(new TextMessage(newNode.toString()));
 			}
 		}
+		
 	}
 	
 	//Ejercicios del aula
 	@Override //notificar un alta de sesión
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		
+		ObjectNode host = mapper.createObjectNode();
+	
+		ObjectNode ready = mapper.createObjectNode();
 		if(sessions.size()<maxSessions) //control de usuarios
 		{
 			System.out.println("New user: " + session.getId());
+			
+			
+			host.put("isHost", 0); //Opción por defecto
+			
+			if(sessions.isEmpty()) {
+				host.put("isHost", 1);
+				System.out.println("Host conectado");
+				sessions.put(session.getId(), session);
+			}
+			ready.put("isReady", 1);
 			sessions.put(session.getId(), session);
+
+			
 		}else {
 			System.out.println("Server full. Try again later");
 			
 		}
+		
+		session.sendMessage(new TextMessage(host.toString()));
+
 		
 	}
 	

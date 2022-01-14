@@ -1,5 +1,4 @@
 //QUEUE SCREEN
-import { Player } from '../Player.js';
 
 
 var timedEventText;
@@ -10,7 +9,7 @@ var maxUsers = 2;
 var activePrevUsersNumber = 0;
 var activeUsersNumber = 0;
 
-var conn;
+var connection;
 var username;
 var countdown = 10;
 var countdownText;
@@ -26,9 +25,9 @@ export class Queue extends Phaser.Scene{
 
 		
 	}
-	init (data, connection){
+	init (data){
 		username = data.username;
-		conn = connection;
+
 	}
 	preload(){
 		//background
@@ -72,10 +71,11 @@ export class Queue extends Phaser.Scene{
 				timedEventText = this.time.addEvent({ delay: 1000, callback: updateText, callbackScope: this, loop: true });
 
 				updateText();
-				if (countdown <= 0) {
+				
+			}
+			if (countdown <= 0) {
 					this.scene.stop();
-					this.scene.start("mainmenu", { username: username, connection: conn });
-				}
+					this.scene.start("game", { username: username });
 
 			}
 		}
@@ -105,6 +105,7 @@ function updateActiveUsers(){
 			console.log("Se ha conectado alguien. El número actual de usuarios es: " + activeUsersNumber);
 		else if(activePrevUsersNumber > activeUsersNumber){
 			console.log("Alguien se ha desconectado. El número actual de usuarios es: " + activeUsersNumber);
+			conn.close();
 			
 			}
 			
@@ -120,9 +121,7 @@ function getActiveUsers(){
 			      dataType: 'json'
 			      }).done(function(data) {
 					activeUsersNumber = data;
-		      	});
-		      	
-		 
+		      	}); 
 }  
 
 

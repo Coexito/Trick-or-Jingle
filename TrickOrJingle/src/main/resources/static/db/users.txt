@@ -3,5 +3,5 @@ Ceci;contraCeci;0
 Sergio;contraSergio;4
 AURORA GARCÍA RAIGÓN;hh;0
 AURORA;hh;0
-hola;adios;0
-sesilia;sesilia;0
+hola;adios;2
+sesilia;sesilia;1

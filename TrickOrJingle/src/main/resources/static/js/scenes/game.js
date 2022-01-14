@@ -4,8 +4,16 @@ import { Weapon } from '../Weapon.js';
 var player1;
 var player2;
 
+var host;
+
 var weapon1;
 var weapon2;
+
+
+var connection;
+var parsedData;
+var isSocketOpen = false;
+var ready = false;
 
 var text;
 var countdownTime;
@@ -21,9 +29,10 @@ export class Game extends Phaser.Scene {
   }
   
   init(data) {
-    this.player1team = data.p1team;
-    this.player2team = data.p2team;
+    this.player1team = "christmas"; //host
+    this.player2team = "halloween"; //client
     this.username = data.username;
+  
     
   }
 
@@ -81,7 +90,11 @@ export class Game extends Phaser.Scene {
   }
 
   create() {
+	
+	
+	connect();
 
+	
     // add audio to scene
     this.bombSound = this.sound.add('Bomb_impact');
     this.shotgunSound = this.sound.add('Fire_shotgun');
@@ -265,10 +278,34 @@ export class Game extends Phaser.Scene {
   }
 
   update() {
+	if(isSocketOpen){
+		
+	
     player1.update();
     player2.update();
+    connection.send(
+		JSON.stringify({
+			x: player1.x,
+			y: player1.y,
+			isShooting: player1.isShooting,
+			canBeDamaged: player1.canBeDamaged,
+			lives: player1.lives
+			
+		}));
+		
+	connection.send(
+		JSON.stringify({
+			x: player2.x,
+			y: player2.y,
+			isShooting: player2.isShooting,
+			canBeDamaged: player2.canBeDamaged,
+			lives: player2.lives
+			
+		}));
+    
+    
 
-    this.checkWinners();
+    this.checkWinners();}
   }
 
   changeStage()
@@ -306,9 +343,42 @@ export class Game extends Phaser.Scene {
         this.scene.stop();
         this.scene.start("gameover", { winnerteam: this.player1team, username: this.username, win: true });
     }
-  }
-
+    
+   }
 }
+	
+	
+	function messageHost(parsedData){ //Mensaje para el host
+		player2.x = parsedData.x;
+		player2.y = parsedData.y;
+		player2.isShooting = parsedData.isShooting;
+		player2.canBeDamaged = parsedData.canBeDamaged;
+		
+		if(player2.isShooting){
+			player2.shooting2();
+		}
+		
+		player2.lives = parsedData.lives;
+		
+	}
+	
+	function messageClient(parsedData){ //Mensaje para el host
+		player1.x = parsedData.x;
+		player1.y = parsedData.y;
+		player1.isShooting = parsedData.isShooting;
+		player1.canBeDamaged = parsedData.canBeDamaged;
+		
+		if(player1.isShooting){
+			player1.shooting1();
+		}
+		
+		player1.lives = parsedData.lives;
+		
+	}
+	
+  
+
+
 
 
 function updateText() {
@@ -325,6 +395,56 @@ function updateWeapon() {
       weapon1.updateWeapon();
       weapon2.updateWeapon();
     }
+}
+
+
+function connect(){
+	 
+		
+	
+	connection = new WebSocket('ws://localhost:8080/game');
+	
+	connection.onerror = function(e) {
+		console.log("WS error: " + e);
+	}
+	
+	connection.onopen = function(){
+		console.log("Opening socket");
+		isSocketOpen = true;
+		
+	}
+	connection.onmessage = function(data) {
+		
+		
+		console.log("Mensaje recibido");
+		
+		parsedData = JSON.parse(data.data);
+		if(parsedData.isHost == 1){
+			host = 1;
+		}else if(host == 1){
+			console.log("Aquí host");
+			messageHost(parsedData);
+			
+		}else{
+			host = 0;
+			console.log("Aquí cliente");
+			
+			messageClient(parsedData);
+		}
+		
+		console.log("WS message: " + data.data);
+		var message = JSON.parse(data.data)
+	}
+	
+	
+	
+	connection.onclose = function() {
+		console.log("Closing socket");
+	}
+	
+	
+		
+
 }
 
 function outOfTime() {    
@@ -345,6 +465,8 @@ function outOfTime() {
     }
     
 }
+
+
 
 // -- Bullet collisions --
 function bulletOnWall(platforms, bullet)

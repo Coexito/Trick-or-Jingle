@@ -50,13 +50,14 @@ export class Player extends Phaser.GameObjects.Sprite
 
     }
 
-    movement1()  //Host
+    movement()  //Host
     {
-        if (this.scene.a_key.isDown)
+        if (this.scene.a_key.isDown) //left
         {
             this.body.setVelocityX(-this.speed);
             this.anims.play(this.sprite+'Left', true);
             currentAnimation = "Left";
+            
         }
         else if (this.scene.d_key.isDown)
         {
@@ -75,8 +76,12 @@ export class Player extends Phaser.GameObjects.Sprite
         {
             this.body.setVelocityY(-470);
         }
+        
+        
+
     }
-    movement2() //client
+    
+    movement2(connection) //client
     {
         // Movement
         if (this.scene.a_key.isDown)
@@ -104,7 +109,7 @@ export class Player extends Phaser.GameObjects.Sprite
         return this;
     }
 
-    shooting1()
+    shooting1() //host
     {
         if (this.hasWeapon){
             // update arrow position
@@ -162,8 +167,8 @@ export class Player extends Phaser.GameObjects.Sprite
             }
         }
     }
-
-    shooting2()
+	
+    shooting2()//client
     {
         if (this.hasWeapon)
         {
@@ -359,12 +364,12 @@ export class Player extends Phaser.GameObjects.Sprite
             // Checks for the controls of each player based on the index
             if(this.idx == 1)
             {
-                this.movement1();
+                this.movement();
                 this.shooting1();
             }  
             else if(this.idx == 2)
             {
-                this.movement2();
+                this.movement();
                 this.shooting2()
             }
         }      

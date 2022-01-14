@@ -11,15 +11,15 @@ export class Pause extends Phaser.Scene {
 
   preload() {
 
-    this.load.image('background_pause', '../../Resources/Art/UI/SC_Pause/SC_Pause_base.png');
-    this.load.image('bt_pause_continue', '../../Resources/Art/UI/SC_Pause/BT_continue.png');
-    this.load.image('bt_pause_controls', '../../Resources/Art/UI/SC_Pause/BT_controls.png');
-    this.load.image('bt_pause_credits', '../../Resources/Art/UI/SC_Pause/BT_credits.png');
-    this.load.image('bt_pause_restart', '../../Resources/Art/UI/SC_Pause/BT_restart.png');
+    this.load.image('background_pause', './Resources/Art/UI/SC_Pause/SC_Pause_base.png');
+    this.load.image('bt_pause_continue', './Resources/Art/UI/SC_Pause/BT_continue.png');
+    this.load.image('bt_pause_controls', './Resources/Art/UI/SC_Pause/BT_controls.png');
+    this.load.image('bt_pause_credits', './Resources/Art/UI/SC_Pause/BT_credits.png');
+    this.load.image('bt_pause_restart', './Resources/Art/UI/SC_Pause/BT_restart.png');
 
-    this.load.image('bt_pause_vol_down', '../../Resources/Art/UI/SC_Pause/BT_Minus.png');
-    this.load.image('bt_pause_base_vol', '../../Resources/Art/UI/SC_Pause/base_volume.png');
-    this.load.image('bt_pause_vol_up', '../../Resources/Art/UI/SC_Pause/BT_Plus.png');
+    this.load.image('bt_pause_vol_down', './Resources/Art/UI/SC_Pause/BT_Minus.png');
+    this.load.image('bt_pause_base_vol', './Resources/Art/UI/SC_Pause/base_volume.png');
+    this.load.image('bt_pause_vol_up', './Resources/Art/UI/SC_Pause/BT_Plus.png');
   }
   
   create() {

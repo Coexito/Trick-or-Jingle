@@ -6,10 +6,10 @@ export class StartMenu extends Phaser.Scene {
 
 
   preload() {
-    this.load.image('background_startmenu', '../../Resources/Art/UI/SC_start.png');
+    this.load.image('background_startmenu', './Resources/Art/UI/SC_start.png');
 
     // music
-    this.load.audio('Halloween_lofi','Resources/Sounds/Music/halloween_lofi.wav');
+    this.load.audio('Halloween_lofi','./Resources/Sounds/Music/halloween_lofi.wav');
 
   }
   

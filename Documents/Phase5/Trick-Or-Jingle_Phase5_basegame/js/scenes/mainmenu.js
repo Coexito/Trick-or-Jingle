@@ -14,16 +14,16 @@ export class MainMenu extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('welcome', '../../Resources/Art/UI/SC_Choose/BT_select_small.png');
-    this.load.image('background', '../../Resources/Art/UI/SC_Choose/SC_choose_base.png');
+    this.load.image('welcome', './Resources/Art/UI/SC_Choose/BT_select_small.png');
+    this.load.image('background', './Resources/Art/UI/SC_Choose/SC_choose_base.png');
 
-    this.load.image('h_button_small', '../../Resources/Art/UI/SC_Choose/BT_halloween_small.png');
-    this.load.image('c_button_small', '../../Resources/Art/UI/SC_Choose/BT_christmas_small.png');
-    this.load.image('h_button_big', '../../Resources/Art/UI/SC_Choose/BT_halloween_big.png');
-    this.load.image('c_button_big', '../../Resources/Art/UI/SC_Choose/BT_christmas_big.png');
+    this.load.image('h_button_small', './Resources/Art/UI/SC_Choose/BT_halloween_small.png');
+    this.load.image('c_button_small', './Resources/Art/UI/SC_Choose/BT_christmas_small.png');
+    this.load.image('h_button_big', './Resources/Art/UI/SC_Choose/BT_halloween_big.png');
+    this.load.image('c_button_big', './Resources/Art/UI/SC_Choose/BT_christmas_big.png');
 
-    this.load.image('button', '../../Resources/Art/UI/SC_Choose/BT_select_small.png');
-    this.load.image('button_ready', '../../Resources/Art/UI/SC_Choose/BT_select_big.png');
+    this.load.image('button', './Resources/Art/UI/SC_Choose/BT_select_small.png');
+    this.load.image('button_ready', './Resources/Art/UI/SC_Choose/BT_select_big.png');
     
   }
   

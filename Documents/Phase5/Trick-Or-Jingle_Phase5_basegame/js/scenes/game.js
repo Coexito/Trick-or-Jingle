@@ -29,26 +29,26 @@ export class Game extends Phaser.Scene {
 
   preload() {
     // weapons assets
-    this.load.image('bomb', '../Resources/Art/Weapons/bomb.png');
-    this.load.image('explosion', '../Resources/Art/Weapons/explosion.png');
-    this.load.image('gun', '../Resources/Art/Weapons/gun.png');
-    this.load.image('shotgun', '../Resources/Art/Weapons/shotgun.png');
+    this.load.image('bomb', './Resources/Art/Weapons/bomb.png');
+    this.load.image('explosion', './Resources/Art/Weapons/explosion.png');
+    this.load.image('gun', './Resources/Art/Weapons/gun.png');
+    this.load.image('shotgun', './Resources/Art/Weapons/shotgun.png');
     this.load.spritesheet('weapons', 
-        '../Resources/Art/Weapons/weapons.png',
+        './Resources/Art/Weapons/weapons.png',
         { frameWidth: 600, frameHeight: 600 }
     );
-    this.load.image('bullet', '../Resources/Art/Weapons/bullet.png');
-    this.load.image('bulletshotgun', '../Resources/Art/Weapons/bulletshotgun.png');
+    this.load.image('bullet', './Resources/Art/Weapons/bullet.png');
+    this.load.image('bulletshotgun', './Resources/Art/Weapons/bulletshotgun.png');
     // pause button
-    this.load.image('pause_button', '../Resources/Art/UI/BT_pause.png');
+    this.load.image('pause_button', './Resources/Art/UI/BT_pause.png');
 
     // players sprites
     this.load.spritesheet('maria', 
-        '../Resources/Art/Sprites/N_MariaKarei/SPS_MariaKarei_RUN.png',
+        './Resources/Art/Sprites/N_MariaKarei/SPS_MariaKarei_RUN.png',
         { frameWidth: 182, frameHeight: 249 }
     );
     this.load.spritesheet('edward', 
-        '../Resources/Art/Sprites/H_EdwardCullon/spritesheet_edward.png',
+        './Resources/Art/Sprites/H_EdwardCullon/spritesheet_edward.png',
         { frameWidth: 182, frameHeight: 244 }
     );
 
@@ -57,22 +57,22 @@ export class Game extends Phaser.Scene {
 
     // stage assets
         // main walls
-    this.load.image('rightWall', '../Resources/Art/Scenery/Platforms/BasicWalls/rightWall.png');
-    this.load.image('leftWall', '../Resources/Art/Scenery/Platforms/BasicWalls/leftWall.png');
-    this.load.image('ground', '../Resources/Art/Scenery/Platforms/BasicWalls/ground.png');
-    this.load.image('ceiling', '../Resources/Art/Scenery/Platforms/BasicWalls/ceiling.png');
-    this.load.image('central', '../Resources/Art/Scenery/Platforms/BasicWalls/central.png')
-    this.load.image('grass', '../Resources/Art/Scenery/Platforms/BasicWalls/grass.png');
+    this.load.image('rightWall', './Resources/Art/Scenery/Platforms/BasicWalls/rightWall.png');
+    this.load.image('leftWall', './Resources/Art/Scenery/Platforms/BasicWalls/leftWall.png');
+    this.load.image('ground', './Resources/Art/Scenery/Platforms/BasicWalls/ground.png');
+    this.load.image('ceiling', './Resources/Art/Scenery/Platforms/BasicWalls/ceiling.png');
+    this.load.image('central', './Resources/Art/Scenery/Platforms/BasicWalls/central.png')
+    this.load.image('grass', './Resources/Art/Scenery/Platforms/BasicWalls/grass.png');
         // backgrounds & platforms spritesheet
     this.load.spritesheet('stage_spritesheet', 
-        '../Resources/Art/Scenery/stage_spritesheet.png',
+        './Resources/Art/Scenery/stage_spritesheet.png',
         { frameWidth: 1280, frameHeight: 680 }
     );
         // basic platforms
-    this.load.image('base_bigcandy_platform', '../Resources/Art/Scenery/Platforms/Base/base_bigcandy_platform.png');
-    this.load.image('base_hw_platform', '../Resources/Art/Scenery/Platforms/Base/base_hw_platform.png');
-    this.load.image('base_ribbon_platform', '../Resources/Art/Scenery/Platforms/Base/base_ribbon_platform.png');
-    this.load.image('base_smallcandy_platform', '../Resources/Art/Scenery/Platforms/Base/base_smallcandy_platform.png');
+    this.load.image('base_bigcandy_platform', './Resources/Art/Scenery/Platforms/Base/base_bigcandy_platform.png');
+    this.load.image('base_hw_platform', './Resources/Art/Scenery/Platforms/Base/base_hw_platform.png');
+    this.load.image('base_ribbon_platform', './Resources/Art/Scenery/Platforms/Base/base_ribbon_platform.png');
+    this.load.image('base_smallcandy_platform', './Resources/Art/Scenery/Platforms/Base/base_smallcandy_platform.png');
     
     // preload sounds
     this.load.audio('Bomb_impact', 'Resources/Sounds/sounds/Bomb_impact.wav');

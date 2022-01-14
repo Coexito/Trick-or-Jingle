@@ -8,10 +8,10 @@ export class Gameover extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('background_endgame_christmas', '../../Resources/Art/UI/SC_Win_Christmas/SC_Win_Christmas_base.png');
-    this.load.image('background_endgame_halloween', '../../Resources/Art/UI/SC_Win_Halloween/SC_win_halloween_base.png');
-    this.load.image('background_endgame_draw', '../../Resources/Art/UI/SC_Draw/SC_draw_base.png');
-    this.load.image('btn_endgame_rematch', '../../Resources/Art/UI/SC_Win_Halloween/BT_rematch.png');
+    this.load.image('background_endgame_christmas', './Resources/Art/UI/SC_Win_Christmas/SC_Win_Christmas_base.png');
+    this.load.image('background_endgame_halloween', './Resources/Art/UI/SC_Win_Halloween/SC_win_halloween_base.png');
+    this.load.image('background_endgame_draw', './Resources/Art/UI/SC_Draw/SC_draw_base.png');
+    this.load.image('btn_endgame_rematch', './Resources/Art/UI/SC_Win_Halloween/BT_rematch.png');
   }
   
   create() {

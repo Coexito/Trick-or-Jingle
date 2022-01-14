@@ -42,7 +42,7 @@ export class Queue extends Phaser.Scene{
 	    textUsers = this.add.text(100, 100, 'clientes conectados: ' + activeUsersNumber.toString());
 	    countdownText = this.add.text(600,600, " ");
 	    
-	    
+	    this.maxUsersIter = 0;
 
 	    //let text = this.add.text(100, 100, activeUsersNumber.toString());
 		//let text = this.add.text(475,500, 'OtherPlayerName').setScale(2);
@@ -63,16 +63,20 @@ export class Queue extends Phaser.Scene{
 			previous = Date.now();
 			
 			if(activeUsersNumber == maxUsers){
-				
+				this.maxUsersIter++;
+			}
+			
+			if(this.maxUsersIter==1){
+	
 				this.readyText = this.add.text(150, 150, 'Player 2 is ready. Starting game in...');
-				timedEventText = this.time.addEvent( { delay: 1000, callback: updateText, callbackScope: this, loop: true});
+				timedEventText = this.time.addEvent({ delay: 1000, callback: updateText, callbackScope: this, loop: true });
 
 				updateText();
-     			if(countdown <= 0){
+				if (countdown <= 0) {
 					this.scene.stop();
-	      			this.scene.start("mainmenu", {username:username, connection:conn});
+					this.scene.start("mainmenu", { username: username, connection: conn });
 				}
-				
+
 			}
 		}
 	}

@@ -31,8 +31,7 @@ $(document).ready(function() {
 	
 	var game = new Phaser.Game(config);
 
-	var myIp = 'localhost:';
-	var port = '8080';
+	
 
 	var connection = new WebSocket('ws://localhost:8080/game');
 	
@@ -47,7 +46,6 @@ $(document).ready(function() {
 	connection.onmessage = function(msg) {
 		console.log("WS message: " + msg.data);
 		var message = JSON.parse(msg.data)
-		//$('#chat').val($('#chat').val() + "\n" + message.name + ": " + message.message);
 	}
 	connection.onclose = function() {
 		console.log("Closing socket");

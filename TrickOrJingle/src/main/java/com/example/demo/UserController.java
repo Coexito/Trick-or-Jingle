@@ -65,15 +65,8 @@ public class UserController {
     	return currentUsers.size();
     }
     
-    @GetMapping("/currentUsersNicks")
-    public String getCurrentUserNick() {
-    		
-    	String nicks = currentUsers.keySet().toString();
-    	
-    	return nicks;
-	    	
-    }
     
+   
     
     @GetMapping("/users/{nick}")
     public User getUser(@PathVariable("nick") String nick) {

@@ -256,7 +256,7 @@ export class Game extends Phaser.Scene {
      text = this.add.text(600, 50, formatTime(countdownTime)).setScale(3); // create text
  
      //function to update the text every second
-     timedEventText = this.time.addEvent( { delay: 1000, callback: updateText, callbackScope: this, loop: true});
+     
 
     // after the 5 minutes call outOfTime function
     var secondsToEnd = 300;

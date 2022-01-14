@@ -27,8 +27,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public class WebSocketEchoHandler extends TextWebSocketHandler{
 	
 	//uso de hashmaps para evitar problemas con la concurrencia
-	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //hashmap de sesiones(?)
-	//a lo mejor se podrían hacer más hashmaps para otras cosas? idk
+	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //hashmap de sesiones
+	
+
 	private ObjectMapper mapper = new ObjectMapper();
 	private boolean ready = false;
 	private int maxSessions = 2;

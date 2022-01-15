@@ -32,6 +32,7 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 
 	private ObjectMapper mapper = new ObjectMapper();
 	private int maxSessions = 2;
+	private boolean bothReady = false;
 	
 	
 	@Override
@@ -73,7 +74,7 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 		ObjectNode host = mapper.createObjectNode();
 	
 		ObjectNode ready = mapper.createObjectNode();
-		if(sessions.size()<maxSessions) //control de usuarios
+		if(sessions.size()<=maxSessions) //control de usuarios
 		{
 			System.out.println("New user: " + session.getId());
 			
@@ -87,6 +88,11 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 			}
 			ready.put("isReady", 1);
 			sessions.put(session.getId(), session);
+			
+			System.out.println("Probando: " + ready.toString());
+			if(ready.size() == maxSessions) {
+				bothReady = true;
+			}
 
 			
 		}else {

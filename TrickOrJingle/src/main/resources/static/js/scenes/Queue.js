@@ -16,6 +16,7 @@ var countdownText;
 var ready = false;
 var textUsers;
 var previous = 0;
+var id;
 export class Queue extends Phaser.Scene{
 	
 	
@@ -51,16 +52,16 @@ export class Queue extends Phaser.Scene{
 		connection.onclose = function(){
 			closinSocket();
 			
-			console.log("Closing socket. Waiting for a new oponent...");
+			console.log("Closing socket.");
 			
 		}
-		connection.onmessage = function(msg){ //llamado cuando se recibe un mensaje del servidor
+		/*connection.onmessage = function(msg){ //llamado cuando se recibe un mensaje del servidor
 			var message = JSON.parse(msg.parse);
 			switch(message.id){
 				case 0:
 					
 			}
-		}
+		}*/
 	    
 	}
 	
@@ -72,6 +73,13 @@ export class Queue extends Phaser.Scene{
 			
 			getActiveUsers(); //actualiza
 			updateActiveUsers(); //comprobación
+			if(activeUsersNumber == 1){
+				id = 1;
+			}
+			else if(activeUsersNumber == 2 && id==null){ //Comprobamos si está vacío para no sobrescribir el del jugador 1
+				id = 2;
+			}
+			//console.log(id);
 			
 			textUsers.setText('Current clients: ' + activeUsersNumber.toString() + " Your username: " + username);
 			
@@ -91,7 +99,7 @@ export class Queue extends Phaser.Scene{
 			}
 			if (countdown <= 0) {
 					this.scene.stop();
-					this.scene.start("game", { username: username });
+					this.scene.start("game", { username: username, id:id });
 
 			}
 		}

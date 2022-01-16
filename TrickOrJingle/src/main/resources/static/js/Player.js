@@ -10,6 +10,7 @@ let shotgunCooldown2 = false;
 let gunCooldown2 = false;
 let bombCooldown2 = false;
 
+
 export class Player extends Phaser.GameObjects.Sprite
 {
     constructor(scene, _speed, _lives, x, y, _sprite, _idx) {
@@ -50,7 +51,7 @@ export class Player extends Phaser.GameObjects.Sprite
 
     }
 
-    movement()  //Host
+    movement()  
     {
         if (this.scene.a_key.isDown) //left
         {
@@ -362,16 +363,12 @@ export class Player extends Phaser.GameObjects.Sprite
         if(this.alive) // If the player is alive
         {
             // Checks for the controls of each player based on the index
-            if(this.idx == 1)
-            {
+            
                 this.movement();
                 this.shooting1();
-            }  
-            else if(this.idx == 2)
-            {
-                this.movement();
-                this.shooting2()
-            }
+            
+                
+            
         }      
 
     }

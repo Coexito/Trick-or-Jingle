@@ -9,12 +9,14 @@ var host;
 var weapon1;
 var weapon2;
 
+var disconnected = false;;
+
 
 //var connection;
 var parsedData;
 var isSocketOpen = false;
 var ready = false;
-
+var connection;
 var text;
 var countdownTime;
 var timedEventText;
@@ -32,6 +34,7 @@ export class Game extends Phaser.Scene {
     //this.player1team = "christmas"; //host
     //this.player2team = "halloween"; //client
     this.username = data.username;
+    this.id = data.id; //1 = host/player1, 2 = cliente/player2
   
     
   }
@@ -280,10 +283,16 @@ export class Game extends Phaser.Scene {
 
   update() {
 	if(isSocketOpen){
-		
+		console.log("tu id es" + this.id);
+		if(this.id == 1){
+			 player1.update();
+			console.log("Player 1 position: " + player1.x + "," + player1.y);
+		}
+		else{
+			player2.update();
 	
-    player1.update();
-    player2.update();
+		}
+		/*
     connection.send(
 		JSON.stringify({
 			x: player1.x,
@@ -304,7 +313,7 @@ export class Game extends Phaser.Scene {
 			
 		}));
     
-    
+    */
 
     this.checkWinners();}
   }
@@ -401,15 +410,33 @@ function updateWeapon() {
 
 function connect(){
 	 
-	 var connection = new WebSocket('ws://localhost:8080/game');
+	 connection = new WebSocket('ws://localhost:8080/game');
 	 connection.onmessage = function(msg){
 		console.log("Probando...");
 		let servMsg = JSON.parse(msg.data);
 		
 	}
+	connection.onopen = function(){
+		console.log("Opening socket");
+		isSocketOpen = true;
+		
+	}
 	
 	connection.onclose = function(){
+		disconnected = true;
 		console.log("closing socket");
+		$.ajax({
+	        method: "DELETE",
+	        url: "http://localhost:8080/currentUsers/"+username,
+	        success : function () {
+				console.log("Current user removed");
+			},
+			error : function () {
+				console.log("Failed to delete");
+				console.log("The URL was:\nlocalhost:8080/currentUsers/"+username)
+			}
+	     })	
+	     	
 	}
 	/*	
 	

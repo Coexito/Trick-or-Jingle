@@ -109,12 +109,12 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	
 	@Override //notificar una baja de sesión
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		System.out.println("Session closed: " + session.getId());
+		System.out.println("Session closed: " + session.getId().charAt(maxSessions)  + "Current active players: " + (sessions.size()-1));
 		
 		
 		//le notificamos al resto de participantes que el jugador se ha desconectado
 		for(WebSocketSession participant : sessions.values()) {
-			participant.sendMessage(new TextMessage("El jugador " + session.getId() + "se ha desconectado"));
+			participant.sendMessage(new TextMessage("0"));
 		}
 		
 		sessions.remove(session.getId()); //borramos la sesión

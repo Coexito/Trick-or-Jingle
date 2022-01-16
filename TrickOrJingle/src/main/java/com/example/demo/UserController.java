@@ -184,6 +184,7 @@ public class UserController {
    public void closeSession(@PathVariable("nick") String nick)throws IOException{
 	   if(currentUsers.containsKey(nick)) {
 		   currentUsers.remove(nick);
+		   System.out.println("Un usuario se ha desconectado.");
 	   }
    }
     

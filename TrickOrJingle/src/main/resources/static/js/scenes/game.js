@@ -95,7 +95,7 @@ export class Game extends Phaser.Scene {
   create() {
 	
 	
-	connect();
+	
 
 	
     // add audio to scene
@@ -278,7 +278,9 @@ export class Game extends Phaser.Scene {
     // after the 5 minutes call outOfTime function
     var secondsToEnd = 300;
     this.time.delayedCall(secondsToEnd * 1000, outOfTime, null, this);  // delay in ms
-
+	
+	connect();
+	
   }
 
   update() {
@@ -286,36 +288,51 @@ export class Game extends Phaser.Scene {
 		console.log("tu id es" + this.id);
 		if(this.id == 1){
 			 player1.update();
-			console.log("Player 1 position: " + player1.x + "," + player1.y);
+			console.log("Player 2 position: " + player2.x + "," + player2.y);
+			connection.send(
+			JSON.stringify({
+				id: this.id,
+				x: player1.x,
+				y: player1.y
+				}));
 		}
 		else{
 			player2.update();
+			connection.send(
+				JSON.stringify({
+					id: this.id,
+					x: player2.x,
+					y: player2.y
+					}));
+			console.log("Player 1 position: " + player1.x + "," + player1.y);
+
 	
 		}
-		/*
-    connection.send(
-		JSON.stringify({
-			x: player1.x,
-			y: player1.y,
-			isShooting: player1.isShooting,
-			canBeDamaged: player1.canBeDamaged,
-			lives: player1.lives
+			/*
+	    connection.send(
+			JSON.stringify({
+				x: player1.x,
+				y: player1.y,
+				isShooting: player1.isShooting,
+				canBeDamaged: player1.canBeDamaged,
+				lives: player1.lives
+				
+			}));
 			
-		}));
-		
-	connection.send(
-		JSON.stringify({
-			x: player2.x,
-			y: player2.y,
-			isShooting: player2.isShooting,
-			canBeDamaged: player2.canBeDamaged,
-			lives: player2.lives
-			
-		}));
-    
-    */
+		connection.send(
+			JSON.stringify({
+				x: player2.x,
+				y: player2.y,
+				isShooting: player2.isShooting,
+				canBeDamaged: player2.canBeDamaged,
+				lives: player2.lives
+				
+			}));
+	    
+	    */
 
-    this.checkWinners();}
+    this.checkWinners();
+    }
   }
 
   changeStage()
@@ -359,30 +376,31 @@ export class Game extends Phaser.Scene {
 	
 	
 	function messageHost(parsedData){ //Mensaje para el host
+		
 		player2.x = parsedData.x;
 		player2.y = parsedData.y;
-		player2.isShooting = parsedData.isShooting;
+		/*player2.isShooting = parsedData.isShooting;
 		player2.canBeDamaged = parsedData.canBeDamaged;
 		
 		if(player2.isShooting){
 			player2.shooting2();
 		}
 		
-		player2.lives = parsedData.lives;
+		player2.lives = parsedData.lives;*/
 		
 	}
 	
 	function messageClient(parsedData){ //Mensaje para el host
 		player1.x = parsedData.x;
 		player1.y = parsedData.y;
-		player1.isShooting = parsedData.isShooting;
+		/*player1.isShooting = parsedData.isShooting;
 		player1.canBeDamaged = parsedData.canBeDamaged;
 		
 		if(player1.isShooting){
 			player1.shooting1();
 		}
 		
-		player1.lives = parsedData.lives;
+		player1.lives = parsedData.lives;*/
 		
 	}
 	
@@ -411,9 +429,20 @@ function updateWeapon() {
 function connect(){
 	 
 	 connection = new WebSocket('ws://localhost:8080/game');
+	 isSocketOpen = false;
+
 	 connection.onmessage = function(msg){
-		console.log("Probando...");
+	
 		let servMsg = JSON.parse(msg.data);
+		if(servMsg.id == 1){ //si es un mensaje del host, se manda el mensaje Host
+			
+			console.log("Enviando mensaje desde host");
+			messageClient(servMsg); //mensaje para el cliente
+		}
+		else if(servMsg.id = 2){ //mensaje desde el cliente
+			console.log("Enviando mensaje desde cliente");
+			//messageHost(servMsg); //mensaje para el host
+		}
 		
 	}
 	connection.onopen = function(){
@@ -423,19 +452,8 @@ function connect(){
 	}
 	
 	connection.onclose = function(){
-		disconnected = true;
 		console.log("closing socket");
-		$.ajax({
-	        method: "DELETE",
-	        url: "http://localhost:8080/currentUsers/"+username,
-	        success : function () {
-				console.log("Current user removed");
-			},
-			error : function () {
-				console.log("Failed to delete");
-				console.log("The URL was:\nlocalhost:8080/currentUsers/"+username)
-			}
-	     })	
+		
 	     	
 	}
 	/*	

@@ -54,17 +54,16 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 		
 		ObjectNode newNode = mapper.createObjectNode(); //objeto json con jackson
         
+		newNode.put("id", node.get("id").asInt());
         newNode.put("x", node.get("x").asDouble());
         newNode.put("y", node.get("y").asDouble());
-        newNode.put("isShooting", node.get("isShooting").asBoolean());
-        newNode.put("canBeDamaged", node.get("canBeDamaged").asBoolean());
-        newNode.put("lives", node.get("lives").asInt());
+        
         
         
 		for(WebSocketSession participant : sessions.values()) {
-			if(!participant.getId().equals(session.getId())) {
+			//if(!participant.getId().equals(session.getId())) {
 				participant.sendMessage(new TextMessage(newNode.toString()));
-			}
+			//}
 		}
 		
 	}

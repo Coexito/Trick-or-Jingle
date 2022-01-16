@@ -29,8 +29,8 @@ export class Game extends Phaser.Scene {
   }
   
   init(data) {
-    this.player1team = "christmas"; //host
-    this.player2team = "halloween"; //client
+    //this.player1team = "christmas"; //host
+    //this.player2team = "halloween"; //client
     this.username = data.username;
   
     
@@ -107,15 +107,16 @@ export class Game extends Phaser.Scene {
     var spriteP1;
     var spriteP2;
 
-    if (this.player1team == 'halloween') // player 1 is edward cullon and player 2 maria karei
-    {
-        spriteP1 = 'edward';
-        spriteP2 = 'maria';
-    } else // player 2 is edward cullon and player 1 maria karei
+    //if (this.player1team == 'halloween') // player 1 is edward cullon and player 2 maria karei
+    //{
+	//Player 1 --> Edward, Player 2 --> Maria
+    spriteP1 = 'edward';
+    spriteP2 = 'maria';
+    /*)} else // player 2 is edward cullon and player 1 maria karei
     {
         spriteP1 = 'maria';
         spriteP2 = 'edward';
-    }
+    }*/
 
     this.events.on('resume', this.unpause);
 
@@ -336,12 +337,12 @@ export class Game extends Phaser.Scene {
   checkWinners() {
     if (player1.getLives() == 0) {
         this.scene.stop();
-        this.scene.start("gameover", { winnerteam: this.player2team, username: this.username, win: false });
+        this.scene.start("gameover", { winnerteam: 'halloween', username: this.username, win: false });
       
     }
     if (player2.getLives() == 0) {
         this.scene.stop();
-        this.scene.start("gameover", { winnerteam: this.player1team, username: this.username, win: true });
+        this.scene.start("gameover", { winnerteam: 'christmas', username: this.username, win: true });
     }
     
    }

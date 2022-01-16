@@ -29,6 +29,7 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	//uso de hashmaps para evitar problemas con la concurrencia
 	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //hashmap de sesiones
 	
+	public String gameId;
 
 	private ObjectMapper mapper = new ObjectMapper();
 	private int maxSessions = 2;
@@ -51,7 +52,7 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 		
 		System.out.println("Message sent: " + node.toString());
 		
-		ObjectNode newNode = mapper.createObjectNode();
+		ObjectNode newNode = mapper.createObjectNode(); //objeto json con jackson
         
         newNode.put("x", node.get("x").asDouble());
         newNode.put("y", node.get("y").asDouble());
@@ -71,18 +72,19 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	//Ejercicios del aula
 	@Override //notificar un alta de sesión
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		ObjectNode host = mapper.createObjectNode();
+		ObjectNode player1 = mapper.createObjectNode();
 	
 		ObjectNode ready = mapper.createObjectNode();
 		if(sessions.size()<=maxSessions) //control de usuarios
 		{
 			System.out.println("New user: " + session.getId());
+			gameId = session.getId();
 			
 			
-			host.put("isHost", 0); //Opción por defecto
+			player1.put("player1", 0); //Opción por defecto
 			
 			if(sessions.isEmpty()) {
-				host.put("isHost", 1);
+				player1.put("player1", 1);
 				System.out.println("Host conectado");
 				sessions.put(session.getId(), session);
 			}
@@ -100,7 +102,7 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 			
 		}
 		
-		session.sendMessage(new TextMessage(host.toString()));
+		session.sendMessage(new TextMessage(player1.toString()));
 
 		
 	}
@@ -108,7 +110,14 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	@Override //notificar una baja de sesión
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		System.out.println("Session closed: " + session.getId());
-		sessions.remove(session.getId());
+		
+		
+		//le notificamos al resto de participantes que el jugador se ha desconectado
+		for(WebSocketSession participant : sessions.values()) {
+			participant.sendMessage(new TextMessage("El jugador " + session.getId() + "se ha desconectado"));
+		}
+		
+		sessions.remove(session.getId()); //borramos la sesión
 	}
 	
 }

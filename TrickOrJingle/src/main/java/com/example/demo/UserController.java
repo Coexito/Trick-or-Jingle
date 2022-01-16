@@ -139,7 +139,7 @@ public class UserController {
     		return new ResponseEntity<>(false, HttpStatus.FOUND);
     } 
     
-    
+  
     @PutMapping("/users/{nickname}")
     public void updateUserScore(@PathVariable("nickname") String nickname) throws IOException 
     {
@@ -180,7 +180,7 @@ public class UserController {
     	
     }
    
-   @DeleteMapping("/currentUsersNumber")
+   @DeleteMapping("/currentUsers")
    public void closeSession(@PathVariable("nick") String nick)throws IOException{
 	   if(currentUsers.containsKey(nick)) {
 		   currentUsers.remove(nick);

@@ -10,7 +10,7 @@ var weapon1;
 var weapon2;
 
 
-var connection;
+//var connection;
 var parsedData;
 var isSocketOpen = false;
 var ready = false;
@@ -400,7 +400,17 @@ function updateWeapon() {
 
 function connect(){
 	 
+	 var connection = new WebSocket('ws://localhost:8080/game');
+	 connection.onmessage = function(msg){
+		console.log("Probando...");
+		let servMsg = JSON.parse(msg.data);
 		
+	}
+	
+	connection.onclose = function(){
+		console.log("closing socket");
+	}
+	/*	
 	
 	connection = new WebSocket('ws://localhost:8080/game');
 	
@@ -441,6 +451,7 @@ function connect(){
 	connection.onclose = function() {
 		console.log("Closing socket");
 	}
+	*/
 	
 	
 		

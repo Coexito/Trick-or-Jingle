@@ -43,8 +43,24 @@ export class Queue extends Phaser.Scene{
 	    
 	    this.maxUsersIter = 0;
 
-	    //let text = this.add.text(100, 100, activeUsersNumber.toString());
-		//let text = this.add.text(475,500, 'OtherPlayerName').setScale(2);
+	    connection = new WebSocket("ws://localhost:8080/game");
+	    //damos valor a los atributos de la conexión en el método en el que la creamos
+	    connection.onerror = function(e){
+			console.log("WS error: " + e);
+		}
+		connection.onclose = function(){
+			closinSocket();
+			
+			console.log("Closing socket. Waiting for a new oponent...");
+			
+		}
+		connection.onmessage = function(msg){ //llamado cuando se recibe un mensaje del servidor
+			var message = JSON.parse(msg.parse);
+			switch(message.id){
+				case 0:
+					
+			}
+		}
 	    
 	}
 	
@@ -52,7 +68,7 @@ export class Queue extends Phaser.Scene{
 	
 	update(){
 		if(Date.now()-previous > refreshTime){
-			//this.sessions();
+			
 			
 			getActiveUsers(); //actualiza
 			updateActiveUsers(); //comprobación
@@ -95,6 +111,22 @@ function formatTime(totalSeconds){
     seconds = seconds.toString().padStart(2,'0'); // add left zeros to seconds
 
     return `${minutes}:${seconds}`;     // return formated time
+}
+
+function closinSocket(){
+	$.ajax({
+	        method: "DELETE",
+	        url: "http://localhost:8080/currentUsers/"+username,
+	        success : function () {
+				console.log("Current user removed");
+			},
+			error : function () {
+				console.log("Failed to delete");
+				console.log("The URL was:\nlocalhost:8080/currentUsers/"+username)
+			}
+	     })	
+	     	
+	     	
 }
 
 

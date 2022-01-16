@@ -1,8 +1,4 @@
 
- 
-
-
-var connection;
 
 export class Login extends Phaser.Scene {
   constructor() {
@@ -93,3 +89,4 @@ function createUser(user, pass)
 		dataType: "json" 
 	})
 }
+

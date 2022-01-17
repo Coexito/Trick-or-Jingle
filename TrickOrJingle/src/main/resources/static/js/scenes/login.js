@@ -2,7 +2,9 @@ $(document).ready(function(){
   console.log('El DOM está cargado (login)')
 });
 
+
 let url;
+
 
 export class Login extends Phaser.Scene {
   constructor() {
@@ -26,6 +28,8 @@ export class Login extends Phaser.Scene {
     
   }
   
+  
+  
 	create() {
 	    this.add.image(640, 340, 'background_login');
 	    
@@ -35,7 +39,9 @@ export class Login extends Phaser.Scene {
 		let password = this.userInput.getChildByName("password");
 		
 		let text = this.add.text(450,500, '').setScale(2);
+		
 		let change = false; // boolean to change scene (at first is set to false)
+	    
 	    
 	    this.startButton = this.add.sprite(650, 600, 'button');	
 	    this.startButton.setInteractive().on('pointerdown', () => {
@@ -65,7 +71,16 @@ export class Login extends Phaser.Scene {
 				}
 	    	}
 	    });
-    
+	    
+	    
+    	
 	}
+	
+	
+	
+	
+	
   
 }
+
+

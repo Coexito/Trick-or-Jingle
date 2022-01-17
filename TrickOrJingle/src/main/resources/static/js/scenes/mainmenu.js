@@ -1,5 +1,11 @@
 let url;
 
+let activeUsersNumber;
+let activePrevUsersNumber;
+
+let textActiveUsers;
+
+
 export class MainMenu extends Phaser.Scene {
   constructor() {
     super({ key: 'mainmenu' });
@@ -31,7 +37,11 @@ export class MainMenu extends Phaser.Scene {
   }
   
   create() {
+	
+	activeUsersNumber = 0;
+	activePrevUsersNumber = 0;
     this.add.image(640, 340, 'background');
+    
 
     this.h_button = this.add.image(460, 350, 'h_button_small');
 
@@ -43,6 +53,7 @@ export class MainMenu extends Phaser.Scene {
       this.p2team = "christmas";  // THIS SOULD ME CHANGED IN PHASE 3
 
       this.startButton.setTexture("button_ready");
+
 
     });
 
@@ -89,6 +100,9 @@ export class MainMenu extends Phaser.Scene {
 	    	this.scene.start('login', {url: url});
     });
     
+          textActiveUsers = this.add.text(100, 100, 'Current users: ' + activeUsersNumber);
+
+    
     
   // -------------- CHAT ---------------
 	
@@ -105,6 +119,19 @@ export class MainMenu extends Phaser.Scene {
 	setInterval (getMessage, 2500); // reloads the chat every so often
 	// ------------------------------------
   }
+  
+  update(){
+		
+		getActiveUsers();
+		updateActiveUsers();
+		textActiveUsers.setText('Current users: ' + activeUsersNumber);
+		console.log(activeUsersNumber);
+	}
+	
+	
+	
+  
+
 }
 
 // --------- CHAT ------------------
@@ -137,3 +164,35 @@ function getMessage() {
 	}
 
 }
+
+
+
+
+
+
+
+function updateActiveUsers(){
+	if(activePrevUsersNumber != activeUsersNumber)
+	 {
+		if(activePrevUsersNumber < activeUsersNumber)
+			console.log("Se ha conectado alguien. El nÃºmero actual de usuarios es: " + activeUsersNumber);
+		else if(activePrevUsersNumber > activeUsersNumber){
+			console.log("Alguien se ha desconectado. El nÃºmero actual de usuarios es: " + activeUsersNumber);
+			//conn.close();
+			
+			}
+			
+		activePrevUsersNumber = activeUsersNumber;
+	}
+	
+}
+
+function getActiveUsers(){
+		      $.ajax({
+			      url:  url + "currentUsersNum",
+			      method: 'GET',
+			      dataType: 'json'
+			      }).done(function(data) {
+					activeUsersNumber = data;
+		      	}); 
+}  

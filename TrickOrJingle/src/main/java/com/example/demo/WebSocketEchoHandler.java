@@ -39,7 +39,7 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		
-		System.out.println("400 OK. Message received: " + message.getPayload());
+		System.out.println("Message received: " + message.getPayload());
 		JsonNode node = mapper.readTree(message.getPayload());
 		
 		sendOtherParticipantsInGame(session, node);
@@ -62,6 +62,7 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
         
 		for(WebSocketSession participant : sessions.values()) {
 			//if(!participant.getId().equals(session.getId())) {
+			System.out.println("participante: "+ participant.getId());
 				participant.sendMessage(new TextMessage(newNode.toString()));
 			//}
 		}

@@ -5,3 +5,6 @@ AURORA GARCÍA RAIGÓN;hh;0
 AURORA;hh;0
 hola;adios;7
 sesilia;sesilia;2
+user2;user2;0
+hola1;adios;0
+hola2;adios;0

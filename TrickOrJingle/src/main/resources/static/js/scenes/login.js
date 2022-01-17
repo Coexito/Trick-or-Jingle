@@ -1,5 +1,5 @@
 
-var url = "192.168.1.20";
+//var url = "192.168.1.20";
 export class Login extends Phaser.Scene {
   constructor() {
     super({ key: 'login' });

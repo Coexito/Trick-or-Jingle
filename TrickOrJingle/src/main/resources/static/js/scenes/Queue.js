@@ -1,6 +1,6 @@
 //QUEUE SCREEN
 
-var url = "192.168.1.20";
+//var url = "192.168.1.20";
 var timedEventText;
 
 var refreshTime = 100;
@@ -11,7 +11,7 @@ var activeUsersNumber = 0;
 
 var connection;
 var username;
-var countdown = 10;
+var countdown = 1;
 var countdownText;
 var ready = false;
 var textUsers;
@@ -70,7 +70,7 @@ export class Queue extends Phaser.Scene{
 	update(){
 		if(Date.now()-previous > refreshTime){
 			
-			
+			console.log("a");
 			getActiveUsers(); //actualiza
 			updateActiveUsers(); //comprobación
 			if(activeUsersNumber == 1){
@@ -79,7 +79,6 @@ export class Queue extends Phaser.Scene{
 			else if(activeUsersNumber == 2 && id==null){ //Comprobamos si está vacío para no sobrescribir el del jugador 1
 				id = 2;
 			}
-			//console.log(id);
 			
 			textUsers.setText('Current clients: ' + activeUsersNumber.toString() + " Your username: " + username);
 			
@@ -98,6 +97,8 @@ export class Queue extends Phaser.Scene{
 				
 			}
 			if (countdown <= 0) {
+				
+				
 					this.scene.stop();
 					this.scene.start("game", { username: username, id:id });
 
@@ -124,7 +125,7 @@ function formatTime(totalSeconds){
 function closinSocket(){
 	$.ajax({
 	        method: "DELETE",
-	        url: "http://192.168.1.20:8080:8080/currentUsers/"+username,
+	        url: "http://localhost:8080/currentUsers/"+username,
 	        success : function () {
 				console.log("Current user removed");
 			},
@@ -156,7 +157,7 @@ function updateActiveUsers(){
 
 function getActiveUsers(){
 		      $.ajax({
-			      url: 'http://' + url + '/currentUsersNum',
+			      url: 'http://localhost:8080/currentUsersNum',
 			      method: 'GET',
 			      dataType: 'json'
 			      }).done(function(data) {

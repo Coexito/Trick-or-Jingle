@@ -6,6 +6,7 @@ var player2;
 
 var host;
 
+var url = "192.168.1.20";
 var weapon1;
 var weapon2;
 
@@ -397,10 +398,22 @@ function messageHost(parsedData){ //Mensaje para el host
 	
 function connect(){
 	 
-	 connection = new WebSocket('ws://localhost:8080/game');
+	 connection = new WebSocket('ws:// ' + url + '/game');
 	 isSocketOpen = false;
 
-	 connection.onmessage = function(msg){
+	 
+	connection.onopen = function(){
+		console.log("Opening socket");
+		isSocketOpen = true;
+		
+	}
+	
+	connection.onclose = function(){
+		console.log("closing socket");
+		isSocketOpen = false;
+	     	
+	}
+	connection.onmessage = function(msg){
 		console.log("cojones");
 		let servMsg = JSON.parse(msg.data);
 		if(msg.id == 2){ //si es un mensaje del host, se manda el mensaje Host
@@ -413,17 +426,6 @@ function connect(){
 			messageClient(servMsg); //mensaje para el host
 		}
 		
-	}
-	connection.onopen = function(){
-		console.log("Opening socket");
-		isSocketOpen = true;
-		
-	}
-	
-	connection.onclose = function(){
-		console.log("closing socket");
-		isSocketOpen = false;
-	     	
 	}
 	/*	
 	

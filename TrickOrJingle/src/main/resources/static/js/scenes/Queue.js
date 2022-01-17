@@ -1,6 +1,6 @@
 //QUEUE SCREEN
 
-
+var url = "192.168.1.20";
 var timedEventText;
 
 var refreshTime = 100;
@@ -156,7 +156,7 @@ function updateActiveUsers(){
 
 function getActiveUsers(){
 		      $.ajax({
-			      url: 'http://localhost:8080/currentUsersNum',
+			      url: 'http://' + url + '/currentUsersNum',
 			      method: 'GET',
 			      dataType: 'json'
 			      }).done(function(data) {

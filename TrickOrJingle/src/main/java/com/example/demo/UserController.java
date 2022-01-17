@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 
 @RestController
 public class UserController {
-    
+
     private Map<String, User> users = new HashMap<String, User>(); // Map of users
     String usersFileURL = "src/main/resources/static/db/users.txt"; // Users file url
     String tempUsersFileURL = "src/main/resources/static/db/tempUsers.txt"; // File used to delete one user

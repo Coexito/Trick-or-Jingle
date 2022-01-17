@@ -289,7 +289,7 @@ export class Game extends Phaser.Scene {
 		if(this.id == 1){
 			 player1.update();
 			console.log("Player 2 position: " + player2.x + "," + player2.y);
-			connection.send(
+			send(
 			JSON.stringify({
 				id: this.id,
 				x: player1.x,
@@ -298,7 +298,7 @@ export class Game extends Phaser.Scene {
 		}
 		else{
 			player2.update();
-			connection.send(
+			send(
 				JSON.stringify({
 					id: this.id,
 					x: player2.x,
@@ -342,16 +342,16 @@ export class Game extends Phaser.Scene {
         else if (player1.getLives() > player2.getLives()) // if player1 has more lives
         {
             if (this.player1team == 'halloween'){ // if player1 is on the halloween team
-                this.stage.setFrame(0); // halloween stage
+                this.stage.setFrame(2); // halloween stage
             }
             else
-                this.stage.setFrame(2); // christams stage
+                this.stage.setFrame(0); // christams stage
         } else if (player1.getLives() < player2.getLives()) // if player2 has more lives
         {
-            if (this.player2team == 'halloween') // if player2 is on the halloween team
-                this.stage.setFrame(0); // halloween stage
+            if (this.player2team == 'christmas') // if player2 is on the halloween team
+                this.stage.setFrame(0); // christams stage
             else
-                this.stage.setFrame(2); // christams stage
+                this.stage.setFrame(2); // halloween stage
         }
   }
 
@@ -363,12 +363,12 @@ export class Game extends Phaser.Scene {
   checkWinners() {
     if (player1.getLives() == 0) {
         this.scene.stop();
-        this.scene.start("gameover", { winnerteam: 'halloween', username: this.username, win: false });
+        this.scene.start("gameover", { winnerteam: 'christmas', username: this.username, win: false });
       
     }
     if (player2.getLives() == 0) {
         this.scene.stop();
-        this.scene.start("gameover", { winnerteam: 'christmas', username: this.username, win: true });
+        this.scene.start("gameover", { winnerteam: 'halloween', username: this.username, win: true });
     }
     
    }
@@ -404,7 +404,7 @@ export class Game extends Phaser.Scene {
 		
 	}
 	
-  
+  function isOpen(ws) { return ws.readyState === ws.OPEN }
 
 
 
@@ -427,7 +427,58 @@ function updateWeapon() {
 
 
 function connect(){
-	 
+	
+	try {
+            connection = new WebSocket('ws://localhost:8080/game');
+            
+            // 
+            // Implement WebSocket event handlers!
+            //
+            connection.onopen = function(event) {
+                console.log('onopen::' + JSON.stringify(event, null, 4));
+                isSocketOpen = true;
+            }
+            
+            connection.onmessage = function(event) {
+                var msg = event.data;
+                console.log('onmessage::' + JSON.stringify(msg, null, 4));
+            }
+            connection.onclose = function(event) {
+                console.log('onclose::' + JSON.stringify(event, null, 4));                
+            }
+            connection.onerror = function(event) {
+                console.log('onerror::' + JSON.stringify(event, null, 4));
+            }
+            
+        } catch (exception) {
+            console.error(exception);
+        }
+     }
+     
+function getStatus() {
+        return connection.readyState;
+        }
+    
+function send(message) {
+        
+        if (connection.readyState == WebSocket.OPEN) {
+            connection.send(message);
+            
+        } else {
+            console.error('webSocket is not open. readyState=' + connection.readyState);
+        }
+    }
+function disconnect() {
+        if (connection.readyState == WebSocket.OPEN) {
+            connection.close();
+            
+        } else {
+            console.error('webSocket is not open. readyState=' + connection.readyState);
+        }
+   }
+
+        
+	 /*
 	 connection = new WebSocket('ws://localhost:8080/game');
 	 isSocketOpen = false;
 
@@ -456,7 +507,7 @@ function connect(){
 		
 	     	
 	}
-	/*	
+		
 	
 	connection = new WebSocket('ws://localhost:8080/game');
 	
@@ -502,7 +553,7 @@ function connect(){
 	
 		
 
-}
+
 
 function outOfTime() {    
     // Checks who's with most lives

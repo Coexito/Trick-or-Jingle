@@ -5,5 +5,5 @@ AURORA GARCÍA RAIGÓN;hh;0
 AURORA;hh;0
 hola;adios;3
 sesilia;sesilia;1
-ola;ola;1
+ola;ola;2
 lentejas;lentejas;0

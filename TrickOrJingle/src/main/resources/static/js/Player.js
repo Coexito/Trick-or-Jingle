@@ -77,12 +77,10 @@ export class Player extends Phaser.GameObjects.Sprite
         {
             this.body.setVelocityY(-470);
         }
-        
-        
-
+  
     }
     
-    movement2(connection) //client
+    /*movement2(connection) //client
     {
         // Movement
         if (this.scene.a_key.isDown)
@@ -108,7 +106,7 @@ export class Player extends Phaser.GameObjects.Sprite
         }
 
         return this;
-    }
+    }*/
 
     shooting1() //host
     {

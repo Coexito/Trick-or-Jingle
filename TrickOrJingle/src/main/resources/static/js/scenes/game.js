@@ -14,7 +14,7 @@ var disconnected = false;;
 
 //var connection;
 var parsedData;
-var isSocketOpen = false;
+var isSocketOpen;
 var ready = false;
 var connection;
 var text;
@@ -284,6 +284,7 @@ export class Game extends Phaser.Scene {
   }
 
   update() {
+	
 	if(isSocketOpen){
 		console.log("tu id es" + this.id);
 		if(this.id == 1){
@@ -298,7 +299,7 @@ export class Game extends Phaser.Scene {
 				'y': player1.y
 				}));
 		}
-		else{
+		else if(this.id == 2){
 			player2.update();
 			console.log("Player 1 position: " + player1.x + "," + player1.y);
 			connection.send(
@@ -404,8 +405,8 @@ function updateWeapon() {
 
 function connect(){
 	 
-	 connection = new WebSocket('ws://127.0.0.1:8080/game');
-	 
+	 connection = new WebSocket('ws://localhost:8080/game');
+
 	 connection.onmessage = function(msg){
 	
 		var obj = JSON.parse(msg.data);
@@ -416,27 +417,21 @@ function connect(){
 			if (obj == 'Datos'){
 			var data = JSON.parse(obj.Datos);
 				if (data.Subtipo == 'Posicion'){
-				player1.x = data.x;
-				player1.y = data.y;
-				Update();
-				}
-			}
-		}
-		else if(obj.id = 2){ //mensaje desde el cliente
-			console.log("Enviando mensaje desde cliente");
-			messageHost(obj); //mensaje para el host
-			if (obj == 'Datos'){
-			var data = JSON.parse(obj.Datos);
-				if (data.Subtipo == 'Posicion'){
-				player2.x = data.x;
-				player2.y = data.y;
-				Update();
+					if(obj.id == 1){
+						player1.x = data.x;
+					    player1.y = data.y;
+					}
+					if(obj.id == 2){
+						player2.x = data.x;
+					    player2.y = data.y;
+					}
 				}
 			}
 		}
 	}	
 	connection.onopen = function(){
 		console.log("Opening socket");
+		isSocketOpen=true;
 	}
 	
 	connection.onclose = function(){

@@ -1,4 +1,5 @@
 package com.example.demo;
+import org.json.JSONObject;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -43,6 +44,11 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 		JsonNode node = mapper.readTree(message.getPayload());
 		
 		sendOtherParticipantsInGame(session, node);
+		
+		String payload = message.getPayload();
+		JSONObject jsonObject = new JSONObject(payload);
+		String Tipo = jsonObject.getString("Tipo");
+		String Mensaje = jsonObject.getString("Subtipo");
 	}
 	
 	//para enviar los datos a los demás participantes.

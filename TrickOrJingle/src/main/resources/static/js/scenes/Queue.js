@@ -43,29 +43,8 @@ export class Queue extends Phaser.Scene{
 	    countdownText = this.add.text(600,600, " ");
 	    
 	    this.maxUsersIter = 0;
-
-	    connection = new WebSocket("ws://localhost:8080/game");
-	    //damos valor a los atributos de la conexión en el método en el que la creamos
-	    connection.onerror = function(e){
-			console.log("WS error: " + e);
-		}
-		connection.onclose = function(){
-			closinSocket();
-			
-			console.log("Closing socket.");
-			
-		}
-		/*connection.onmessage = function(msg){ //llamado cuando se recibe un mensaje del servidor
-			var message = JSON.parse(msg.parse);
-			switch(message.id){
-				case 0:
-					
-			}
-		}*/
 	    
 	}
-	
-
 	
 	update(){
 		if(Date.now()-previous > refreshTime){
@@ -91,7 +70,7 @@ export class Queue extends Phaser.Scene{
 			
 			if(this.maxUsersIter==1){
 	
-				this.readyText = this.add.text(150, 150, 'Player 2 is ready. Starting game in...');
+				this.readyText = this.add.text(150, 150, 'The other player is ready. Starting game in...');
 				timedEventText = this.time.addEvent({ delay: 1000, callback: updateText, callbackScope: this, loop: true });
 
 				updateText();

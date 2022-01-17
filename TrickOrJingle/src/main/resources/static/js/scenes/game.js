@@ -287,49 +287,30 @@ export class Game extends Phaser.Scene {
 	if(isSocketOpen){
 		console.log("tu id es" + this.id);
 		if(this.id == 1){
-			 player1.update();
+			player1.update();
 			console.log("Player 2 position: " + player2.x + "," + player2.y);
 			connection.send(
-			JSON.stringify({
-				id: this.id,
-				x: player1.x,
-				y: player1.y
+				JSON.stringify({
+				'Tipo': 'datos',
+				'Subtipo': 'Posición',
+				'id': this.id,
+				'x': player1.x,
+				'y': player1.y
 				}));
 		}
 		else{
 			player2.update();
+			console.log("Player 1 position: " + player1.x + "," + player1.y);
 			connection.send(
 				JSON.stringify({
-					id: this.id,
-					x: player2.x,
-					y: player2.y
-					}));
-			console.log("Player 1 position: " + player1.x + "," + player1.y);
+				'Tipo': 'datos',
+				'Subtipo': 'Posición',
+				'id': this.id,
+				'x': player2.x,
+				'y': player2.y
+			}));
 
-	
 		}
-			/*
-	    connection.send(
-			JSON.stringify({
-				x: player1.x,
-				y: player1.y,
-				isShooting: player1.isShooting,
-				canBeDamaged: player1.canBeDamaged,
-				lives: player1.lives
-				
-			}));
-			
-		connection.send(
-			JSON.stringify({
-				x: player2.x,
-				y: player2.y,
-				isShooting: player2.isShooting,
-				canBeDamaged: player2.canBeDamaged,
-				lives: player2.lives
-				
-			}));
-	    
-	    */
 
     this.checkWinners();
     }
@@ -379,35 +360,30 @@ export class Game extends Phaser.Scene {
 		
 		player2.x = parsedData.x;
 		player2.y = parsedData.y;
-		/*player2.isShooting = parsedData.isShooting;
+		player2.isShooting = parsedData.isShooting;
 		player2.canBeDamaged = parsedData.canBeDamaged;
 		
 		if(player2.isShooting){
 			player2.shooting2();
 		}
 		
-		player2.lives = parsedData.lives;*/
+		player2.lives = parsedData.lives;
 		
 	}
 	
 	function messageClient(parsedData){ //Mensaje para el host
 		player1.x = parsedData.x;
 		player1.y = parsedData.y;
-		/*player1.isShooting = parsedData.isShooting;
+		player1.isShooting = parsedData.isShooting;
 		player1.canBeDamaged = parsedData.canBeDamaged;
 		
 		if(player1.isShooting){
 			player1.shooting1();
 		}
 		
-		player1.lives = parsedData.lives;*/
+		player1.lives = parsedData.lives;
 		
 	}
-	
-  
-
-
-
 
 function updateText() {
     if (isPaused == false) {
@@ -428,80 +404,48 @@ function updateWeapon() {
 
 function connect(){
 	 
-	 connection = new WebSocket('ws://localhost:8080/game');
-	 isSocketOpen = false;
-
+	 connection = new WebSocket('ws://127.0.0.1:8080/game');
+	 
 	 connection.onmessage = function(msg){
 	
-		let servMsg = JSON.parse(msg.data);
-		if(servMsg.id == 1){ //si es un mensaje del host, se manda el mensaje Host
+		var obj = JSON.parse(msg.data);
+		if(obj.id == 1){ //si es un mensaje del host, se manda el mensaje Host
 			
 			console.log("Enviando mensaje desde host");
-			messageClient(servMsg); //mensaje para el cliente
+			messageClient(obj); //mensaje para el cliente
+			if (obj == 'Datos'){
+			var data = JSON.parse(obj.Datos);
+				if (data.Subtipo == 'Posicion'){
+				player1.x = data.x;
+				player1.y = data.y;
+				Update();
+				}
+			}
 		}
-		else if(servMsg.id = 2){ //mensaje desde el cliente
+		else if(obj.id = 2){ //mensaje desde el cliente
 			console.log("Enviando mensaje desde cliente");
-			//messageHost(servMsg); //mensaje para el host
+			messageHost(obj); //mensaje para el host
+			if (obj == 'Datos'){
+			var data = JSON.parse(obj.Datos);
+				if (data.Subtipo == 'Posicion'){
+				player2.x = data.x;
+				player2.y = data.y;
+				Update();
+				}
+			}
 		}
-		
-	}
+	}	
 	connection.onopen = function(){
 		console.log("Opening socket");
-		isSocketOpen = true;
-		
 	}
 	
 	connection.onclose = function(){
 		console.log("closing socket");
-		
-	     	
 	}
-	/*	
-	
-	connection = new WebSocket('ws://localhost:8080/game');
 	
 	connection.onerror = function(e) {
 		console.log("WS error: " + e);
 	}
-	
-	connection.onopen = function(){
-		console.log("Opening socket");
-		isSocketOpen = true;
-		
-	}
-	connection.onmessage = function(data) {
-		
-		
-		console.log("Mensaje recibido");
-		
-		parsedData = JSON.parse(data.data);
-		if(parsedData.isHost == 1){
-			host = 1;
-		}else if(host == 1){
-			console.log("Aquí host");
-			messageHost(parsedData);
-			
-		}else{
-			host = 0;
-			console.log("Aquí cliente");
-			
-			messageClient(parsedData);
-		}
-		
-		console.log("WS message: " + data.data);
-		var message = JSON.parse(data.data)
-	}
-	
-	
-	
-	connection.onclose = function() {
-		console.log("Closing socket");
-	}
-	*/
-	
-	
-		
-
 }
 
 function outOfTime() {    

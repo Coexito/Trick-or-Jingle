@@ -31,8 +31,8 @@ export class Game extends Phaser.Scene {
   }
   
   init(data) {
-    //this.player1team = "christmas"; //host
-    //this.player2team = "halloween"; //client
+    this.player1team = 'halloween'; //host
+    this.player2team = 'christmas'; //client
     this.username = data.username;
     this.id = data.id; //1 = host/player1, 2 = cliente/player2
   
@@ -247,7 +247,7 @@ export class Game extends Phaser.Scene {
     this.physics.add.collider(this.players, this.weapons, pickUpWeapon, null, this); // collider between player and weapons
 
 
-    // Player 1 inputs
+    //Inputs
         // Mooving
     this.w_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.a_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -258,7 +258,7 @@ export class Game extends Phaser.Scene {
     this.q_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
     this.e_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
-
+	/*
     // Player 2 inputs
         // Mooving
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -267,7 +267,7 @@ export class Game extends Phaser.Scene {
     this.numpad_0_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO);
     this.numpad_7_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SEVEN);
     this.numpad_9_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_NINE);
-
+*/
      // Countdown text
      countdownTime = 300; // 300 seconds are 5 minutes
      text = this.add.text(600, 50, formatTime(countdownTime)).setScale(3); // create text
@@ -287,11 +287,11 @@ export class Game extends Phaser.Scene {
 	if(isSocketOpen){
 		console.log("tu id es" + this.id);
 		if(this.id == 1){
-			 player1.update();
-			console.log("Player 2 position: " + player2.x + "," + player2.y);
+			player1.update();
+			//console.log("Sending player 1 position: " + player1.x + "," + player1.y);
 			connection.send(
 			JSON.stringify({
-				id: this.id,
+				id: player1.idx,
 				x: player1.x,
 				y: player1.y
 				}));
@@ -300,37 +300,14 @@ export class Game extends Phaser.Scene {
 			player2.update();
 			connection.send(
 				JSON.stringify({
-					id: this.id,
+					id: player2.idx,
 					x: player2.x,
 					y: player2.y
 					}));
-			console.log("Player 1 position: " + player1.x + "," + player1.y);
+			//console.log("Player 1 position: " + player1.x + "," + player1.y);
 
 	
 		}
-			/*
-	    connection.send(
-			JSON.stringify({
-				x: player1.x,
-				y: player1.y,
-				isShooting: player1.isShooting,
-				canBeDamaged: player1.canBeDamaged,
-				lives: player1.lives
-				
-			}));
-			
-		connection.send(
-			JSON.stringify({
-				x: player2.x,
-				y: player2.y,
-				isShooting: player2.isShooting,
-				canBeDamaged: player2.canBeDamaged,
-				lives: player2.lives
-				
-			}));
-	    
-	    */
-
     this.checkWinners();
     }
   }
@@ -341,17 +318,14 @@ export class Game extends Phaser.Scene {
             this.stage.setFrame(1); // mixed stage
         else if (player1.getLives() > player2.getLives()) // if player1 has more lives
         {
-            if (this.player1team == 'halloween'){ // if player1 is on the halloween team
-                this.stage.setFrame(0); // halloween stage
-            }
-            else
-                this.stage.setFrame(2); // christams stage
+            
+                this.stage.setFrame(2); // halloween stage
+            
         } else if (player1.getLives() < player2.getLives()) // if player2 has more lives
         {
-            if (this.player2team == 'halloween') // if player2 is on the halloween team
-                this.stage.setFrame(0); // halloween stage
-            else
-                this.stage.setFrame(2); // christams stage
+            
+                this.stage.setFrame(0); // christmas stage
+           
         }
   }
 
@@ -363,51 +337,18 @@ export class Game extends Phaser.Scene {
   checkWinners() {
     if (player1.getLives() == 0) {
         this.scene.stop();
-        this.scene.start("gameover", { winnerteam: 'halloween', username: this.username, win: false });
+        this.scene.start("gameover", { winnerteam: 'christmas', username: this.username, win: false });
       
     }
     if (player2.getLives() == 0) {
         this.scene.stop();
-        this.scene.start("gameover", { winnerteam: 'christmas', username: this.username, win: true });
+        this.scene.start("gameover", { winnerteam: 'halloween', username: this.username, win: true });
     }
     
    }
 }
 	
 	
-	function messageHost(parsedData){ //Mensaje para el host
-		
-		player2.x = parsedData.x;
-		player2.y = parsedData.y;
-		/*player2.isShooting = parsedData.isShooting;
-		player2.canBeDamaged = parsedData.canBeDamaged;
-		
-		if(player2.isShooting){
-			player2.shooting2();
-		}
-		
-		player2.lives = parsedData.lives;*/
-		
-	}
-	
-	function messageClient(parsedData){ //Mensaje para el host
-		player1.x = parsedData.x;
-		player1.y = parsedData.y;
-		/*player1.isShooting = parsedData.isShooting;
-		player1.canBeDamaged = parsedData.canBeDamaged;
-		
-		if(player1.isShooting){
-			player1.shooting1();
-		}
-		
-		player1.lives = parsedData.lives;*/
-		
-	}
-	
-  
-
-
-
 
 function updateText() {
     if (isPaused == false) {
@@ -425,23 +366,51 @@ function updateWeapon() {
     }
 }
 
-
+function messageHost(parsedData){ //Mensaje para el host
+		console.log("El id desde el que estoy mandando es " + parsedData.id);
+		player1.x = parsedData.x;
+		player1.y = parsedData.y;
+		/*player2.isShooting = parsedData.isShooting;
+		player2.canBeDamaged = parsedData.canBeDamaged;
+		
+		if(player2.isShooting){
+			player2.shooting2();
+		}
+		
+		player2.lives = parsedData.lives;*/
+		
+	}
+	
+	function messageClient(parsedData){ //Mensaje DESDE el cliente
+		player2.x = parsedData.x;
+		player2.y = parsedData.y;
+		/*player1.isShooting = parsedData.isShooting;
+		player1.canBeDamaged = parsedData.canBeDamaged;
+		
+		if(player1.isShooting){
+			player1.shooting1();
+		}
+		
+		player1.lives = parsedData.lives;*/
+		
+	}
+	
 function connect(){
 	 
 	 connection = new WebSocket('ws://localhost:8080/game');
 	 isSocketOpen = false;
 
 	 connection.onmessage = function(msg){
-	
+		console.log("cojones");
 		let servMsg = JSON.parse(msg.data);
-		if(servMsg.id == 1){ //si es un mensaje del host, se manda el mensaje Host
+		if(msg.id == 2){ //si es un mensaje del host, se manda el mensaje Host
 			
-			console.log("Enviando mensaje desde host");
-			messageClient(servMsg); //mensaje para el cliente
+			//console.log("Enviando mensaje desde host");
+			messageHost(servMsg); //mensaje para el cliente
 		}
-		else if(servMsg.id = 2){ //mensaje desde el cliente
-			console.log("Enviando mensaje desde cliente");
-			//messageHost(servMsg); //mensaje para el host
+		else if(msg.id == 1){ //mensaje desde el cliente
+			//console.log("Enviando mensaje desde cliente");
+			messageClient(servMsg); //mensaje para el host
 		}
 		
 	}
@@ -453,7 +422,7 @@ function connect(){
 	
 	connection.onclose = function(){
 		console.log("closing socket");
-		
+		isSocketOpen = false;
 	     	
 	}
 	/*	

@@ -124,7 +124,7 @@ function formatTime(totalSeconds){
 function closinSocket(){
 	$.ajax({
 	        method: "DELETE",
-	        url: "http://localhost:8080/currentUsers/"+username,
+	        url: "http://192.168.1.20:8080:8080/currentUsers/"+username,
 	        success : function () {
 				console.log("Current user removed");
 			},

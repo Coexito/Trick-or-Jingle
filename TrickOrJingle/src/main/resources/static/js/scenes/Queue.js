@@ -36,6 +36,7 @@ export class Queue extends Phaser.Scene{
 	}
 
 	create(){
+		countdown = 1;
 		
 	    //background
 	    this.bg_queue = this.add.image(640, 340, 'background_queue');
@@ -68,9 +69,8 @@ export class Queue extends Phaser.Scene{
 
 	
 	update(){
-		if(Date.now()-previous > refreshTime){
+		
 			
-			console.log("a");
 			getActiveUsers(); //actualiza
 			updateActiveUsers(); //comprobación
 			if(activeUsersNumber == 1){
@@ -98,12 +98,12 @@ export class Queue extends Phaser.Scene{
 			}
 			if (countdown <= 0) {
 				
-				
+					console.log("La cuenta atrás ha llegado a su fin"); //aquí llega ok
 					this.scene.stop();
 					this.scene.start("game", { username: username, id:id });
 
 			}
-		}
+		
 	}
 }
 

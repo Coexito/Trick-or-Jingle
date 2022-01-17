@@ -286,25 +286,32 @@ export class Game extends Phaser.Scene {
 
   update() {
 	if(isSocketOpen){
-		console.log("tu id es" + this.id);
-		if(this.id == 1){
+		if(this.id == 1){ 
 			player1.update();
-			//console.log("Sending player 1 position: " + player1.x + "," + player1.y);
 			connection.send(
 			JSON.stringify({
-				id: player1.idx,
+				id: this.id,
 				x: player1.x,
 				y: player1.y
 				}));
+			console.log("sending data from host...");
 		}
 		else{
-			player2.update();
+			console.log("Aquí se cierra el socket");
+
+			player2.update(); //EL PROBLEMA ESTÁ AQUÍ. CUANDO HACE ESTE SEND SE PARA
+			
+			
 			connection.send(
+				
 				JSON.stringify({
-					id: player2.idx,
+					id: this.id,
 					x: player2.x,
 					y: player2.y
 					}));
+					
+			console.log("this.id");
+
 			//console.log("Player 1 position: " + player1.x + "," + player1.y);
 
 	
@@ -320,12 +327,12 @@ export class Game extends Phaser.Scene {
         else if (player1.getLives() > player2.getLives()) // if player1 has more lives
         {
             
-                this.stage.setFrame(2); // halloween stage
+                this.stage.setFrame(0); // halloween stage
             
         } else if (player1.getLives() < player2.getLives()) // if player2 has more lives
         {
             
-                this.stage.setFrame(0); // christmas stage
+                this.stage.setFrame(2); // christmas stage
            
         }
   }
@@ -367,8 +374,12 @@ function updateWeapon() {
     }
 }
 
-function messageHost(parsedData){ //Mensaje para el host
+function messageHost(parsedData){ //Mensaje para el host. AQUÍ NO LLEGA
+
+		
+
 		console.log("El id desde el que estoy mandando es " + parsedData.id);
+		console.log("Player 1 x: " + parsedData.x + "Player 1 y: " +parsedData.y)
 		player1.x = parsedData.x;
 		player1.y = parsedData.y;
 		/*player2.isShooting = parsedData.isShooting;
@@ -382,7 +393,11 @@ function messageHost(parsedData){ //Mensaje para el host
 		
 	}
 	
-	function messageClient(parsedData){ //Mensaje DESDE el cliente
+	function messageClient(parsedData){ //Mensaje DESDE el cliente. AQUÍ TAMPOCO LLEGA
+	
+		console.log("Los datos se mandan del cliente al host");
+
+		console.log("Player 2 x: " + parsedData.x + "Player 2 y: " +parsedData.y)
 		player2.x = parsedData.x;
 		player2.y = parsedData.y;
 		/*player1.isShooting = parsedData.isShooting;
@@ -408,21 +423,30 @@ function connect(){
 		
 	}
 	
+
 	connection.onclose = function(){
 		console.log("closing socket 1");
 		isSocketOpen = false;
 	     	
-	}
-	connection.onmessage = function(msg){
+	}		
+	
+
+	connection.onmessage = function(msg){ 
+		//console.log("El mensaje parece llegar al listener");---> sí llega
 		let servMsg = JSON.parse(msg.data);
-		if(msg.id == 2){ //si es un mensaje del host, se manda el mensaje Host
-			
+		
+		
+		if(servMsg.id == 2){ //si es un mensaje del host, se manda el mensaje Host
+			console.log("recibiendo datos en Cliente..."); //ESTE NO RECIBE LOS DATOS!!!
+
 			//console.log("Enviando mensaje desde host");
-			messageHost(servMsg); //mensaje para el cliente
+			messageHost(servMsg); //mensaje para el cliente desde el host.
 		}
-		else if(msg.id == 1){ //mensaje desde el cliente
+		else if(servMsg.id == 1){ //mensaje desde el cliente
 			//console.log("Enviando mensaje desde cliente");
-			messageClient(servMsg); //mensaje para el host
+			
+			console.log("Recibiendo datos en Host");
+			messageClient(servMsg); //mensaje para el host del cliente
 		}
 		
 	}

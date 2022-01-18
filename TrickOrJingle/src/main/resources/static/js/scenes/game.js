@@ -286,8 +286,11 @@ export class Game extends Phaser.Scene {
 
   update() {
 	if(isSocketOpen){
+		//console.log("id " + this.id);
+
 		if(this.id == 1){ 
 			player1.update();
+			
 			connection.send(
 			JSON.stringify({
 				id: this.id,
@@ -297,28 +300,28 @@ export class Game extends Phaser.Scene {
 			console.log("sending data from host...");
 		}
 		else{
-			console.log("Aquí se cierra el socket");
 
-			player2.update(); //EL PROBLEMA ESTÁ AQUÍ. CUANDO HACE ESTE SEND SE PARA
+			player2.update(); 
 			
-			
+			//console.log("id else " + this.id);
 			connection.send(
-				
 				JSON.stringify({
 					id: this.id,
 					x: player2.x,
 					y: player2.y
 					}));
 					
-			console.log("this.id");
-
+			
+			}
+			
 			//console.log("Player 1 position: " + player1.x + "," + player1.y);
 
 	
 		}
+		
     this.checkWinners();
-    }
   }
+  
 
   changeStage()
   {
@@ -355,6 +358,8 @@ export class Game extends Phaser.Scene {
     
    }
 }
+
+
 	
 	
 
@@ -374,14 +379,14 @@ function updateWeapon() {
     }
 }
 
-function messageHost(parsedData){ //Mensaje para el host. AQUÍ NO LLEGA
+	function messageMaria(parsedData){ //Mensaje para el host
 
 		
 
 		console.log("El id desde el que estoy mandando es " + parsedData.id);
 		console.log("Player 1 x: " + parsedData.x + "Player 1 y: " +parsedData.y)
-		player1.x = parsedData.x;
-		player1.y = parsedData.y;
+		player2.x = parsedData.x;
+		player2.y = parsedData.y;
 		/*player2.isShooting = parsedData.isShooting;
 		player2.canBeDamaged = parsedData.canBeDamaged;
 		
@@ -393,13 +398,13 @@ function messageHost(parsedData){ //Mensaje para el host. AQUÍ NO LLEGA
 		
 	}
 	
-	function messageClient(parsedData){ //Mensaje DESDE el cliente. AQUÍ TAMPOCO LLEGA
+	function messageEdward(parsedData){ //player2 --> maria
 	
 		console.log("Los datos se mandan del cliente al host");
 
 		console.log("Player 2 x: " + parsedData.x + "Player 2 y: " +parsedData.y)
-		player2.x = parsedData.x;
-		player2.y = parsedData.y;
+		player1.x = parsedData.x;
+		player1.y = parsedData.y;
 		/*player1.isShooting = parsedData.isShooting;
 		player1.canBeDamaged = parsedData.canBeDamaged;
 		
@@ -435,18 +440,20 @@ function connect(){
 		//console.log("El mensaje parece llegar al listener");---> sí llega
 		let servMsg = JSON.parse(msg.data);
 		
+		console.log("Mensaje recibido: " + msg.data);
 		
-		if(servMsg.id == 2){ //si es un mensaje del host, se manda el mensaje Host
-			console.log("recibiendo datos en Cliente..."); //ESTE NO RECIBE LOS DATOS!!!
+		//player2
+		if(servMsg.id == 2){ //si es un mensaje del player1, se manda el mensaje Host
+			console.log("recibiendo datos en Cliente..."); 
 
-			//console.log("Enviando mensaje desde host");
-			messageHost(servMsg); //mensaje para el cliente desde el host.
-		}
-		else if(servMsg.id == 1){ //mensaje desde el cliente
+			messageMaria(servMsg); //mensaje para el cliente desde el host.
+		}else{
+		//player 1
 			//console.log("Enviando mensaje desde cliente");
 			
+			
 			console.log("Recibiendo datos en Host");
-			messageClient(servMsg); //mensaje para el host del cliente
+			messageEdward(servMsg); //mensaje para el host del cliente
 		}
 		
 	}

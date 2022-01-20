@@ -9,3 +9,4 @@ user2;user2;0
 hola1;adios;0
 hola2;adios;0
 cecilia;cecilia;1
+A;hh;0

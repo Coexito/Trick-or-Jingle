@@ -27,6 +27,8 @@ export class Player extends Phaser.GameObjects.Sprite
         this.weaponType;
 
         this.sprite = _sprite;
+        
+        this.isShooting = false;
 
         // Pointer sprite for bullets arrow marker
         this.arrow = scene.physics.add.staticSprite(1000,1000, 'weapons').setScale(0.4); // create out of frame because it has no weapon when created
@@ -134,8 +136,8 @@ export class Player extends Phaser.GameObjects.Sprite
                 case 'shotgun': // if the weapon type is a shotgun
                     if (Phaser.Input.Keyboard.JustDown(this.scene.space_key) && (shotgunCooldown1 == false)) // it only works if the player has cooled down
                     {
+						this.isShooting = true;
                         this.shootShotGun(); 
-
                         shotgunCooldown1 = true; // the weapon needs to cooldown to be used again
                         setTimeout( function(){ // after some time sets boolean to false so it can be shot again
                             shotgunCooldown1 = false;
@@ -194,6 +196,7 @@ export class Player extends Phaser.GameObjects.Sprite
                 case 'shotgun': // if the weapon type is a shotgun
                     if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key) && (shotgunCooldown2 == false))
                     {
+						this.isShooting = true;
                         this.shootShotGun();
 
                         shotgunCooldown2 = true;
@@ -249,6 +252,8 @@ export class Player extends Phaser.GameObjects.Sprite
         // Sets bullet velocity
         bullet.body.velocity.x = vec.y;
         bullet.body.velocity.y = -vec.x;
+        
+        this.isShooting = false;
     }
 
     shootShotGun()
@@ -287,6 +292,8 @@ export class Player extends Phaser.GameObjects.Sprite
                 bullet.disableBody(true, true); 
             }
         });
+        
+        this.isShooting = false;
     }
 
     throwBomb()

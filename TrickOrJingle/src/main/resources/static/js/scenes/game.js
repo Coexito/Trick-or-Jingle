@@ -20,6 +20,8 @@ var text;
 var countdownTime;
 var timedEventText;
 var timedEventWeapon;
+var timedEventUpdateConection;
+var millisecondsToUpdateConnection = 50; // milliseconds to update the game
 
 var id;
 
@@ -285,32 +287,32 @@ export class Game extends Phaser.Scene {
 		this.time.delayedCall(secondsToEnd * 1000, outOfTime, null, this);  // delay in ms
 
 		connect();
+		
+		timedEventUpdateConection = this.time.addEvent({
+			delay: millisecondsToUpdateConnection, 
+			callback: this.sendPlayerInfo, 
+			callbackScope: this, 
+			loop: true });
 
 	}
 
 	update() {
 		
 		
-		this.sendPlayerInfo();
+		//this.sendPlayerInfo();
 		/*if (isSocketOpen) {
-			//console.log("id " + id);
 
 			if (id == 1) {
 				player1.update();
-
 				connection.send(
 					JSON.stringify({
 						id: id,
 						x: player1.x,
 						y: player1.y
 					}));
-				console.log("sending data from host...");
 			}
 			else {
-
 				player2.update();
-
-				//console.log("id else " + id);
 				connection.send(
 					JSON.stringify({
 						id: id,
@@ -320,10 +322,6 @@ export class Game extends Phaser.Scene {
 
 
 			}
-
-			//console.log("Player 1 position: " + player1.x + "," + player1.y);
-
-
 		}*/
 
 		this.checkWinners();
@@ -369,22 +367,38 @@ export class Game extends Phaser.Scene {
 		
 		if(id == "1")
 		{
+			var weaponType = player1.weaponType;
+			if(weaponType == null)
+				weaponType = 'None';
+			
 			player1.update();
 			msg = {
 				id:	id,
 				x: 	player1.x,
 				y: 	player1.y,
-				weaponAngle: player1.arrow.angle }
+				weaponAngle: player1.arrow.angle,
+				weaponType: weaponType,
+				hasWeapon: player1.hasWeapon,
+				shoots: player1.isShooting,
+				lives: player1.lives }
 		}
 			
 		else if(id == "2")
 		{
+			var weaponType = player2.weaponType;
+			if(weaponType == null)
+				weaponType = 'None';
+				
 			player2.update();
 			msg = {
 				id:	id,
 				x: 	player2.x,
 				y: 	player2.y,
-				weaponAngle: player2.arrow.angle }
+				weaponAngle: player2.arrow.angle,
+				weaponType: weaponType,
+				hasWeapon: player2.hasWeapon,
+				shoots: player2.isShooting,
+				lives: player2.lives }
 		}
 		
 		if (isSocketOpen)
@@ -532,6 +546,28 @@ function updateEnemyInfo(parsedData) {
 		
 		// Weapon
 		player2.arrow.angle = parsedData.weaponAngle;
+		player2.weaponType = parsedData.weaponType;
+		player2.hasWeapon = parsedData.hasWeapon;
+		
+			// Shooting
+		var shoots = false;
+		shoots = parsedData.shoots;
+		
+		if(shoots)
+		{
+			switch(player2.weaponType)
+			{
+				default:
+				case 'gun':
+					player2.shootGun();
+					console.log("Shoot gun");
+					break;
+				case 'shotgun':
+					player2.shootShotGun();
+					console.log("Shoot shotgun");
+					break;
+			}
+		}	
 		
 		// Lives
 		player2.lives = parsedData.lives;
@@ -544,6 +580,28 @@ function updateEnemyInfo(parsedData) {
 		
 		// Weapon
 		player1.arrow.angle = parsedData.weaponAngle;
+		player1.weaponType = parsedData.weaponType;
+		player1.hasWeapon = parsedData.hasWeapon;
+
+			// Shooting
+		var shoots = false;
+		shoots = parsedData.shoots;
+		
+		if(shoots)
+		{
+			switch(player1.weaponType)
+			{
+				default:
+				case 'gun':
+					player1.shootGun();
+					console.log("Shoot gun");
+					break;
+				case 'shotgun':
+					player1.shootShotGun();
+					console.log("Shoot shotgun");
+					break;
+			}
+		}	
 		
 		// Lives
 		player1.lives = parsedData.lives;

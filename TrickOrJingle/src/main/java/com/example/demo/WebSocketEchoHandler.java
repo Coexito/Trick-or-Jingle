@@ -57,6 +57,12 @@ public class WebSocketEchoHandler extends TextWebSocketHandler {
 	        newNode.put("x", node.get("x").asDouble());
 	        newNode.put("y", node.get("y").asDouble());
 	        
+	        newNode.put("weaponAngle", node.get("weaponAngle").asDouble());
+	        newNode.put("weaponType", node.get("weaponType").asText());
+	        newNode.put("hasWeapon", node.get("hasWeapon").asBoolean());
+	        newNode.put("shoots", node.get("shoots").asBoolean());
+	        newNode.put("lives", node.get("lives").asInt());
+	        
 	        for(WebSocketSession participant : sessions.values()) {
 				if(!participant.getId().equals(session.getId())) {
 					participant.sendMessage(new TextMessage(newNode.toString()));

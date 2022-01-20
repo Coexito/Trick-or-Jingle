@@ -6,6 +6,11 @@ export class Login extends Phaser.Scene {
 
     this.username = 'Anonymous';
   }
+  
+  init(data)
+  {
+	this.url = data.url;
+  }
 
   preload() {
     this.load.image('background_login', '../../Resources/Art/UI/SC_Username/SC_username_background.png');
@@ -37,7 +42,7 @@ export class Login extends Phaser.Scene {
 				$.ajax({
 			        method: "GET",
 			        async: false,
-			        url: "http://localhost:8080/password/"+name.value,
+			        url: this.url + "password/" + name.value,
 			        success : function (userPassword) {
 						if (userPassword == password.value){
 							console.log("User " + name.value +" exists. Logging in");
@@ -57,14 +62,14 @@ export class Login extends Phaser.Scene {
 		     	})
 		     	
 		     	// Starts the next scene
-		     	if(change){	
+		     	if(change)
+		     	{	
 		     		this.scene.stop();
-//<<<<<<< Updated upstream
-	        		
-	        		this.scene.start('Queue', { username: name.value});	
-				} else { // if the given password doesn't match the one of the existing user, we can't change the scene
+	        		this.scene.start('Queue', { username: name.value, url: this.url});	
+				} 
+				else
+				{ // if the given password doesn't match the one of the existing user, we can't change the scene
 					text.setText('Wrong password. Try again'); // 
-//>>>>>>> Stashed changes
 				}
 	    	}
 	    });
@@ -84,7 +89,7 @@ function createUser(user, pass)
 			'Accept': 'application/json',
 			'Content-type' : 'application/json'	
 		},
-		url: "http://localhost:8080/users",
+		url: this.url + "users",
 		data: JSON.stringify( { nick: ""+user, password: ""+pass } ),
 		dataType: "json" 
 	})

@@ -24,43 +24,47 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
 @EnableWebSocket
-public class WebSocketEchoHandler extends TextWebSocketHandler{
+public class WebSocketEchoHandler extends TextWebSocketHandler {
 	
-	//uso de hashmaps para evitar problemas con la concurrencia
+	//uso de hashmaps para evitar problemas de concurrencia
 	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //hashmap de sesiones
 	
-	public String gameId;
-
 	private ObjectMapper mapper = new ObjectMapper();
 	private int maxSessions = 2;
-	private boolean bothReady = false;
 	
 	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		
 		System.out.println("Message servidor received: " + message.getPayload());
+		
+		// The node with info is created and sent to the other participants in the game.
 		JsonNode node = mapper.readTree(message.getPayload());
-		
 		sendOtherParticipantsInGame(session, node);
-		
-		
-		
 	}
 	
 	//para enviar los datos a los demás participantes.
 	//datos que enviar: cambios en posiciones de personajes, tipo de disparo, ángulo, origen y velocidad
-
 	private void sendOtherParticipantsInGame(WebSocketSession session, JsonNode node) throws IOException {
 		
-			//System.out.println("Message sent: " + node.toString());
+			System.out.println("Attempting to send message...");
 			
+			// Creates a JSON object to access the info
 			ObjectNode newNode = mapper.createObjectNode(); //objeto json con jackson
 	        
+			// The JSON passed with parameters is used to fill the new JSON object just created
 			newNode.put("id", node.get("id").asInt());
 	        newNode.put("x", node.get("x").asDouble());
 	        newNode.put("y", node.get("y").asDouble());
 	        
+	        for(WebSocketSession participant : sessions.values()) {
+				if(!participant.getId().equals(session.getId())) {
+					participant.sendMessage(new TextMessage(newNode.toString()));
+					System.out.println("Message sent to: " + participant.getId());
+				}
+			}
+	        
+	        /*
 	        WebSocketSession p1 = sessions.get("1"); //devuelve la sesión del 1
 	        WebSocketSession p2 = sessions.get("2"); //devuelve la sesión del 2
 	        
@@ -68,16 +72,15 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	        System.out.println("----------------------------------------------------------------");
 
 	        System.out.println("getId1 " + p1.getId());
-
 	        System.out.println("getId2 " + p2.getId());
 	        System.out.println("getId Session " + session.getId());
-	        
+	        */
 	        //-----------------------------------------------------------------------------
 	        /*if(p2.getId() != session.getId()) {
 	        	System.out.println("soy la sesión 1");
 	        }*/
 	        
-	        if(p2.getId() == session.getId()) {
+	        /*if(p2.getId() == session.getId()) {
 	        	System.out.println("soy la sesión 2"); //lo mando al 1
 				p1.sendMessage(new TextMessage(newNode.toString()));
 				
@@ -89,7 +92,7 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	        	//lo mando al 2
 				p2.sendMessage(new TextMessage(newNode.toString()));
 
-	        }
+	        }*/
 	        
 	        
 	        /*
@@ -116,29 +119,16 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 	//Ejercicios del aula
 	@Override //notificar un alta de sesión
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-	
-		ObjectNode ready = mapper.createObjectNode();
-		if(sessions.size()<=maxSessions) //control de usuarios
+			
+		System.out.println("Attempting to start session...");
+		
+		if(sessions.size() < maxSessions) //control de usuarios
 		{
-			System.out.println("New user: " + session.getId());
-			gameId = session.getId();
-			
-			
-			
-			if(sessions.get("1") == null) {
-				System.out.println("Player1 conectado");
-				sessions.put("1", session);
-			}
-			else {
-				sessions.put("2", session);
-
-			}
-			ready.put("isReady", 1);
-			
-			
-			System.out.println("Probando: " + ready.toString());
-			if(ready.size() == maxSessions) {
-				bothReady = true;
+			System.out.println("New session: " + session.getId());
+			sessions.put(session.getId(), session);			
+						
+			if( sessions.size() == maxSessions) {
+				System.out.println("2 players connected, game starts");
 			}
 
 			
@@ -147,15 +137,13 @@ public class WebSocketEchoHandler extends TextWebSocketHandler{
 			
 		}
 		
-		//session.sendMessage(new TextMessage(player1.toString()));
-
-		
 	}
 	
 	@Override //notificar una baja de sesión
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		System.out.println("Session closed: " + session.getId().charAt(maxSessions)  + "Current active players: " + (sessions.size()-1));
 		
+		System.out.println("Session closed: " + session.getId());
+		System.out.println( "Current active players: " + (sessions.size()-1));
 		
 		//le notificamos al resto de participantes que el jugador se ha desconectado
 		for(WebSocketSession participant : sessions.values()) {

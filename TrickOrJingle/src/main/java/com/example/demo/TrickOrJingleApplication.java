@@ -22,15 +22,12 @@ public class TrickOrJingleApplication implements WebSocketConfigurer{ //implemen
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(gameHander(), "/game").setAllowedOrigins("*");
+		registry.addHandler(gameHandler(), "/game").setAllowedOrigins("*");
 		System.out.println("Manejador añadido");
-
-		
-		
 	}
 	
 	@Bean //le indicamos a spring que se trata de un componente
-	public WebSocketEchoHandler gameHander() {
+	public WebSocketEchoHandler gameHandler() {
 		System.out.println("Creando manejador...");
 
 		return new WebSocketEchoHandler();

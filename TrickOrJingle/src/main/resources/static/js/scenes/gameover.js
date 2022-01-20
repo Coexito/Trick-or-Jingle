@@ -7,6 +7,7 @@ export class Gameover extends Phaser.Scene {
     this.winnerteam = data.winnerteam;
     this.username = data.username;
     this.win = data.win;
+    this.url = data.url;
   }
 
   preload() {
@@ -41,8 +42,10 @@ export class Gameover extends Phaser.Scene {
 	    $.ajax({
 	        type: 'PUT',
 	        async: false,
-	        url: 'http://localhost:8080/users/' + this.username,
+	        url: this.url + 'users/' + this.username,
 	    });
+	    
+	    console.log("Updated: " + this.url + 'users/' + this.username)
 	}
     
     

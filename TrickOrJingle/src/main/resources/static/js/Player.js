@@ -10,6 +10,8 @@ let shotgunCooldown2 = false;
 let gunCooldown2 = false;
 let bombCooldown2 = false;
 
+let shooting = false;
+
 
 export class Player extends Phaser.GameObjects.Sprite
 {
@@ -118,23 +120,25 @@ export class Player extends Phaser.GameObjects.Sprite
                 case 'shotgun': // if the weapon type is a shotgun
                     if (Phaser.Input.Keyboard.JustDown(this.scene.space_key) && (shotgunCooldown1 == false)) // it only works if the player has cooled down
                     {
-						this.isShooting = true;
+						shooting = true;
                         this.shootShotGun(); 
                         shotgunCooldown1 = true; // the weapon needs to cooldown to be used again
                         setTimeout( function(){ // after some time sets boolean to false so it can be shot again
                             shotgunCooldown1 = false;
+                            shooting = false;
                         }, 1000);
                     }
                     break;
                 case 'gun': // if the weapon type is a gun
                     if (Phaser.Input.Keyboard.JustDown(this.scene.space_key) && (gunCooldown1 == false))
                     {
-						this.isShooting = true;
+						shooting = true;
                         this.shootGun();
 
                         gunCooldown1 = true;
                         setTimeout( function(){
                             gunCooldown1 = false;
+                            shooting = false;
                         }, 1000);
                     }
                     break;
@@ -142,12 +146,13 @@ export class Player extends Phaser.GameObjects.Sprite
                 case 'bomb':
                     if (Phaser.Input.Keyboard.JustDown(this.scene.space_key) && (bombCooldown1 == false))
                     {
-						this.isShooting = true;
+						shooting = true;
                         this.throwBomb();
 
                         bombCooldown1 = true;
                         setTimeout( function(){
                             bombCooldown1 = false;
+                            shooting = false;
                         }, 1000);
                     }
                     break;
@@ -180,16 +185,19 @@ export class Player extends Phaser.GameObjects.Sprite
     
     shootWebsocket()
     {
-		switch(this.weaponType)
+	    switch(this.weaponType)
 	    {
 		    case 'gun':
-			    this.shootGun();
+				this.shootGun();
+			    
 			    break;
 		    case 'shotgun':
-			    this.shootShotGun();
+				this.shootShotGun();
+			    
 			    break;
 		    case 'bomb':
-			    this.throwBomb()
+				this.throwBomb();
+				
 			    break;
 	    }
 	}
@@ -218,7 +226,6 @@ export class Player extends Phaser.GameObjects.Sprite
         bullet.body.velocity.x = vec.y;
         bullet.body.velocity.y = -vec.x;
         
-        this.isShooting = false;
     }
 
     shootShotGun()
@@ -258,7 +265,6 @@ export class Player extends Phaser.GameObjects.Sprite
             }
         });
         
-        this.isShooting = false;
     }
 
     throwBomb()
@@ -275,7 +281,6 @@ export class Player extends Phaser.GameObjects.Sprite
         bomb.body.velocity.x = vec.y;
         bomb.body.velocity.y = -vec.x;
         
-        this.isShooting = false;
     }
 
     takeDamage()
@@ -337,6 +342,7 @@ export class Player extends Phaser.GameObjects.Sprite
 		if (this.alive) // If the player is alive
 		{
 			// Checks for the controls of each player based on the index
+			this.isShooting = shooting;
 			this.movement();
 			this.shooting();
 		}

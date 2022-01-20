@@ -21,6 +21,8 @@ var timedEventWeapon;
 var timedEventUpdateConection;
 var millisecondsToUpdateConnection = 33; // milliseconds to update the game (33 is 30 times per second)
 
+var enableShooting = true;
+
 var id;
 
 var isPaused = false;
@@ -556,8 +558,16 @@ function updateEnemyInfo(parsedData) {
 		var shoots = false;
 		shoots = parsedData.shoots;
 		
-		if(shoots)
-			player1.shootWebsocket();	
+		if(shoots && enableShooting){
+			player2.shootWebsocket();
+			
+			enableShooting = false;	
+			
+			setTimeout(function() {
+				enableShooting = true;
+
+			}, 1000);
+		}
 		
 		// Lives
 		player2.lives = parsedData.lives;
@@ -577,8 +587,16 @@ function updateEnemyInfo(parsedData) {
 		var shoots = false;
 		shoots = parsedData.shoots;
 		
-		if(shoots)
+		if(shoots && enableShooting){
 			player1.shootWebsocket();
+			
+			enableShooting = false;	
+			
+			setTimeout(function() {
+				enableShooting = true;
+
+			}, 1000);
+		}
 		
 		// Lives
 		player1.lives = parsedData.lives;

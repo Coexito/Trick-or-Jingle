@@ -10,8 +10,6 @@ var weapon2;
 
 var disconnected = false;;
 
-
-//var connection;
 var parsedData;
 var isSocketOpen = false;
 var ready = false;
@@ -21,7 +19,7 @@ var countdownTime;
 var timedEventText;
 var timedEventWeapon;
 var timedEventUpdateConection;
-var millisecondsToUpdateConnection = 50; // milliseconds to update the game
+var millisecondsToUpdateConnection = 33; // milliseconds to update the game (33 is 30 times per second)
 
 var id;
 
@@ -298,9 +296,9 @@ export class Game extends Phaser.Scene {
 
 	update() {
 		
-		
 		//this.sendPlayerInfo();
-		/*if (isSocketOpen) {
+		/*
+		if (isSocketOpen) {
 
 			if (id == 1) {
 				player1.update();
@@ -322,7 +320,8 @@ export class Game extends Phaser.Scene {
 
 
 			}
-		}*/
+		}
+		*/
 
 		this.checkWinners();
 	}
@@ -558,20 +557,7 @@ function updateEnemyInfo(parsedData) {
 		shoots = parsedData.shoots;
 		
 		if(shoots)
-		{
-			switch(player2.weaponType)
-			{
-				default:
-				case 'gun':
-					player2.shootGun();
-					console.log("Shoot gun");
-					break;
-				case 'shotgun':
-					player2.shootShotGun();
-					console.log("Shoot shotgun");
-					break;
-			}
-		}	
+			player1.shootWebsocket();	
 		
 		// Lives
 		player2.lives = parsedData.lives;
@@ -592,20 +578,7 @@ function updateEnemyInfo(parsedData) {
 		shoots = parsedData.shoots;
 		
 		if(shoots)
-		{
-			switch(player1.weaponType)
-			{
-				default:
-				case 'gun':
-					player1.shootGun();
-					console.log("Shoot gun");
-					break;
-				case 'shotgun':
-					player1.shootShotGun();
-					console.log("Shoot shotgun");
-					break;
-			}
-		}	
+			player1.shootWebsocket();
 		
 		// Lives
 		player1.lives = parsedData.lives;

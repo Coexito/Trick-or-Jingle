@@ -79,13 +79,12 @@ export class Player extends Phaser.GameObjects.Sprite
         {
             this.body.setVelocityY(-470);
         }
-        
-        
 
     }
     
-    movement2(connection) //client
+    movementWebsocket()
     {
+		/*
         // Movement
         if (this.scene.a_key.isDown)
         {
@@ -110,9 +109,10 @@ export class Player extends Phaser.GameObjects.Sprite
         }
 
         return this;
+        */
     }
 
-    shooting1() //host
+    shooting() //host
     {
         if (this.hasWeapon){
             // update arrow position
@@ -171,7 +171,7 @@ export class Player extends Phaser.GameObjects.Sprite
         }
     }
 	
-    shooting2()//client
+    shootingWebsocket()//client
     {
         if (this.hasWeapon)
         {
@@ -179,55 +179,19 @@ export class Player extends Phaser.GameObjects.Sprite
             this.arrow.x = this.x;
             this.arrow.y = this.y;
 
-            // rotate arrow
-            if (this.scene.numpad_9_key.isDown)
-            {
-                this.arrow.angle += 2;
-            }
-
-            if (this.scene.numpad_7_key.isDown)
-            {
-                this.arrow.angle -= 2;
-            }
-
             // shooting method depends on weaponType
             switch(this.weaponType)
-            {
-                case 'shotgun': // if the weapon type is a shotgun
-                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key) && (shotgunCooldown2 == false))
-                    {
-						this.isShooting = true;
-                        this.shootShotGun();
-
-                        shotgunCooldown2 = true;
-                        setTimeout( function(){
-                            shotgunCooldown2 = false;
-                        }, 1000);
-                    }
-                    break;
-                case 'gun': // if the weapon type is a gun
-                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key) && (gunCooldown2 == false))
-                    {
-                        this.shootGun();
-
-                        gunCooldown2 = true;
-                        setTimeout( function(){
-                            gunCooldown2 = false;
-                        }, 500);
-                    }
-                    break;
-                case 'bomb':
-                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key) && (bombCooldown2 == false))
-                    {
-                        this.throwBomb();
-
-                        bombCooldown2 = true;
-                        setTimeout( function(){
-                            bombCooldown2 = false;
-                        }, 1000);
-                    }
-                    break;
-            }
+	        {
+	            case 'gun':
+	                this.arrow.setFrame(0);
+	                break;
+	            case 'shotgun':
+	                this.arrow.setFrame(1);
+	                break;
+	            case 'bomb':
+	                this.arrow.setFrame(2);
+	                break;
+	        }
         }
     }
 
@@ -365,19 +329,25 @@ export class Player extends Phaser.GameObjects.Sprite
         }
     }
 
-    update(){
+	update() {
 
-        if(this.alive) // If the player is alive
+		if (this.alive) // If the player is alive
+		{
+			// Checks for the controls of each player based on the index
+			this.movement();
+			this.shooting();
+		}
+
+	}
+
+	updateWebsocket() 
+	{
+		if(this.alive) // If the player is alive
         {
             // Checks for the controls of each player based on the index
-            
-                this.movement();
-                this.shooting1();
-            
-                
-            
-        }      
-
-    }
+            this.movementWebsocket();
+            this.shootingWebsocket();
+        } 
+	}
 
 }

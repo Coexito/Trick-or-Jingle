@@ -233,7 +233,7 @@ export class Game extends Phaser.Scene {
 
 		// Adds colliders
 		// Characters
-		this.physics.add.collider(this.players, this.players); // collider between characters
+		//this.physics.add.collider(this.players, this.players); // collider between characters
 		this.physics.add.collider(this.players, this.platforms); // collider between character 1 and platforms
 
 		// Bullets
@@ -372,6 +372,8 @@ export class Game extends Phaser.Scene {
 				weaponType = 'None';
 			
 			player1.update();
+			player2.updateWebsocket();
+			
 			msg = {
 				id:	id,
 				x: 	player1.x,
@@ -390,6 +392,8 @@ export class Game extends Phaser.Scene {
 				weaponType = 'None';
 				
 			player2.update();
+			player1.updateWebsocket();
+			
 			msg = {
 				id:	id,
 				x: 	player2.x,

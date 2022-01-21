@@ -17,8 +17,10 @@ var ready = false;
 var textUsers;
 var previous = 0;
 var id;
+var password;
 
 let url;
+let maxUsersIter;
 
 export class Queue extends Phaser.Scene {
 	
@@ -28,6 +30,7 @@ export class Queue extends Phaser.Scene {
 	
 	init (data){
 		username = data.username;
+		password = data.password;
 		url = data.url;
 		connection = data.connection;
 	}
@@ -38,14 +41,14 @@ export class Queue extends Phaser.Scene {
 	}
 
 	create(){
-		countdown = 1;
+		countdown = 5;
 		
 	    //background
 	    this.bg_queue = this.add.image(640, 340, 'background_queue');
 	    textUsers = this.add.text(100, 100, 'clientes conectados: ' + activeUsersNumber.toString());
 	    countdownText = this.add.text(600,600, " ");
 	    
-	    this.maxUsersIter = 0;
+	    maxUsersIter = 0;
 	    
 	    let tempUrlForWS = url.replace("http://", "")
 
@@ -64,6 +67,20 @@ export class Queue extends Phaser.Scene {
 			console.log("Closing socket.");
 			
 		}	    
+		
+		// create current user
+		$.ajax({
+			type: "POST",
+			async: false,
+			headers: {
+				'Accept': 'application/json',
+				'Content-type': 'application/json'
+			},
+			url: url + "currentUsers",
+			data: JSON.stringify({ nick: "" + username, password: "" + password }),
+			dataType: "json"
+		})
+		
 	}
 	
 
@@ -79,15 +96,17 @@ export class Queue extends Phaser.Scene {
 			id = 2;
 		
 		textUsers.setText('Current clients: ' + activeUsersNumber.toString() + " Your username: " + username);
-		
+
 		previous = Date.now();
 			
 		if(activeUsersNumber == maxUsers)
-			this.maxUsersIter++;
+			maxUsersIter++;
+	
 			
-		if(this.maxUsersIter==1){
+		
+		if(maxUsersIter==1){
 			this.readyText = this.add.text(150, 150, 'Player 2 is ready. Starting game, please dont close the window...');
-			timedEventText = this.time.addEvent({ delay: 3000, callback: updateText, callbackScope: this, loop: true });
+			timedEventText = this.time.addEvent({ delay: 1000, callback: updateText, callbackScope: this, loop: true });
 
 			//updateText();
 		}
@@ -95,7 +114,7 @@ export class Queue extends Phaser.Scene {
 		if (countdown <= 0) {
 			console.log("Iniciando juego");
 			this.scene.stop();
-			this.scene.start("game", { username: username, id:id, url:url, websocket: connection });
+			this.scene.start("game", { username: username, id:id, url:url, websocket: connection, password: password });
 		}
 		
 	}
@@ -137,7 +156,7 @@ function updateActiveUsers(){
 			console.log("User connected. Total current users: " + activeUsersNumber);
 		else if(activePrevUsersNumber > activeUsersNumber){
 			console.log("User disconnected. Total current users: " + activeUsersNumber);
-			conn.close();
+			//conn.close();
 		}
 		activePrevUsersNumber = activeUsersNumber;
 	}
@@ -147,6 +166,7 @@ function updateActiveUsers(){
 function getActiveUsers(){
 	$.ajax({
 		url: url + 'currentUsersNum',
+		async: false,
 		method: 'GET',
 		dataType: 'json'
 		}).done(function(data) {

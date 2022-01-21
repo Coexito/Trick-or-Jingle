@@ -37,11 +37,23 @@ export class Gameover extends Phaser.Scene {
     this.bt_continue = this.add.image(640, 550, 'btn_endgame_rematch');
     this.bt_continue.setInteractive().on('pointerdown', () => {	
 		
-	    this.scene.start('Queue', {username: this.username, url: this.url, connection: connection});
+	    this.scene.start('Queue', {username: this.username, url: this.url, connection: connection, password: this.password});
 	    this.scene.stop();
     });
     
     console.log("Player 1 won?: " + this.win)
+    
+    // delete currentUser
+    $.ajax({
+	        method: "DELETE",
+	        url: this.url + 'currentUsers/' + this.username,
+	        success : function () {
+				console.log("User removed");
+			},
+			error : function () {
+				console.log("Failed to delete");
+			}
+	     })
     
     if(this.win)
     {

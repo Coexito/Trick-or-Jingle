@@ -41,8 +41,9 @@ export class Game extends Phaser.Scene {
 		this.username = data.username;
 		id = data.id; //1 = host/player1, 2 = cliente/player2
 		connection = data.websocket;
+		this.password = data.password;
 		
-		//url = data.url;
+		url = data.url;
 
 	}
 
@@ -352,12 +353,12 @@ export class Game extends Phaser.Scene {
 	checkWinners() {
 		if (player1.getLives() == 0) {
 			this.scene.stop();
-			this.scene.start("gameover", { winnerteam: 'christmas', username: this.username, win: false, url: url, connection: connection });
+			this.scene.start("gameover", { winnerteam: 'christmas', username: this.username, win: false, url: url, connection: connection, password: this.password });
 
 		}
 		if (player2.getLives() == 0) {
 			this.scene.stop();
-			this.scene.start("gameover", { winnerteam: 'halloween', username: this.username, win: true, url: url, connection: connection });
+			this.scene.start("gameover", { winnerteam: 'halloween', username: this.username, win: true, url: url, connection: connection, password: this.password });
 		}
 
 	}
@@ -441,16 +442,16 @@ function outOfTime() {
 	// Checks who's with most lives
 	if (player1.getLives() < player2.getLives()) {
 		this.scene.stop();
-		this.scene.start("gameover", { winnerteam: this.player2team, username: this.username, win: false, url: url, connection: connection });
+		this.scene.start("gameover", { winnerteam: this.player2team, username: this.username, win: false, url: url, connection: connection, password: this.password });
 	}
 	else if (player2.getLives() < player1.getLives()) {
 		this.scene.stop();
-		this.scene.start("gameover", { winnerteam: this.player1team, username: this.username, win: true, url: url, connection: connection });
+		this.scene.start("gameover", { winnerteam: this.player1team, username: this.username, win: true, url: url, connection: connection, password: this.password });
 	}
 	else // draw
 	{
 		this.scene.stop();
-		this.scene.start("gameover", { winnerteam: "draw", username: this.username, win: false, url: url, connection: connection });
+		this.scene.start("gameover", { winnerteam: "draw", username: this.username, win: false, url: url, connection: connection, password: this.password });
 	}
 
 }

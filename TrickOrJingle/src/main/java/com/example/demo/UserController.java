@@ -84,6 +84,16 @@ public class UserController {
     }
     
     
+    @PostMapping("/currentUsers")
+    public boolean addCurrentUser(@RequestBody User newUser) 
+    {
+    	String nick = newUser.getNick();	// Uses the user nick as key
+    	
+    	currentUsers.put(nick, newUser);
+    	
+    	return true;
+    } 
+    
     @PostMapping("/users")
     public boolean addUser(@RequestBody User newUser) 
     {
@@ -93,7 +103,6 @@ public class UserController {
     	if(!users.containsKey(nick)) // if the user doesn't exist
     	{
     		users.put(nick, newUser); // we add the new user
-    		currentUsers.put(nick, newUser);
     		
     		// Add user to the txt file
             try (Writer writer = new BufferedWriter(new FileWriter(usersFileURL, true))) // "true" parameter is for appending
@@ -115,7 +124,6 @@ public class UserController {
     		
     	} else { // the user exists
     		if(users.get(nick).getPassword().equals(password)) { // if the password given matches the stored one
-    	    	currentUsers.put(nick, newUser);
 
     			return true; // we can change the scene
     		} else // if the password isn't the same
@@ -166,8 +174,8 @@ public class UserController {
     	
     }
    
-   @DeleteMapping("/currentUsers")
-   public void closeSession(@PathVariable("nick") String nick)throws IOException{
+   @DeleteMapping("/currentUsers/{nick}")
+   public void deleteCurrentUser(@PathVariable("nick") String nick)throws IOException{
 	   if(currentUsers.containsKey(nick)) {
 		   currentUsers.remove(nick);
 		   System.out.println("Un usuario se ha desconectado.");

@@ -2,7 +2,7 @@ Aurora;contraAurora;0
 Ceci;contraCeci;0
 Sergio;contraSergio;4
 AURORA GARCÍA RAIGÓN;hh;0
-AURORA;hh;0
+AURORA;hh;8
 hola;adios;8
 sesilia;sesilia;2
 user2;user2;0
@@ -10,4 +10,4 @@ hola1;adios;0
 hola2;adios;0
 cecilia;cecilia;1
 A;hh;0
-d;dede;0
+d;dede;7

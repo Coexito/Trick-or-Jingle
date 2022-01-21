@@ -352,12 +352,12 @@ export class Game extends Phaser.Scene {
 	checkWinners() {
 		if (player1.getLives() == 0) {
 			this.scene.stop();
-			this.scene.start("gameover", { winnerteam: 'christmas', username: this.username, win: false, url: url });
+			this.scene.start("gameover", { winnerteam: 'christmas', username: this.username, win: false, url: url, connection: connection });
 
 		}
 		if (player2.getLives() == 0) {
 			this.scene.stop();
-			this.scene.start("gameover", { winnerteam: 'halloween', username: this.username, win: true, url: url });
+			this.scene.start("gameover", { winnerteam: 'halloween', username: this.username, win: true, url: url, connection: connection });
 		}
 
 	}
@@ -439,16 +439,16 @@ function outOfTime() {
 	// Checks who's with most lives
 	if (player1.getLives() < player2.getLives()) {
 		this.scene.stop();
-		this.scene.start("gameover", { winnerteam: this.player2team, username: this.username, win: false, url: url });
+		this.scene.start("gameover", { winnerteam: this.player2team, username: this.username, win: false, url: url, connection: connection });
 	}
 	else if (player2.getLives() < player1.getLives()) {
 		this.scene.stop();
-		this.scene.start("gameover", { winnerteam: this.player1team, username: this.username, win: true, url: url });
+		this.scene.start("gameover", { winnerteam: this.player1team, username: this.username, win: true, url: url, connection: connection });
 	}
 	else // draw
 	{
 		this.scene.stop();
-		this.scene.start("gameover", { winnerteam: "draw", username: this.username, win: false, url: url });
+		this.scene.start("gameover", { winnerteam: "draw", username: this.username, win: false, url: url, connection: connection });
 	}
 
 }

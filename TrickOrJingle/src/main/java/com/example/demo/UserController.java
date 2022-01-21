@@ -59,14 +59,11 @@ public class UserController {
     }
     
     
-    
     @GetMapping("/currentUsersNum")
     public int getCurrentUsersNum() {
     	return currentUsers.size();
     }
     
-    
-   
     
     @GetMapping("/users/{nick}")
     public User getUser(@PathVariable("nick") String nick) {

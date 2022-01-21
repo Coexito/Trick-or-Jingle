@@ -1,3 +1,5 @@
+var connection;
+
 export class Gameover extends Phaser.Scene {
   constructor() {
     super({ key: 'gameover' });
@@ -8,6 +10,8 @@ export class Gameover extends Phaser.Scene {
     this.username = data.username;
     this.win = data.win;
     this.url = data.url;
+    connection = data.connection;
+    
   }
 
   preload() {
@@ -18,6 +22,9 @@ export class Gameover extends Phaser.Scene {
   }
   
   create() {
+	
+	// Closes the websocket
+	//connection.close();
 
     if(this.winnerteam == "halloween")
       this.add.image(640, 340, 'background_endgame_halloween');
@@ -28,10 +35,10 @@ export class Gameover extends Phaser.Scene {
 
     // Rematch btn
     this.bt_continue = this.add.image(640, 550, 'btn_endgame_rematch');
-    this.bt_continue.setInteractive().on('pointerdown', () => {
-
-      this.scene.start('mainmenu');
-      this.scene.stop();
+    this.bt_continue.setInteractive().on('pointerdown', () => {	
+		
+	    this.scene.start('Queue', {username: this.username, url: this.url, connection: connection});
+	    this.scene.stop();
     });
     
     console.log("Player 1 won?: " + this.win)

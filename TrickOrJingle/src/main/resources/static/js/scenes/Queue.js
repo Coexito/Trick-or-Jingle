@@ -20,8 +20,7 @@ var id;
 
 let url;
 
-export class Queue extends Phaser.Scene{
-	
+export class Queue extends Phaser.Scene {
 	
 	constructor(){
 		super({key: 'Queue'});		
@@ -30,6 +29,7 @@ export class Queue extends Phaser.Scene{
 	init (data){
 		username = data.username;
 		url = data.url;
+		connection = data.connection;
 	}
 	
 	preload(){
@@ -47,7 +47,9 @@ export class Queue extends Phaser.Scene{
 	    
 	    this.maxUsersIter = 0;
 
-	    connection = new WebSocket("ws://localhost:8080/game");
+		if(connection == null || connection == undefined)			// If it's the first attempt to connect
+	    	connection = new WebSocket("ws://localhost:8080/game");
+	    	
 	    console.log("Websocket url:\n ws://" + url + "game");
 	    
 	    //damos valor a los atributos de la conexión en el método en el que la creamos
@@ -57,58 +59,42 @@ export class Queue extends Phaser.Scene{
 		
 		connection.onclose = function(){
 			closinSocket();
-			
 			console.log("Closing socket.");
 			
-		}
-		
-		/*connection.onmessage = function(msg){ //llamado cuando se recibe un mensaje del servidor
-			var message = JSON.parse(msg.parse);
-			switch(message.id){
-				case 0:
-					
-			}
-		}*/
-	    
+		}	    
 	}
 	
 
 	
-	update(){
-
-			getActiveUsers(); //actualiza
-			updateActiveUsers(); //comprobación
-			
-			if(activeUsersNumber == 1){
-				id = 1;
-			}
-			else if(activeUsersNumber == 2 && id==null){ //Comprobamos si está vacío para no sobrescribir el del jugador 1
-				id = 2;
-			}
-			
-			textUsers.setText('Current clients: ' + activeUsersNumber.toString() + " Your username: " + username);
-			
-			previous = Date.now();
-			
-			if(activeUsersNumber == maxUsers){
-				this.maxUsersIter++;
-			}
-			
-			if(this.maxUsersIter==1){
+	update()
+	{
+		getActiveUsers(); //actualiza
+		updateActiveUsers(); //comprobación
 	
-				this.readyText = this.add.text(150, 150, 'Player 2 is ready. Starting game in...');
-				timedEventText = this.time.addEvent({ delay: 1000, callback: updateText, callbackScope: this, loop: true });
+		if(activeUsersNumber == 1)
+			id = 1;
+		else if(activeUsersNumber == 2 && id==null)  //Comprobamos si está vacío para no sobrescribir el del jugador 1
+			id = 2;
+		
+		textUsers.setText('Current clients: ' + activeUsersNumber.toString() + " Your username: " + username);
+		
+		previous = Date.now();
+			
+		if(activeUsersNumber == maxUsers)
+			this.maxUsersIter++;
+			
+		if(this.maxUsersIter==1){
+			this.readyText = this.add.text(150, 150, 'Player 2 is ready. Starting game, please dont close the window...');
+			timedEventText = this.time.addEvent({ delay: 3000, callback: updateText, callbackScope: this, loop: true });
 
-				updateText();
-				
-			}
-			if (countdown <= 0) {
-				
-					console.log("La cuenta atrás ha llegado a su fin"); //aquí llega ok
-					this.scene.stop();
-					this.scene.start("game", { username: username, id:id, url:url, websocket: connection });
-
-			}
+			//updateText();
+		}
+			
+		if (countdown <= 0) {
+			console.log("Iniciando juego");
+			this.scene.stop();
+			this.scene.start("game", { username: username, id:id, url:url, websocket: connection });
+		}
 		
 	}
 }
@@ -129,18 +115,16 @@ function formatTime(totalSeconds){
 
 function closinSocket(){
 	$.ajax({
-	        method: "DELETE",
-	        url: url + "currentUsers/" + username,
-	        success : function () {
-				console.log("Current user removed");
-			},
-			error : function () {
-				console.log("Failed to delete");
-				console.log("The URL was:\n" + url +"currentUsers/"+username)
-			}
-	     })	
-	     	
-	     	
+	    method: "DELETE",
+	    url: url + "currentUsers/" + username,
+	    success : function () {
+			console.log("Current user removed");
+		},
+		error : function () {
+			console.log("Failed to delete");
+			console.log("The URL was:\n" + url +"currentUsers/"+username)
+		}
+	})	     	
 }
 
 
@@ -148,13 +132,11 @@ function updateActiveUsers(){
 	if(activePrevUsersNumber != activeUsersNumber)
 	 {
 		if(activePrevUsersNumber < activeUsersNumber)
-			console.log("Se ha conectado alguien. El número actual de usuarios es: " + activeUsersNumber);
+			console.log("User connected. Total current users: " + activeUsersNumber);
 		else if(activePrevUsersNumber > activeUsersNumber){
-			console.log("Alguien se ha desconectado. El número actual de usuarios es: " + activeUsersNumber);
+			console.log("User disconnected. Total current users: " + activeUsersNumber);
 			conn.close();
-			
-			}
-			
+		}
 		activePrevUsersNumber = activeUsersNumber;
 	}
 	
@@ -166,7 +148,7 @@ function getActiveUsers(){
 		method: 'GET',
 		dataType: 'json'
 		}).done(function(data) {
-		activeUsersNumber = data;
+			activeUsersNumber = data;
 	}); 
 }  
 

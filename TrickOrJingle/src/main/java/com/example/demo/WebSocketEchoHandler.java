@@ -69,57 +69,6 @@ public class WebSocketEchoHandler extends TextWebSocketHandler {
 					System.out.println("Message sent to: " + participant.getId());
 				}
 			}
-	        
-	        /*
-	        WebSocketSession p1 = sessions.get("1"); //devuelve la sesión del 1
-	        WebSocketSession p2 = sessions.get("2"); //devuelve la sesión del 2
-	        
-	        
-	        System.out.println("----------------------------------------------------------------");
-
-	        System.out.println("getId1 " + p1.getId());
-	        System.out.println("getId2 " + p2.getId());
-	        System.out.println("getId Session " + session.getId());
-	        */
-	        //-----------------------------------------------------------------------------
-	        /*if(p2.getId() != session.getId()) {
-	        	System.out.println("soy la sesión 1");
-	        }*/
-	        
-	        /*if(p2.getId() == session.getId()) {
-	        	System.out.println("soy la sesión 2"); //lo mando al 1
-				p1.sendMessage(new TextMessage(newNode.toString()));
-				
-
-	        }
-	        else {
-	        	
-	        	System.out.println("soy la sesión 1");
-	        	//lo mando al 2
-				p2.sendMessage(new TextMessage(newNode.toString()));
-
-	        }*/
-	        
-	        
-	        /*
-	        try {
-			for(WebSocketSession participant : sessions.values()) {
-				System.out.println("participante fuera: "+ participant.getId() + " sesión fuera " + session.getId());
-	
-				
-				if(!participant.getId().equals(session.getId())) {
-					synchronized(participant){
-					
-						System.out.println("participante dentro: "+ participant.getId() + " sesión dentro " + session.getId());
-						participant.sendMessage(new TextMessage(newNode.toString()));
-					}
-				}
-			}
-			}catch(Exception e) {
-				System.out.println(e.getMessage());
-				System.out.println(e.getLocalizedMessage());
-			}*/
-			
 	}
 	
 	//Ejercicios del aula
@@ -144,6 +93,7 @@ public class WebSocketEchoHandler extends TextWebSocketHandler {
 		}
 		
 	}
+	
 	
 	@Override //notificar una baja de sesión
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {

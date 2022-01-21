@@ -46,11 +46,13 @@ export class Queue extends Phaser.Scene {
 	    countdownText = this.add.text(600,600, " ");
 	    
 	    this.maxUsersIter = 0;
+	    
+	    let tempUrlForWS = url.replace("http://", "")
 
 		if(connection == null || connection == undefined)			// If it's the first attempt to connect
-	    	connection = new WebSocket("ws://localhost:8080/game");
+	    	connection = new WebSocket("ws://" + tempUrlForWS + "game");
 	    	
-	    console.log("Websocket url:\n ws://" + url + "game");
+	    console.log("Websocket url:\n ws://" + tempUrlForWS + "game");
 	    
 	    //damos valor a los atributos de la conexión en el método en el que la creamos
 	    connection.onerror = function(e){

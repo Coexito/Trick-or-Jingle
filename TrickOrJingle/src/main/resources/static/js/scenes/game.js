@@ -379,6 +379,7 @@ export class Game extends Phaser.Scene {
 				id:	id,
 				x: 	player1.x,
 				y: 	player1.y,
+				velocity: player1.body.velocity,
 				weaponAngle: player1.arrow.angle,
 				weaponType: weaponType,
 				hasWeapon: player1.hasWeapon,
@@ -399,6 +400,7 @@ export class Game extends Phaser.Scene {
 				id:	id,
 				x: 	player2.x,
 				y: 	player2.y,
+				velocity: player2.body.velocity,
 				weaponAngle: player2.arrow.angle,
 				weaponType: weaponType,
 				hasWeapon: player2.hasWeapon,
@@ -546,8 +548,12 @@ function updateEnemyInfo(parsedData) {
 	if(id == "1")
 	{
 		// Position
+		if(player2.body != undefined)
+			player2.body.setVelocity(parsedData.velocity);
+			
 		player2.x = parsedData.x;
 		player2.y = parsedData.y;
+		
 		
 		// Weapon
 		player2.arrow.angle = parsedData.weaponAngle;
@@ -575,6 +581,9 @@ function updateEnemyInfo(parsedData) {
 	else if(id == "2")
 	{
 		// Position
+		if(player1.body != undefined)
+			player1.body.setVelocity(parsedData.velocity);
+			
 		player1.x = parsedData.x;
 		player1.y = parsedData.y;
 		

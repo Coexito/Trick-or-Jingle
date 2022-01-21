@@ -81,19 +81,31 @@ export class Player extends Phaser.GameObjects.Sprite
         {
             this.body.setVelocityY(-470);
         }
+        
+        
 
     }
     
     movementWebsocket()
     {
 		if (this.previousX < this.x)
-          this.anims.play(this.sprite+'Right', true);
+		{
+			//this.body.setVelocityX(-this.speed);
+			this.anims.play(this.sprite+'Right', true);
+		}
         else if (this.previousX > this.x)
-            this.anims.play(this.sprite+'Left', true);
+        {
+			//this.body.setVelocityX(this.speed);
+			this.anims.play(this.sprite+'Left', true);
+		}
         else
-            this.anims.play(this.sprite+'Turn');
+        {
+			 this.anims.play(this.sprite+'Turn');
+		}
+           
 
         this.previousX = this.x;
+        //this.previousY = this.y;
     }
 
     shooting() //host

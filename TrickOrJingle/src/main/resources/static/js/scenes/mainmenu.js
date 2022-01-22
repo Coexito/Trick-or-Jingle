@@ -1,12 +1,7 @@
-let url;
-
-let activeUsersNumber;
-let activePrevUsersNumber;
-
-let textActiveUsers;
-
-
+<var ready = false; //Number of players that have chosen their team
+ 
 export class MainMenu extends Phaser.Scene {
+  
   constructor() {
     super({ key: 'mainmenu' });
 
@@ -14,9 +9,11 @@ export class MainMenu extends Phaser.Scene {
     this.p2team = "None";
   }
   
-  init(data) {
+  init(data, conn) {
     this.username = data.username;
-    url = data.url;
+    this.connection = conn;
+    console.log("Conexión realizada con éxito");
+
   }
 
   preload() {
@@ -44,13 +41,14 @@ export class MainMenu extends Phaser.Scene {
     
 
     this.h_button = this.add.image(460, 350, 'h_button_small');
-
+	
+	//Player chooses team
     this.h_button.setInteractive().on('pointerdown', () => {
       this.h_button.setTexture("h_button_big");
       this.c_button.setTexture("c_button_small");
-
-      this.p1team = "halloween";
-      this.p2team = "christmas";  // THIS SOULD ME CHANGED IN PHASE 3
+		
+	
+      this.team = "halloween";
 
       this.startButton.setTexture("button_ready");
 
@@ -63,7 +61,6 @@ export class MainMenu extends Phaser.Scene {
       this.h_button.setTexture("h_button_small");
 
       this.p1team = "christmas";
-      this.p2team = "halloween";  // THIS SOULD ME CHANGED IN PHASE 3
       
       this.startButton.setTexture("button_ready");
     });
@@ -71,9 +68,18 @@ export class MainMenu extends Phaser.Scene {
     this.startButton = this.add.sprite(650, 600, 'button_not_ready');
     
     this.startButton.setInteractive().on('pointerdown', () => {
-      if(this.p1team != "None" || this.p2team != "None")
+		//connection via websocket: "I'm ready"
+		ready =true;
+		connection.send(
+			JSON.stringify({
+				ready: ready
+			})
+		);
+		
+      if(this.team != "None")
         this.scene.stop();
-        this.scene.start('game', { p1team: this.p1team, p2team: this.p2team, username: this.username, url: url });
+        this.scene.start('game', { team: this.team, username: this.username, connection:connection });
+
     });
     
     

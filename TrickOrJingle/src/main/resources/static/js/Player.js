@@ -3,11 +3,15 @@
 let shotgunCooldown1 = false; // at the start it hasn't used any weapons so they don't need to cooldown
 let gunCooldown1 = false;
 let bombCooldown1 = false;
+let currentAnimation = "turn";
 
 // player 2
 let shotgunCooldown2 = false;
 let gunCooldown2 = false;
 let bombCooldown2 = false;
+
+let shooting = false;
+
 
 export class Player extends Phaser.GameObjects.Sprite
 {
@@ -25,9 +29,11 @@ export class Player extends Phaser.GameObjects.Sprite
         this.weaponType;
 
         this.sprite = _sprite;
+        
+        this.isShooting = false;
 
         // Pointer sprite for bullets arrow marker
-        this.arrow = scene.physics.add.staticSprite(1000,1000, 'weapons').setScale(0.4); // create out of frame because it has no weapon when created
+        this.arrow = scene.physics.add.staticSprite(1000,1000, 'weapons'); // create out of frame because it has no weapon when created
         this.arrow.depth = 100; // put on front of the player
         this.arrow.angle = 45;
 
@@ -49,73 +55,81 @@ export class Player extends Phaser.GameObjects.Sprite
 
     }
 
-    movement1()
+    movement()  
     {
-        if (this.scene.a_key.isDown)
+        if (this.scene.a_key.isDown) //left
         {
             this.body.setVelocityX(-this.speed);
             this.anims.play(this.sprite+'Left', true);
+            currentAnimation = "Left";
+            
         }
         else if (this.scene.d_key.isDown)
         {
             this.body.setVelocityX(this.speed);
             this.anims.play(this.sprite+'Right', true);
+            currentAnimation = "Right";
         }
         else
         {
             this.body.setVelocityX(0);
             this.anims.play(this.sprite+'Turn');
+            currentAnimation = "Turn";
         }
 
-        if ((Phaser.Input.Keyboard.JustDown(this.scene.w_key) && this.body.touching.down))
+        if ((Phaser.Input.Keyboard.JustDown(this.scene.w_key) && this.body.touching.down)) //jump
         {
             this.body.setVelocityY(-470);
         }
+        
+        
+
     }
-    movement2()
+    
+    movementWebsocket()
     {
-        // Movement
-        if (this.scene.cursors.left.isDown)
+		if (this.previousX < this.x)
+		{
+			//this.body.setVelocityX(-this.speed);
+			this.anims.play(this.sprite+'Right', true);
+		}
+        else if (this.previousX > this.x)
         {
-            this.body.setVelocityX(-this.speed);
-            this.anims.play(this.sprite+'Left', true);
-        }
-        else if (this.scene.cursors.right.isDown)
-        {
-            this.body.setVelocityX(this.speed);
-            this.anims.play(this.sprite+'Right', true);
-        }
+			//this.body.setVelocityX(this.speed);
+			this.anims.play(this.sprite+'Left', true);
+		}
         else
         {
-            this.body.setVelocityX(0);
-            this.anims.play(this.sprite+'Turn');
-        }
+			 this.anims.play(this.sprite+'Turn');
+		}
+           
 
-        // Jumping
-        if ((Phaser.Input.Keyboard.JustDown(this.scene.cursors.up) && this.body.touching.down))
-        {
-            this.body.setVelocityY(-470);
-        }
-
-        return this;
+        this.previousX = this.x;
+        //this.previousY = this.y;
     }
 
-    shooting1()
+    shooting() //host
     {
         if (this.hasWeapon){
             // update arrow position
             this.arrow.x = this.x;
             this.arrow.y = this.y;
+            
+            // Flips the weapon when fully rotated
+            if(this.arrow.angle < 0)
+                this.arrow.flipX = true;
+            else
+                this.arrow.flipX = false;
 
             // rotate arrow
             if (this.scene.e_key.isDown)
             {
-                this.arrow.angle += 2;
+                this.arrow.angle += 3;
             }
 
             if (this.scene.q_key.isDown)
             {
-                this.arrow.angle -= 2;
+                this.arrow.angle -= 3;
             }
 
             // shooting method depends on weaponType
@@ -124,22 +138,25 @@ export class Player extends Phaser.GameObjects.Sprite
                 case 'shotgun': // if the weapon type is a shotgun
                     if (Phaser.Input.Keyboard.JustDown(this.scene.space_key) && (shotgunCooldown1 == false)) // it only works if the player has cooled down
                     {
+						shooting = true;
                         this.shootShotGun(); 
-
                         shotgunCooldown1 = true; // the weapon needs to cooldown to be used again
                         setTimeout( function(){ // after some time sets boolean to false so it can be shot again
                             shotgunCooldown1 = false;
+                            shooting = false;
                         }, 1000);
                     }
                     break;
                 case 'gun': // if the weapon type is a gun
                     if (Phaser.Input.Keyboard.JustDown(this.scene.space_key) && (gunCooldown1 == false))
                     {
+						shooting = true;
                         this.shootGun();
 
                         gunCooldown1 = true;
                         setTimeout( function(){
                             gunCooldown1 = false;
+                            shooting = false;
                         }, 1000);
                     }
                     break;
@@ -147,76 +164,69 @@ export class Player extends Phaser.GameObjects.Sprite
                 case 'bomb':
                     if (Phaser.Input.Keyboard.JustDown(this.scene.space_key) && (bombCooldown1 == false))
                     {
+						shooting = true;
                         this.throwBomb();
 
                         bombCooldown1 = true;
                         setTimeout( function(){
                             bombCooldown1 = false;
+                            shooting = false;
                         }, 1000);
                     }
                     break;
             }
         }
     }
-
-    shooting2()
+	
+    showWeaponWebsocket()
     {
         if (this.hasWeapon)
         {
             // update arrow position
             this.arrow.x = this.x;
             this.arrow.y = this.y;
+            
+            // Flips the weapon when fully rotated
+            if(this.arrow.angle < 0)
+                this.arrow.flipX = true;
+            else
+                this.arrow.flipX = false;
 
-            // rotate arrow
-            if (this.scene.numpad_9_key.isDown)
-            {
-                this.arrow.angle += 2;
-            }
-
-            if (this.scene.numpad_7_key.isDown)
-            {
-                this.arrow.angle -= 2;
-            }
-
-            // shooting method depends on weaponType
             switch(this.weaponType)
-            {
-                case 'shotgun': // if the weapon type is a shotgun
-                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key) && (shotgunCooldown2 == false))
-                    {
-                        this.shootShotGun();
-
-                        shotgunCooldown2 = true;
-                        setTimeout( function(){
-                            shotgunCooldown2 = false;
-                        }, 1000);
-                    }
-                    break;
-                case 'gun': // if the weapon type is a gun
-                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key) && (gunCooldown2 == false))
-                    {
-                        this.shootGun();
-
-                        gunCooldown2 = true;
-                        setTimeout( function(){
-                            gunCooldown2 = false;
-                        }, 500);
-                    }
-                    break;
-                case 'bomb':
-                    if(Phaser.Input.Keyboard.JustDown(this.scene.numpad_0_key) && (bombCooldown2 == false))
-                    {
-                        this.throwBomb();
-
-                        bombCooldown2 = true;
-                        setTimeout( function(){
-                            bombCooldown2 = false;
-                        }, 1000);
-                    }
-                    break;
-            }
+	        {
+	            case 'gun':
+	                this.arrow.setFrame(0);
+	                break;
+	            case 'shotgun':
+	                this.arrow.setFrame(1);
+	                break;
+	            case 'bomb':
+	                this.arrow.setFrame(2);
+	                break;
+	        }
         }
     }
+    
+    shootWebsocket()
+    {
+	    switch(this.weaponType)
+	    {
+		    case 'gun':
+				this.shootGun();
+			    
+			    break;
+		    case 'shotgun':
+				this.shootShotGun();
+			    
+			    break;
+		    case 'bomb':
+				this.throwBomb();
+				
+			    break;
+	    }
+	}
+    
+    
 
     shootGun()
     {
@@ -239,6 +249,7 @@ export class Player extends Phaser.GameObjects.Sprite
         // Sets bullet velocity
         bullet.body.velocity.x = vec.y;
         bullet.body.velocity.y = -vec.x;
+        
     }
 
     shootShotGun()
@@ -277,6 +288,7 @@ export class Player extends Phaser.GameObjects.Sprite
                 bullet.disableBody(true, true); 
             }
         });
+        
     }
 
     throwBomb()
@@ -292,6 +304,7 @@ export class Player extends Phaser.GameObjects.Sprite
         // Sets bullet velocity
         bomb.body.velocity.x = vec.y;
         bomb.body.velocity.y = -vec.x;
+        
     }
 
     takeDamage()
@@ -348,23 +361,26 @@ export class Player extends Phaser.GameObjects.Sprite
         }
     }
 
-    update(){
+	update() {
 
-        if(this.alive) // If the player is alive
+		if (this.alive) // If the player is alive
+		{
+			// Checks for the controls of each player based on the index
+			this.isShooting = shooting;
+			this.movement();
+			this.shooting();
+		}
+
+	}
+
+	updateWebsocket() 
+	{
+		if(this.alive) // If the player is alive
         {
             // Checks for the controls of each player based on the index
-            if(this.idx == 1)
-            {
-                this.movement1();
-                this.shooting1();
-            }  
-            else if(this.idx == 2)
-            {
-                this.movement2();
-                this.shooting2()
-            }
-        }      
-
-    }
+            this.movementWebsocket();
+            this.showWeaponWebsocket();
+        } 
+	}
 
 }

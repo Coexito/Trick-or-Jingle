@@ -18,7 +18,8 @@ export class StartMenu extends Phaser.Scene {
 	
 	//Get the game url
 	url = window.location.href;
-	console.log(url);
+	console.log("Game url is:\n" + url);
+	
     // music
     var backgroundMusic = this.sound.add('Halloween_lofi');
     backgroundMusic.loop = true;
@@ -30,7 +31,7 @@ export class StartMenu extends Phaser.Scene {
 
     this.bg_start.setInteractive().on('pointerdown', () => {
       this.scene.stop();
-      this.scene.start("login", { url: url});
+      this.scene.start("login", { url: url, music: backgroundMusic});
     });
     
   }

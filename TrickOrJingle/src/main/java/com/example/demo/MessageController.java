@@ -36,6 +36,7 @@ public class MessageController {
 	public String getMessage(@PathVariable("i") String i) {
 		
 		int size = messages.size();
+		//System.out.println("user: "+i + " size: " + size);
 		
 		String message = "";
 		if(i.equals("0") && size>=1) {

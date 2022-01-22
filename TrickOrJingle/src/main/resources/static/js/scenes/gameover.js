@@ -1,3 +1,5 @@
+var connection;
+
 export class Gameover extends Phaser.Scene {
   constructor() {
     super({ key: 'gameover' });
@@ -7,6 +9,9 @@ export class Gameover extends Phaser.Scene {
     this.winnerteam = data.winnerteam;
     this.username = data.username;
     this.win = data.win;
+    this.url = data.url;
+    connection = data.connection;
+    
   }
 
   preload() {
@@ -17,6 +22,9 @@ export class Gameover extends Phaser.Scene {
   }
   
   create() {
+	
+	// Closes the websocket
+	//connection.close();
 
     if(this.winnerteam == "halloween")
       this.add.image(640, 340, 'background_endgame_halloween');
@@ -27,13 +35,25 @@ export class Gameover extends Phaser.Scene {
 
     // Rematch btn
     this.bt_continue = this.add.image(640, 550, 'btn_endgame_rematch');
-    this.bt_continue.setInteractive().on('pointerdown', () => {
-
-      this.scene.start('mainmenu');
-      this.scene.stop();
+    this.bt_continue.setInteractive().on('pointerdown', () => {	
+		
+	    this.scene.start('Queue', {username: this.username, url: this.url, connection: connection, password: this.password});
+	    this.scene.stop();
     });
     
     console.log("Player 1 won?: " + this.win)
+    
+    // delete currentUser
+    $.ajax({
+	        method: "DELETE",
+	        url: this.url + 'currentUsers/' + this.username,
+	        success : function () {
+				console.log("User removed");
+			},
+			error : function () {
+				console.log("Failed to delete");
+			}
+	     })
     
     if(this.win)
     {
@@ -41,8 +61,10 @@ export class Gameover extends Phaser.Scene {
 	    $.ajax({
 	        type: 'PUT',
 	        async: false,
-	        url: 'http://localhost:8080/users/' + this.username,
+	        url: this.url + 'users/' + this.username,
 	    });
+	    
+	    console.log("Updated: " + this.url + 'users/' + this.username)
 	}
     
     

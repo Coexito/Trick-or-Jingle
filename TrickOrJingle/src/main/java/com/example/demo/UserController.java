@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 
 @RestController
 public class UserController {
-    
+
     private Map<String, User> users = new HashMap<String, User>(); // Map of users
     
     private Map <String, User> currentUsers = new HashMap<String, User>();
@@ -22,6 +22,8 @@ public class UserController {
 
     String usersFileURL = "src/main/resources/static/db/users.txt"; // Users file url
     String tempUsersFileURL = "src/main/resources/static/db/tempUsers.txt"; // File used to delete one user
+    
+    private Map <String, User> currentUsers = new HashMap<String, User>();
     
     public UserController()
     {
@@ -77,6 +79,18 @@ public class UserController {
         return users;
     }
     
+    @GetMapping("/currentUsers")
+    public Map<String, User> getCurrentUsers(){
+    	//System.out.println("Accediendo a los usuarios actuales");
+    	return currentUsers;
+    }
+    
+    
+    @GetMapping("/currentUsersNum")
+    public int getCurrentUsersNum() {
+    	return currentUsers.size();
+    }
+    
     
     @GetMapping("/users/{nick}")
     public User getUser(@PathVariable("nick") String nick) {
@@ -84,6 +98,7 @@ public class UserController {
     	if(users.containsKey(nick))	// User is found
     	{
     		User user = users.get(nick);   
+
             return user;    		
     	}
     	else	// User is not found
@@ -95,6 +110,18 @@ public class UserController {
     	
     }
     
+    
+    @PostMapping("/currentUsers")
+    public boolean addCurrentUser(@RequestBody User newUser) 
+    {
+    	String nick = newUser.getNick();	// Uses the user nick as key
+    	
+    	currentUsers.put(nick, newUser);
+    	
+    	return true;
+    } 
+    
+
     @PostMapping("/users")
     public boolean addUser(@RequestBody User newUser) 
     {
@@ -104,7 +131,6 @@ public class UserController {
     	if(!users.containsKey(nick)) // if the user doesn't exist
     	{
     		users.put(nick, newUser); // we add the new user
-    		currentUsers.put(nick, newUser);
     		
     		// Add user to the txt file
             try (Writer writer = new BufferedWriter(new FileWriter(usersFileURL, true))) // "true" parameter is for appending
@@ -126,7 +152,6 @@ public class UserController {
     		
     	} else { // the user exists
     		if(users.get(nick).getPassword().equals(password)) { // if the password given matches the stored one
-    	    	currentUsers.put(nick, newUser);
 
     			return true; // we can change the scene
     		} else // if the password isn't the same
@@ -136,7 +161,7 @@ public class UserController {
     	
     } 
     
-    
+  
     @PutMapping("/users/{nickname}")
     public void updateUserScore(@PathVariable("nickname") String nickname) throws IOException 
     {
@@ -176,6 +201,14 @@ public class UserController {
 		boolean successful = tempFile.renameTo(inputFile);
     	
     }
+   
+   @DeleteMapping("/currentUsers/{nick}")
+   public void deleteCurrentUser(@PathVariable("nick") String nick)throws IOException{
+	   if(currentUsers.containsKey(nick)) {
+		   currentUsers.remove(nick);
+		   System.out.println("Un usuario se ha desconectado.");
+	   }
+   }
     
    @DeleteMapping("/users/{nick}")
     public void deleteUser(@PathVariable("nick") String nick) throws IOException {
@@ -214,6 +247,8 @@ public class UserController {
 		   inputFile.delete();
 		   boolean successful = tempFile.renameTo(inputFile);
 		   
+		   currentUsers.remove(nick);
+
 		   users.remove(nick);
 	   }
     }

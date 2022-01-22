@@ -187,7 +187,7 @@ Para ejecutar *Trick or Jingle* basta con tener el archivo **TrickOrJingle.jar**
 
 Tenga en cuenta que para ejecutar este archivo, así como para utilizar la instrucción indicada, es necesario tener [Java](https://www.java.com) instalado en su computador, siendo preferible la última versión disponible. También se recomienda instalar el *Java Software Development Kit* o [Java SDK](https://www.oracle.com/java/technologies/sdk-downloads.html) instalado para evitar cualquier tipo de problema.
 
-Una vez se ejecute el archivo TrickOrJingle.jar con éxito, podrá ejecutar su navegador de confianza y acceder al juego escribiendo *localhost:8080* en la barra de direcciones. ¡A partir de ahí, a jugar!
+Una vez se ejecute el archivo TrickOrJingle.jar con éxito, podrá ejecutar su navegador de confianza y acceder al juego escribiendo la ip de la máquina en la que se está ejecutando el servidor, seguida por /8080, en la barra de direcciones (por ejemplo: 123.45.2.1/8080 . Esta NO es la IP que debe poner). ¡A partir de ahí, a jugar!
 
 # Autoría
 

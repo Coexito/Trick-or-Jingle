@@ -32,7 +32,7 @@ export class StartMenu extends Phaser.Scene {
 
     this.bg_start.setInteractive().on('pointerdown', () => {
       this.scene.stop();
-      this.scene.start("login", { url: url});
+      this.scene.start("login", { url: url, music: backgroundMusic});
       
     });
     

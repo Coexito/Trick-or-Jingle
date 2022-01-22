@@ -1,6 +1,6 @@
-Aurora;contraAurora;0
+Aurora;contraAurora;6
 Ceci;contraCeci;0
-Sergio;contraSergio;4
+Sergio;contraSergio;9
 AURORA GARCÍA RAIGÓN;hh;0
 AURORA;hh;8
 hola;adios;8

@@ -22,6 +22,8 @@ var password;
 let url;
 let maxUsersIter;
 
+let bgmusic;
+
 export class Queue extends Phaser.Scene {
 	
 	constructor(){
@@ -33,6 +35,7 @@ export class Queue extends Phaser.Scene {
 		password = data.password;
 		url = data.url;
 		connection = data.connection;
+		bgmusic = data.music;
 	}
 	
 	preload(){
@@ -114,7 +117,7 @@ export class Queue extends Phaser.Scene {
 		if (countdown <= 0) {
 			console.log("Iniciando juego");
 			this.scene.stop();
-			this.scene.start("game", { username: username, id:id, url:url, websocket: connection, password: password });
+			this.scene.start("game", { username: username, id:id, url:url, websocket: connection, password: password, music: bgmusic });
 		}
 		
 	}

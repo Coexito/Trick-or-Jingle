@@ -12,15 +12,57 @@ a:hover{
 
 
 #RRSS{
-    font-family: Helvetica, Arial;
+    font-family: "Arial Rounded MT Bold", Helvetica, Arial;
     color: white;
     text-align: center;
 
 }
-#game{
-    
+
+/* Tutorial banner */
+
+.container {
+    position: relative;
+    width: 30%;
+    text-align: center;
     margin: auto;
-}
+    margin-bottom: 15px;
+  }
+  .image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #fda705;
+  }
+  
+  .container:hover .overlay {
+    opacity: 1;
+  }
+  
+  .text {
+    color: black;
+    font-size: 30px;
+    font-family: "Arial Rounded MT Bold", Arial, Helvetica;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+  }
+
+/* --------------- */
+
 #banner{
     text-align: center;
 }
@@ -28,34 +70,32 @@ a:hover{
     text-align: center;
 }
 
+#game{
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+#pannels {
+    display: block;
+    text-align: center;
+}
+
 
 footer{
-     position: fixed;
+    position: fixed;
     padding: 10px 10px 0px 10px;
     bottom: 0;
     color: ghostwhite;
-
 }
+
 body{
     height: 2189px;
     width:  1920;
     background-image: url(/Resources/WebAssets/background.png);
     background-color: darkred; 
+    background-size: 100%;
 }
+
 html{
     overflow: scroll;
-}
-
-
-#chatField{
-	float: right;
-    left: -50%;
-    position: relative;
-}
-
-#chatTable{
-	background-color:lightgoldenrodyellow;
-	margin:auto;
-	height: 200px;
-    width:  500px;
 }

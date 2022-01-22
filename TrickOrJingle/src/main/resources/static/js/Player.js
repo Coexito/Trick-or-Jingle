@@ -33,7 +33,7 @@ export class Player extends Phaser.GameObjects.Sprite
         this.isShooting = false;
 
         // Pointer sprite for bullets arrow marker
-        this.arrow = scene.physics.add.staticSprite(1000,1000, 'weapons').setScale(0.4); // create out of frame because it has no weapon when created
+        this.arrow = scene.physics.add.staticSprite(1000,1000, 'weapons'); // create out of frame because it has no weapon when created
         this.arrow.depth = 100; // put on front of the player
         this.arrow.angle = 45;
 
@@ -114,6 +114,12 @@ export class Player extends Phaser.GameObjects.Sprite
             // update arrow position
             this.arrow.x = this.x;
             this.arrow.y = this.y;
+            
+            // Flips the weapon when fully rotated
+            if(this.arrow.angle < 0)
+                this.arrow.flipX = true;
+            else
+                this.arrow.flipX = false;
 
             // rotate arrow
             if (this.scene.e_key.isDown)
@@ -179,6 +185,12 @@ export class Player extends Phaser.GameObjects.Sprite
             // update arrow position
             this.arrow.x = this.x;
             this.arrow.y = this.y;
+            
+            // Flips the weapon when fully rotated
+            if(this.arrow.angle < 0)
+                this.arrow.flipX = true;
+            else
+                this.arrow.flipX = false;
 
             switch(this.weaponType)
 	        {

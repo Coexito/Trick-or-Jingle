@@ -27,7 +27,9 @@ var id;
 
 var isPaused = false;
 
-var url = "localhost:8080/";
+var url;
+
+let bgmusic;
 
 export class Game extends Phaser.Scene {
 
@@ -44,6 +46,8 @@ export class Game extends Phaser.Scene {
 		this.password = data.password;
 		
 		url = data.url;
+		
+		bgmusic = data.music;
 
 	}
 
@@ -159,7 +163,7 @@ export class Game extends Phaser.Scene {
 		this.pause_button = this.add.image(50, 50, 'pause_button');
 
 		this.pause_button.setInteractive().on("pointerdown", () => {
-			this.scene.launch("pause");
+			this.scene.launch("pause", {backgroundMusic: bgmusic});
 			this.scene.pause();
 			isPaused = true;
 		});
@@ -353,12 +357,12 @@ export class Game extends Phaser.Scene {
 	checkWinners() {
 		if (player1.getLives() == 0) {
 			this.scene.stop();
-			this.scene.start("gameover", { winnerteam: 'christmas', username: this.username, win: false, url: url, connection: connection, password: this.password });
+			this.scene.start("gameover", { winnerteam: 'christmas', username: this.username, win: false, url: url, connection: connection, password: this.password, backgroundMusic: bgmusic });
 
 		}
 		if (player2.getLives() == 0) {
 			this.scene.stop();
-			this.scene.start("gameover", { winnerteam: 'halloween', username: this.username, win: true, url: url, connection: connection, password: this.password });
+			this.scene.start("gameover", { winnerteam: 'halloween', username: this.username, win: true, url: url, connection: connection, password: this.password, backgroundMusic: bgmusic });
 		}
 
 	}
@@ -442,16 +446,16 @@ function outOfTime() {
 	// Checks who's with most lives
 	if (player1.getLives() < player2.getLives()) {
 		this.scene.stop();
-		this.scene.start("gameover", { winnerteam: this.player2team, username: this.username, win: false, url: url, connection: connection, password: this.password });
+		this.scene.start("gameover", { winnerteam: this.player2team, username: this.username, win: false, url: url, connection: connection, password: this.password, backgroundMusic: bgmusic });
 	}
 	else if (player2.getLives() < player1.getLives()) {
 		this.scene.stop();
-		this.scene.start("gameover", { winnerteam: this.player1team, username: this.username, win: true, url: url, connection: connection, password: this.password });
+		this.scene.start("gameover", { winnerteam: this.player1team, username: this.username, win: true, url: url, connection: connection, password: this.password, backgroundMusic: bgmusic });
 	}
 	else // draw
 	{
 		this.scene.stop();
-		this.scene.start("gameover", { winnerteam: "draw", username: this.username, win: false, url: url, connection: connection, password: this.password });
+		this.scene.start("gameover", { winnerteam: "draw", username: this.username, win: false, url: url, connection: connection, password: this.password, backgroundMusic: bgmusic });
 	}
 
 }

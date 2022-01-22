@@ -1,5 +1,6 @@
 
-//var url = "192.168.1.20";
+var bgmusic;
+
 export class Login extends Phaser.Scene {
   constructor() {
     super({ key: 'login' });
@@ -10,6 +11,7 @@ export class Login extends Phaser.Scene {
   init(data)
   {
 	this.url = data.url;
+	bgmusic = data.music;
   }
 
   preload() {
@@ -58,7 +60,7 @@ export class Login extends Phaser.Scene {
 		     	// Starts the next scene
 		     	if(change){ // if we access with an existing user and correct password or create a new one we can change the scene
 		     		this.scene.stop();
-	        		this.scene.start('Queue', { username: name.value, url: this.url, password: password.value});	
+	        		this.scene.start('Queue', { username: name.value, url: this.url, password: password.value, music: bgmusic});	
 				} else { // if the given password doesn't match the one of the existing user, we can't change the scene
 					text.setText('Wrong password. Try again'); // 
 				}

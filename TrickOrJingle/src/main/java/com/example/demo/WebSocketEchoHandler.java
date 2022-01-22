@@ -36,44 +36,45 @@ public class WebSocketEchoHandler extends TextWebSocketHandler {
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		
-		System.out.println("Message servidor received: " + message.getPayload());
+		//System.out.println("Message servidor received: " + message.getPayload());
 		
 		// The node with info is created and sent to the other participants in the game.
 		JsonNode node = mapper.readTree(message.getPayload());
 		sendOtherParticipantsInGame(session, node);
 	}
 	
-	//para enviar los datos a los demás participantes.
-	//datos que enviar: cambios en posiciones de personajes, tipo de disparo, ángulo, origen y velocidad
+	
 	private void sendOtherParticipantsInGame(WebSocketSession session, JsonNode node) throws IOException {
 		
-			System.out.println("Attempting to send message...");
+			//System.out.println("Attempting to send message...");
 			
 			// Creates a JSON object to access the info
 			ObjectNode newNode = mapper.createObjectNode(); //objeto json con jackson
 	        
 			// The JSON passed with parameters is used to fill the new JSON object just created
+				// Movement
 			newNode.put("id", node.get("id").asInt());
 	        newNode.put("x", node.get("x").asDouble());
 	        newNode.put("y", node.get("y").asDouble());
 	        newNode.put("velocity", node.get("velocity").asDouble());
-	        
+	        	// Weapons
 	        newNode.put("weaponAngle", node.get("weaponAngle").asDouble());
 	        newNode.put("weaponType", node.get("weaponType").asText());
 	        newNode.put("hasWeapon", node.get("hasWeapon").asBoolean());
 	        newNode.put("shoots", node.get("shoots").asBoolean());
+	        	// Game rules
 	        newNode.put("lives", node.get("lives").asInt());
 	        
 	        for(WebSocketSession participant : sessions.values()) {
 				if(!participant.getId().equals(session.getId())) {
 					participant.sendMessage(new TextMessage(newNode.toString()));
-					System.out.println("Message sent to: " + participant.getId());
+					//System.out.println("Message sent to: " + participant.getId());
 				}
 			}
 	}
 	
-	//Ejercicios del aula
-	@Override //notificar un alta de sesión
+
+	@Override // Notifies a new session
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 			
 		System.out.println("Attempting to start session...");

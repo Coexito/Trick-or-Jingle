@@ -164,8 +164,8 @@ export class Game extends Phaser.Scene {
 
 		this.pause_button.setInteractive().on("pointerdown", () => {
 			this.scene.launch("pause", {backgroundMusic: bgmusic});
-			this.scene.pause();
-			isPaused = true;
+			//this.scene.pause();
+			//isPaused = true;
 		});
 
 		// Creates a group for the players, bullets & weapons

@@ -3,15 +3,15 @@
 
 ![Trick or Jingle](/Documents/Readme-resources/Logos/Trick_or_Jingle_logo.png)
 
+## Vídeo explicativo
+[![Video explicativo](/Documents/Readme-resources/Video/video_imagen.png)](https://www.youtube.com/watch?v=e05qWvB7Czk "Trick or Jingle - Vídeo explicativo")
+
 ## Identidad del juego
 
 *Trick or Jingle* se trata de un juego gratuito estilo plataformas y acción
 que dará fin a la rivalidad Halloween contra Navidad en una ***ÉPICA*** batalla.
 
 ![Trick or Jingle isotype](/Documents/Readme-resources/Logos/Trick_or_Jingle_isotipo.png)
-
-## Vídeo explicativo
-[![Video explicativo](/Documents/Readme-resources/Video/video_imagen.png)](https://www.youtube.com/watch?v=e05qWvB7Czk "Trick or Jingle - Vídeo explicativo")
 
 ## Lanzamiento
 **Plataformas**: Navegador ([Chrome](https://www.google.es/chrome/)).

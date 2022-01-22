@@ -16,10 +16,6 @@ import org.springframework.http.HttpStatus;
 public class UserController {
 
     private Map<String, User> users = new HashMap<String, User>(); // Map of users
-    
-    private Map <String, User> currentUsers = new HashMap<String, User>();
-    
-
     String usersFileURL = "src/main/resources/static/db/users.txt"; // Users file url
     String tempUsersFileURL = "src/main/resources/static/db/tempUsers.txt"; // File used to delete one user
     
@@ -49,29 +45,6 @@ public class UserController {
     	      e.printStackTrace();
     	    }
     }
-    
-
-    @GetMapping("/currentUsers")
-    public Map<String, User> getCurrentUsers(){
-    	//System.out.println("Accediendo a los usuarios actuales");
-    	return currentUsers;
-    }
-    
-    
-    
-    @GetMapping("/currentUsersNum")
-    public int getCurrentUsersNum() {
-    	return currentUsers.size();
-    }
-    
-    @DeleteMapping("/currentUsers")
-    public void closeSession(@PathVariable("nick") String nick)throws IOException{
- 	   if(currentUsers.containsKey(nick)) {
- 		   currentUsers.remove(nick);
- 		   System.out.println("Un usuario se ha desconectado.");
- 	   }
-    }
-    
     
     @GetMapping("/users")
     public Map<String, User> getUsers(){
@@ -121,7 +94,6 @@ public class UserController {
     	return true;
     } 
     
-
     @PostMapping("/users")
     public boolean addUser(@RequestBody User newUser) 
     {
@@ -248,7 +220,6 @@ public class UserController {
 		   boolean successful = tempFile.renameTo(inputFile);
 		   
 		   currentUsers.remove(nick);
-
 		   users.remove(nick);
 	   }
     }

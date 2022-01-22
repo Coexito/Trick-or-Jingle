@@ -146,7 +146,7 @@ Pantalla de bienvenida del juego mostrando la ilustración inicial. Puede hacers
 En esta pantalla el jugador podrá iniciar sesión con su usuario ya creado, o bien crear uno en caso de que no existiera. Iniciar sesión sirve para almacenar el número de partidas ganadas en total.
 
 ![Team selection screen](/Documents/Readme-resources/Diagrams/Pantalla3.PNG)
-Tendrá que haber dos jugadores para poder empezar a jugar. El primer jugador que se conecte estará en esta pantalla hasta que se conecte un contrincante, en cuyo caso empezará una cuenta atrás hasta pasar a la pantalla de juego.
+El jugador podrá escoger con qué equipo quiere jugar. No podrá avanzar hasta haber seleccionado al menos uno de los dos. Como adición, también podrá borrar su usuario en caso de que quisiera, simplemente pulsando en el botón indicado.
 
 ![Game screen](/Documents/Readme-resources/Diagrams/Pantalla4.PNG)
 Escena de juego principal. Aquí los jugadores podrán competir para ver quién es el mejor. Puede pausarse el juego pulsando en el botón de la esquina superior izquierda.
@@ -165,22 +165,6 @@ Se ha implementado una API REST utilizada para labores de red tales como inicio 
 A continuación se presenta el sencillo pero eficaz diagrama de clases utilizado para este propósito:
 ![API REST Class Diagram](/Documents/Readme-resources/Diagrams/D_API_REST_fondo.jpg)
 
-## Implementación con websockets
-
-Se ha implementado comunicación por websockets para hacer que el juego sea multijugador online. Para ello, se ha creado una conexión entre los clientes y el servidor. Los clientes mandan el estado actual del jugador que corresponda al servidor, y el servidor actúa a modo de difusor enviando dicho estado al resto de jugadores para que vean estos cambios reflejados. Dicho estado está compuesto por: 
-
-* Vidas.
-* Posición.
-* Velocidad.
-* Tener arma (bool).
-* Está disparando (bool).
-* Ángulo del arma.
-* Tipo de arma.
-
-Se ha decidido pasar el ángulo y tipo de arma en lugar de la posición de la bala en cada momento porque se considera que es óptimo mandar los datos necesarios para calcular la posición de la bala en cada máquina en lugar de estar pasando en todo momento la posición, que resultaría muy costoso.
-
-Además, para poder hacer uso de websockets se ha implementado una nueva clase en la parte de servidor llamada WebSocketEchoHandler que permite difundir los mensajes entre los clientes.
-
 ## Instrucciones de ejecución
 
 Para ejecutar *Trick or Jingle* basta con tener el archivo **TrickOrJingle.jar** en su computador y ejecutarlo. Podrá hacer doble click sobre el archivo o, en caso de que no funcionara con debería, puede abrir la consola de comandos en la ubicación del archivo y ejecutar la siguiente instrucción:
@@ -189,7 +173,7 @@ Para ejecutar *Trick or Jingle* basta con tener el archivo **TrickOrJingle.jar**
 
 Tenga en cuenta que para ejecutar este archivo, así como para utilizar la instrucción indicada, es necesario tener [Java](https://www.java.com) instalado en su computador, siendo preferible la última versión disponible. También se recomienda instalar el *Java Software Development Kit* o [Java SDK](https://www.oracle.com/java/technologies/sdk-downloads.html) instalado para evitar cualquier tipo de problema.
 
-Una vez se ejecute el archivo TrickOrJingle.jar con éxito, podrá ejecutar su navegador de confianza y acceder al juego escribiendo la ip de la máquina en la que se está ejecutando el servidor, seguida por /8080, en la barra de direcciones (por ejemplo: 123.45.2.1/8080 . Esta NO es la IP que debe poner). ¡A partir de ahí, a jugar!
+Una vez se ejecute el archivo TrickOrJingle.jar con éxito, podrá ejecutar su navegador de confianza y acceder al juego escribiendo *localhost:8080* en la barra de direcciones. ¡A partir de ahí, a jugar!
 
 # Autoría
 

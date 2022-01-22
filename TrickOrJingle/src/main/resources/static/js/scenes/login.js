@@ -1,9 +1,6 @@
 
 var bgmusic;
 
-let url;
-
-
 export class Login extends Phaser.Scene {
   constructor() {
     super({ key: 'login' });
@@ -15,7 +12,6 @@ export class Login extends Phaser.Scene {
   {
 	this.url = data.url;
 	bgmusic = data.music;
-
   }
 
   preload() {
@@ -28,7 +24,7 @@ export class Login extends Phaser.Scene {
    
     
   }
-
+	
 	create() {
 	    this.add.image(640, 340, 'background_login');
 	    
@@ -54,7 +50,6 @@ export class Login extends Phaser.Scene {
 						'Content-type': 'application/json'
 					},
 					url: this.url + "users",
-
 					data: JSON.stringify({ nick: "" + name.value, password: "" + password.value }),
 					dataType: "json",
 					success : function (boolean) { // returned variable to check if we can change the scene
@@ -66,7 +61,6 @@ export class Login extends Phaser.Scene {
 		     	if(change){ // if we access with an existing user and correct password or create a new one we can change the scene
 		     		this.scene.stop();
 	        		this.scene.start('Queue', { username: name.value, url: this.url, password: password.value, music: bgmusic});	
-
 				} else { // if the given password doesn't match the one of the existing user, we can't change the scene
 					text.setText('Wrong password. Try again'); // 
 				}
@@ -76,10 +70,6 @@ export class Login extends Phaser.Scene {
 	    
     	
 	}
-	
-	
-	
-	
-	
   
 }
+

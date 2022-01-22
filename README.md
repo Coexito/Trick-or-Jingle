@@ -144,7 +144,7 @@ Pantalla de bienvenida del juego mostrando la ilustración inicial. Puede hacers
 En esta pantalla el jugador podrá iniciar sesión con su usuario ya creado, o bien crear uno en caso de que no existiera. Iniciar sesión sirve para almacenar el número de partidas ganadas en total.
 
 ![Team selection screen](/Documents/Readme-resources/Diagrams/Pantalla3.PNG)
-El jugador podrá escoger con qué equipo quiere jugar. No podrá avanzar hasta haber seleccionado al menos uno de los dos. Como adición, también podrá borrar su usuario en caso de que quisiera, simplemente pulsando en el botón indicado.
+Tendrá que haber dos jugadores para poder empezar a jugar. El primer jugador que se conecte estará en esta pantalla hasta que se conecte un contrincante, en cuyo caso empezará una cuenta atrás hasta pasar a la pantalla de juego.
 
 ![Game screen](/Documents/Readme-resources/Diagrams/Pantalla4.PNG)
 Escena de juego principal. Aquí los jugadores podrán competir para ver quién es el mejor. Puede pausarse el juego pulsando en el botón de la esquina superior izquierda.

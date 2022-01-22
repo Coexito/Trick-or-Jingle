@@ -1,6 +1,8 @@
 import { Player } from '../Player.js';
 import { Weapon } from '../Weapon.js';
 
+let url;
+
 var player1;
 var player2;
 

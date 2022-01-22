@@ -6,7 +6,6 @@ export class StartMenu extends Phaser.Scene {
 
   }
 
-
   preload() {
     this.load.image('background_startmenu', '../../Resources/Art/UI/SC_start.png');
 
@@ -33,7 +32,6 @@ export class StartMenu extends Phaser.Scene {
     this.bg_start.setInteractive().on('pointerdown', () => {
       this.scene.stop();
       this.scene.start("login", { url: url, music: backgroundMusic});
-      
     });
     
   }

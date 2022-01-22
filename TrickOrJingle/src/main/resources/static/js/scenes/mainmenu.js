@@ -1,8 +1,5 @@
- var ready = false; //Number of players that have chosen their team
+<var ready = false; //Number of players that have chosen their team
  
-
-
-
 export class MainMenu extends Phaser.Scene {
   
   constructor() {
@@ -16,6 +13,7 @@ export class MainMenu extends Phaser.Scene {
     this.username = data.username;
     this.connection = conn;
     console.log("Conexión realizada con éxito");
+
   }
 
   preload() {
@@ -36,7 +34,11 @@ export class MainMenu extends Phaser.Scene {
   }
   
   create() {
+	
+	activeUsersNumber = 0;
+	activePrevUsersNumber = 0;
     this.add.image(640, 340, 'background');
+    
 
     this.h_button = this.add.image(460, 350, 'h_button_small');
 	
@@ -49,6 +51,7 @@ export class MainMenu extends Phaser.Scene {
       this.team = "halloween";
 
       this.startButton.setTexture("button_ready");
+
 
     });
 
@@ -76,6 +79,7 @@ export class MainMenu extends Phaser.Scene {
       if(this.team != "None")
         this.scene.stop();
         this.scene.start('game', { team: this.team, username: this.username, connection:connection });
+
     });
     
     
@@ -87,20 +91,23 @@ export class MainMenu extends Phaser.Scene {
 		
 		$.ajax({
 	        method: "DELETE",
-	        url: "http://localhost:8080/users/"+username,
+	        url: url+ "users/" + username,
 	        success : function () {
 				console.log("User removed");
 			},
 			error : function () {
 				console.log("Failed to delete");
-				console.log("The URL was:\nlocalhost:8080/users/"+username)
+				console.log("The URL was:\n" + url + "users/"+username)
 			}
 	     })	
 	     	
 	     	// Changes scene after making the Delete  
 			this.scene.stop();
-	    	this.scene.start('login');
+	    	this.scene.start('login', {url: url});
     });
+    
+          textActiveUsers = this.add.text(100, 100, 'Current users: ' + activeUsersNumber);
+
     
     
   // -------------- CHAT ---------------
@@ -118,6 +125,19 @@ export class MainMenu extends Phaser.Scene {
 	setInterval (getMessage, 2500); // reloads the chat every so often
 	// ------------------------------------
   }
+  
+  update(){
+		
+		getActiveUsers();
+		updateActiveUsers();
+		textActiveUsers.setText('Current users: ' + activeUsersNumber);
+		console.log(activeUsersNumber);
+	}
+	
+	
+	
+  
+
 }
 
 // --------- CHAT ------------------
@@ -131,7 +151,7 @@ function sendMessage(user, message)
 			'Accept': 'application/json',
 			'Content-type' : 'application/json'	
 		},
-		url: "http://localhost:8080/chat",
+		url: url + "chat",
 		data: JSON.stringify( { user: ""+user, message: ""+message } ),
 		dataType: "json" 
 	})
@@ -142,7 +162,7 @@ function getMessage() {
 	for (let i = 0; i < 4; i++) {
 		$.ajax({
 			method: "GET",
-			url: "http://localhost:8080/chat/" + i.toString()
+			url: url + "chat/" + i.toString()
 		}).done(function(data){
 			if(data != "")
 				document.getElementById("message"+i.toString()).innerHTML = data;
@@ -150,3 +170,35 @@ function getMessage() {
 	}
 
 }
+
+
+
+
+
+
+
+function updateActiveUsers(){
+	if(activePrevUsersNumber != activeUsersNumber)
+	 {
+		if(activePrevUsersNumber < activeUsersNumber)
+			console.log("Se ha conectado alguien. El nÃºmero actual de usuarios es: " + activeUsersNumber);
+		else if(activePrevUsersNumber > activeUsersNumber){
+			console.log("Alguien se ha desconectado. El nÃºmero actual de usuarios es: " + activeUsersNumber);
+			//conn.close();
+			
+			}
+			
+		activePrevUsersNumber = activeUsersNumber;
+	}
+	
+}
+
+function getActiveUsers(){
+		      $.ajax({
+			      url:  url + "currentUsersNum",
+			      method: 'GET',
+			      dataType: 'json'
+			      }).done(function(data) {
+					activeUsersNumber = data;
+		      	}); 
+}  

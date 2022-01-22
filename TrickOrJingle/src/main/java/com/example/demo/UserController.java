@@ -22,9 +22,7 @@ public class UserController {
 
     String usersFileURL = "src/main/resources/static/db/users.txt"; // Users file url
     String tempUsersFileURL = "src/main/resources/static/db/tempUsers.txt"; // File used to delete one user
-    
-    private Map <String, User> currentUsers = new HashMap<String, User>();
-    
+        
     public UserController()
     {
     	// Fills the memory users map using the txt file.
@@ -49,21 +47,7 @@ public class UserController {
     	      e.printStackTrace();
     	    }
     }
-    
-
-    @GetMapping("/currentUsers")
-    public Map<String, User> getCurrentUsers(){
-    	//System.out.println("Accediendo a los usuarios actuales");
-    	return currentUsers;
-    }
-    
-    
-    
-    @GetMapping("/currentUsersNum")
-    public int getCurrentUsersNum() {
-    	return currentUsers.size();
-    }
-    
+        
     @DeleteMapping("/currentUsers")
     public void closeSession(@PathVariable("nick") String nick)throws IOException{
  	   if(currentUsers.containsKey(nick)) {

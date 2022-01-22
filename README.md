@@ -163,6 +163,22 @@ Se ha implementado una API REST utilizada para labores de red tales como inicio 
 A continuación se presenta el sencillo pero eficaz diagrama de clases utilizado para este propósito:
 ![API REST Class Diagram](/Documents/Readme-resources/Diagrams/D_API_REST_fondo.jpg)
 
+## Implementación con websockets
+
+Se ha implementado comunicación por websockets para hacer que el juego sea multijugador online. Para ello, se ha creado una conexión entre los clientes y el servidor. Los clientes mandan el estado actual del jugador que corresponda al servidor, y el servidor actúa a modo de difusor enviando dicho estado al resto de jugadores para que vean estos cambios reflejados. Dicho estado está compuesto por: 
+
+* Vidas.
+* Posición.
+* Velocidad.
+* Tener arma (bool).
+* Está disparando (bool).
+* Ángulo del arma.
+* Tipo de arma.
+
+Se ha decidido pasar el ángulo y tipo de arma en lugar de la posición de la bala en cada momento porque se considera que es óptimo mandar los datos necesarios para calcular la posición de la bala en cada máquina en lugar de estar pasando en todo momento la posición, que resultaría muy costoso.
+
+Además, para poder hacer uso de websockets se ha implementado una nueva clase en la parte de servidor llamada WebSocketEchoHandler que permite difundir los mensajes entre los clientes.
+
 ## Instrucciones de ejecución
 
 Para ejecutar *Trick or Jingle* basta con tener el archivo **TrickOrJingle.jar** en su computador y ejecutarlo. Podrá hacer doble click sobre el archivo o, en caso de que no funcionara con debería, puede abrir la consola de comandos en la ubicación del archivo y ejecutar la siguiente instrucción:
